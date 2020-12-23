@@ -12,4 +12,14 @@ const Template: Story<Props> = (args:Props) => <Timeline {...args} />;
 export const Default: Story<Props> = Template.bind({});
 Default.args = {
   timezone: 'america/New_York',
+  time: '11:43',
+  date: '12-23-2020',
 } as Partial<Props>;
+
+export const NormalHours: Story<Props> = Template.bind({});
+NormalHours.args = {
+  timezone: 'america/New_York',
+  time: '11:43',
+  date: '12-23-2020',
+  militaryFormat: false,
+}
