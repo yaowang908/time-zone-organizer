@@ -12,16 +12,19 @@ const Container = styled.div<ContainerProps>`
 
 interface HolderProps {
   elementWidth?: number;
+  isScrollEnabled?: boolean;
 }
 
 const Holder = styled.div<HolderProps>`
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  overflow-x: scroll; 
+  overflow-x: ${(props)=> props.isScrollEnabled? 'scroll' : 'hidden'}; 
   height: 25px;
   font-size: 0.8em;
   font-family: Sans-Serif;
+  cursor: pointer;
+  user-select: none;
   & > div {
     width: ${(props)=> props.elementWidth? `${props.elementWidth}px` : '75px'};
     text-align: center;
