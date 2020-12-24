@@ -19,7 +19,32 @@ Default.args = {
 export const NormalHours: Story<Props> = Template.bind({});
 NormalHours.args = {
   timezone: 'america/New_York',
-  time: '11:43',
+  time: '9:43',
   date: '12-23-2020',
   militaryFormat: false,
-}
+} as Partial<Props>;
+
+export const WidthIndicator: Story<Props> = Template.bind({});
+WidthIndicator.args = {
+  timezone: 'america/New_York',
+  time: '11:15',
+  date: '12-23-2020',
+  militaryFormat: false,
+} as Partial<Props>;
+WidthIndicator.decorators = [
+  (Story) => (
+    <div style={{width: '100%', height: '100vh', position: 'relative', paddingTop: '100px'}}>
+      <div style={{
+          width: '0px', 
+          height: '100vh',  
+          position: 'absolute', 
+          top: '0', 
+          left: '50%', 
+          marginLeft: '0px', 
+          backgroundColor:'transparent', 
+          border:'1px solid red'
+        }}></div>
+      <Story/>
+    </div>
+  ),
+];

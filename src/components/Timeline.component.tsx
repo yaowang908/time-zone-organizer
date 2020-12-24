@@ -48,13 +48,41 @@ const Timeline: React.FC<Props> = ({
     militaryFormat = true,
     color = defaultColor
 }) => {
-  let hoursArr:string[];
-  hoursArr = hoursFormat.military;
-  if (!militaryFormat) hoursArr = hoursFormat.normal; 
+
+  const [hoursArr, setHoursArr] = React.useState<string[]>([]);
+  const [curHour, setCurHour] = React.useState<string>('0');
+  const [curMin, setCurMin] = React.useState<string>('0');
+  const [eleWidth, setEleWidth] = React.useState<number>(75);
+
+  React.useEffect(() => {
+    const cur = time.split(':');
+    const [_curHour, _curMin ]= cur;
+    setCurHour(_curHour);
+    setCurMin(_curMin);
+  }, [time]);
+
+  React.useEffect(() => {
+    let tempHoursArr = hoursFormat.normal;
+    if (!militaryFormat) tempHoursArr = hoursFormat.military;
+    const prevArr = tempHoursArr.slice(0, Number(curHour) + 1);
+    const nextArr = tempHoursArr.slice(Number(curHour) + 1, hoursArr.length);
+    const baseArr = [...nextArr, ...prevArr, ...nextArr, ...prevArr];
+    // console.dir(1);
+    setHoursArr(baseArr);
+  }, [militaryFormat, hoursArr.length, curHour]);
+
+  const holderCallbackRef = (ele: (HTMLDivElement | null)) => {
+      if (ele) {
+        // set cur hour in middle
+        //TODO: min not showing in correct position, 11:15
+        const marginSetByMin = ( Number(curMin) / 60 ) * eleWidth; 
+        ele.scrollLeft = (ele.scrollWidth / 2) - (ele.clientWidth / 2) - (eleWidth / 2) + marginSetByMin;
+      }
+  };
 
   return (
     <Styled.Container bg={color.background} txtColor={color.nightText}>
-      <Styled.Holder>
+      <Styled.Holder elementWidth={eleWidth} ref={holderCallbackRef}>
         {
           hoursArr.map((x, index) => {
             return <div key={index}>{x}</div>
