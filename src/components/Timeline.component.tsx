@@ -80,8 +80,6 @@ const Timeline: React.FC<Props> = ({
       }
   };
 
-  //TODO: drag to move
-
   return (
     <Styled.Container bg={color.background} txtColor={color.nightText}>
       <Styled.Holder elementWidth={eleWidth} ref={holderCallbackRef} isScrollEnabled={false}>
