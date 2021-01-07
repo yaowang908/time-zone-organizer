@@ -43,8 +43,8 @@ const Timeline: React.FC<Props> = ({
     timezone, 
     time, 
     date, 
-    sunriseTime = '18:00', 
-    sunsetTime = '6:00', 
+    sunriseTime = '6:00', 
+    sunsetTime = '18:00', 
     militaryFormat = true,
     color = defaultColor
 }) => {
@@ -74,18 +74,61 @@ const Timeline: React.FC<Props> = ({
   const holderCallbackRef = (ele: (HTMLDivElement | null)) => {
       if (ele) {
         // set cur hour in middle
-        //TODO: min not showing in correct position, 11:15
         const marginSetByMin = ( Number(curMin) / 60 ) * eleWidth; 
         ele.scrollLeft = (ele.scrollWidth / 2) - (ele.clientWidth / 2) - (eleWidth / 2) + marginSetByMin;
       }
   };
+
+  const setBackgroundColor = (t:string) => {
+    const getTimeWhenUsingMilitaryFormat = (_time:string) => {
+      // console.dir(_time);
+      // console.dir(hoursFormat.normal.indexOf(_time));
+      return hoursFormat.normal.indexOf(_time);
+    };
+    const getTime = (_time:string) => {
+      if(!militaryFormat) return Number(_time);
+      return getTimeWhenUsingMilitaryFormat(_time);
+    };
+    const thisTime:number = getTime(t);
+    const type = {
+      night: 'NIGHT',
+      dawn: 'DAWN',
+      day: 'DAY',
+      dusk: 'DUSK',
+    }
+    // sunriseTime = '18:00', 
+    // sunsetTime = '6:00', 
+    const sunriseHour = Number(sunriseTime.split(':')[0]);
+    const sunsetHour = Number(sunsetTime.split(':')[0]);
+    let thisType = type.night;
+    if (thisTime < sunriseHour) thisType = type.night;
+    if (thisTime > sunriseHour && thisTime < sunsetHour ) thisType = type.day;
+    if (thisTime > sunsetHour) thisType = type.night;
+    if (thisTime === sunriseHour) thisType = type.dawn;
+    if (thisTime === sunsetHour) thisType = type.dusk;
+
+    switch (thisType) {
+      case type.night:
+        return {'backgroundColor': defaultColor.night};
+      case type.dawn:
+        return {'backgroundImage': `linear-gradient( 90deg, ${defaultColor.night} 13%, ${defaultColor.day} 86%)`, 'color': defaultColor.white };
+      case type.day:
+        return {'backgroundColor': defaultColor.day};
+      case type.dusk:
+        return {'backgroundImage': `linear-gradient( 90deg, ${defaultColor.day} 13%, ${defaultColor.night} 86%)`, 'color': defaultColor.white };
+      default:
+        return {'backgroundColor': defaultColor.night};
+    }
+
+    
+  }
 
   return (
     <Styled.Container bg={color.background} txtColor={color.nightText}>
       <Styled.Holder elementWidth={eleWidth} ref={holderCallbackRef} isScrollEnabled={false}>
         {
           hoursArr.map((x, index) => {
-            return <div key={index}>{x}</div>
+            return <div key={index} style={setBackgroundColor(x)}>{x}</div>
           })
         }
       </Styled.Holder>

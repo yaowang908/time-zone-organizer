@@ -27,7 +27,7 @@ NormalHours.args = {
 export const WidthIndicator: Story<Props> = Template.bind({});
 WidthIndicator.args = {
   timezone: 'america/New_York',
-  time: '11:15',
+  time: '11:20',
   date: '12-23-2020',
   militaryFormat: false,
 } as Partial<Props>;

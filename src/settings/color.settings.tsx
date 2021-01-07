@@ -6,6 +6,7 @@ const defaultColor = {
   background: '#0A2875',
   textLighter: '#FDFDFF',
   textDarker: '#4B67AD',
+  white: '#FFF',
 };
 
 export default defaultColor;
