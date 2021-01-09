@@ -8,6 +8,8 @@ interface ContainerProps {
 const Container = styled.div<ContainerProps>`
   ${(props)=> props.bg? `background-color: ${props.bg};` : ''}
   ${(props)=> props.txtColor? `color: ${props.txtColor};` : ''}
+  ${(props)=> props.txtColor? `border-bottom: 1px solid ${props.txtColor};` : ''}
+  ${(props)=> props.txtColor? `border-top: 1px solid ${props.txtColor};` : ''}
 `;
 
 interface HolderProps {

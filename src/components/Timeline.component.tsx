@@ -19,12 +19,14 @@ import { Styled } from './Timeline.style';
  *  @param { string } background - hex code default: '#0A2875',
  *  @param { string } textLighter - hex code default: '#FDFDFF',
  *  @param { string } textDarker - hex code default: '#4B67AD',
+ * @param { number } elementWidth - number of the element width in px
  */
 
 export interface Props {
   timezone: string;
   time: string;
   date: string;
+  elementWidth?: number;
   sunriseTime?: string;
   sunsetTime?: string;
   militaryFormat?: boolean;
@@ -42,7 +44,8 @@ export interface Props {
 const Timeline: React.FC<Props> = ({
     timezone, 
     time, 
-    date, 
+    date,
+    elementWidth, 
     sunriseTime = '6:00', 
     sunsetTime = '18:00', 
     militaryFormat = true,
@@ -53,6 +56,12 @@ const Timeline: React.FC<Props> = ({
   const [curHour, setCurHour] = React.useState<string>('0');
   const [curMin, setCurMin] = React.useState<string>('0');
   const [eleWidth, setEleWidth] = React.useState<number>(75);
+
+  React.useEffect(() => {
+    if( elementWidth && elementWidth > 0 ) {
+      setEleWidth(elementWidth);
+    }
+  }, [elementWidth]);
 
   React.useEffect(() => {
     const cur = time.split(':');
