@@ -88,16 +88,17 @@ const Timeline: React.FC<Props> = ({
       }
   };
 
-  const setBackgroundColor = (t:string) => {
-    const getTimeWhenUsingMilitaryFormat = (_time:string) => {
-      // console.dir(_time);
-      // console.dir(hoursFormat.normal.indexOf(_time));
-      return hoursFormat.normal.indexOf(_time);
-    };
-    const getTime = (_time:string) => {
-      if(!militaryFormat) return Number(_time);
+  const getTimeWhenUsingMilitaryFormat = (_time:string) => {
+    // console.dir(_time);
+    // console.dir(hoursFormat.normal.indexOf(_time));
+    return hoursFormat.normal.indexOf(_time);
+  };
+  const getTime = (_time:string) => {
+    if(!militaryFormat) return Number(_time);
       return getTimeWhenUsingMilitaryFormat(_time);
-    };
+  }
+
+  const setBackgroundColor = (t:string) => {  
     const thisTime:number = getTime(t);
     const type = {
       night: 'NIGHT',
@@ -116,28 +117,52 @@ const Timeline: React.FC<Props> = ({
     if (thisTime === sunriseHour) thisType = type.dawn;
     if (thisTime === sunsetHour) thisType = type.dusk;
 
+    const baseStyle = {'position':'relative'};
+
     switch (thisType) {
       case type.night:
-        return {'backgroundColor': defaultColor.night};
+        return Object.assign({} as React.CSSProperties, baseStyle, {'backgroundColor': defaultColor.night});
       case type.dawn:
-        return {'backgroundImage': `linear-gradient( 90deg, ${defaultColor.night} 13%, ${defaultColor.day} 86%)`, 'color': defaultColor.white };
+        return Object.assign({} as React.CSSProperties, baseStyle,  {'backgroundImage': `linear-gradient( 90deg, ${defaultColor.night} 13%, ${defaultColor.day} 86%)`, 'color': defaultColor.white });
       case type.day:
-        return {'backgroundColor': defaultColor.day};
+        return Object.assign({} as React.CSSProperties, baseStyle, {'backgroundColor': defaultColor.day});
       case type.dusk:
-        return {'backgroundImage': `linear-gradient( 90deg, ${defaultColor.day} 13%, ${defaultColor.night} 86%)`, 'color': defaultColor.white };
+        return Object.assign({} as React.CSSProperties, baseStyle, {'backgroundImage': `linear-gradient( 90deg, ${defaultColor.day} 13%, ${defaultColor.night} 86%)`, 'color': defaultColor.white });
       default:
-        return {'backgroundColor': defaultColor.night};
+        return Object.assign({} as React.CSSProperties, baseStyle, {'backgroundColor': defaultColor.night});
     }
+  }
+  
+  const getAnnotation = (txt :string) => {
+    const annotationStyle = {
+      'position': 'absolute',
+      'top': '100%',
+      'fontSize': '0.5em',
+    } as React.CSSProperties;
+    // FIXME: not showing in Timeline component, could be caused by the holder's overflow setting scroll vs auto vs visible
+    // need do some experiment to know what cause it
+    return <div style={annotationStyle}>{txt}</div>;
+  };
 
-    
+  const getContent = (t:string) => {
+    const thisTime:number = getTime(t);
+    if(thisTime === 0) {
+      return (
+      <>
+        {t}
+        {getAnnotation(date)}
+      </>
+      );
+    }
+    return t;
   }
 
   return (
     <Styled.Container bg={color.background} txtColor={color.nightText}>
-      <Styled.Holder elementWidth={eleWidth} ref={holderCallbackRef} isScrollEnabled={false}>
+      <Styled.Holder elementWidth={eleWidth} ref={holderCallbackRef} isScrollEnabled={true}>
         {
           hoursArr.map((x, index) => {
-            return <div key={index} style={setBackgroundColor(x)}>{x}</div>
+            return <div key={index} style={setBackgroundColor(x)}>{getContent(x)}</div>
           })
         }
       </Styled.Holder>

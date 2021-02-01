@@ -22,6 +22,7 @@ const Holder = styled.div<HolderProps>`
   flex-direction: row;
   flex-wrap: nowrap;
   overflow-x: ${(props)=> props.isScrollEnabled? 'scroll' : 'hidden'}; 
+  overflow-y: scroll;
   height: 25px;
   font-size: 0.8em;
   font-family: Sans-Serif;

@@ -27,9 +27,10 @@ NormalHours.args = {
 export const WithIndicator: Story<Props> = Template.bind({});
 WithIndicator.args = {
   timezone: 'america/New_York',
-  time: '11:20',
+  time: '7:20',
   date: '12-23-2020',
   militaryFormat: false,
+  elementWidth: 50,
 } as Partial<Props>;
 WithIndicator.decorators = [
   (Story) => (
@@ -42,7 +43,8 @@ WithIndicator.decorators = [
           left: '50%', 
           marginLeft: '0px', 
           backgroundColor:'transparent', 
-          border:'1px solid red'
+          border:'1px solid red',
+          zIndex: 100,
         }}></div>
       <Story/>
     </div>
