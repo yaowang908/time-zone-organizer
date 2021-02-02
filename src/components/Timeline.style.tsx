@@ -23,7 +23,7 @@ const Holder = styled.div<HolderProps>`
   flex-wrap: nowrap;
   overflow-x: ${(props)=> props.isScrollEnabled? 'scroll' : 'hidden'}; 
   overflow-y: scroll;
-  height: 25px;
+  height: 35px;
   font-size: 0.8em;
   font-family: Sans-Serif;
   cursor: pointer;
@@ -31,7 +31,7 @@ const Holder = styled.div<HolderProps>`
   & > div {
     width: ${(props)=> props.elementWidth? `${props.elementWidth}px` : '75px'};
     text-align: center;
-    line-height: 25px;
+    line-height: 35px;
     flex: 1 0 ${(props)=> props.elementWidth? `${props.elementWidth}px` : '75px'};
   }
   &::-webkit-scrollbar {

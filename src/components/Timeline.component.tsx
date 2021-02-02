@@ -2,6 +2,8 @@ import React from 'react';
 import defaultColor from '../settings/color.settings';
 import hoursFormat from '../settings/hours.setting';
 
+import { useDebouncedEffect } from '../lib/useDebouncedEffect';
+
 import { Styled } from './Timeline.style';
 
 /**
@@ -71,6 +73,7 @@ const Timeline: React.FC<Props> = ({
   }, [time]);
 
   React.useEffect(() => {
+    //recreate hoursArr base on the time parameter at middle
     let tempHoursArr = hoursFormat.normal;
     if (!militaryFormat) tempHoursArr = hoursFormat.military;
     const prevArr = tempHoursArr.slice(0, Number(curHour) + 1);
@@ -117,7 +120,7 @@ const Timeline: React.FC<Props> = ({
     if (thisTime === sunriseHour) thisType = type.dawn;
     if (thisTime === sunsetHour) thisType = type.dusk;
 
-    const baseStyle = {'position':'relative'};
+    const baseStyle = {"width":"100%"};
 
     switch (thisType) {
       case type.night:
@@ -136,33 +139,25 @@ const Timeline: React.FC<Props> = ({
   const getAnnotation = (txt :string) => {
     const annotationStyle = {
       'position': 'absolute',
-      'top': '100%',
-      'fontSize': '0.5em',
+      'top': '12px',
+      'fontSize': '0.6em',
     } as React.CSSProperties;
-    // FIXME: not showing in Timeline component, could be caused by the holder's overflow setting scroll vs auto vs visible
-    // need do some experiment to know what cause it
-    return <div style={annotationStyle}>{txt}</div>;
+// DONE: show date under midnight cell
+    return <div style={annotationStyle} >{txt}</div>;
+    // return txt;
   };
-
-  const getContent = (t:string) => {
-    const thisTime:number = getTime(t);
-    if(thisTime === 0) {
-      return (
-      <>
-        {t}
-        {getAnnotation(date)}
-      </>
-      );
-    }
-    return t;
-  }
 
   return (
     <Styled.Container bg={color.background} txtColor={color.nightText}>
       <Styled.Holder elementWidth={eleWidth} ref={holderCallbackRef} isScrollEnabled={true}>
         {
           hoursArr.map((x, index) => {
-            return <div key={index} style={setBackgroundColor(x)}>{getContent(x)}</div>
+            return (
+            <div key={index} style={{"display":"flex","flexDirection":"column","position":"relative", "alignItems":"center"}}>
+              <div style={setBackgroundColor(x)} >{x}</div>
+              {(x === '0') ? getAnnotation(date) : ''}
+            </div>
+            );
           })
         }
       </Styled.Holder>

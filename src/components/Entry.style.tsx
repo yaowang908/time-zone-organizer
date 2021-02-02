@@ -5,7 +5,7 @@ interface ContainerProps {
 };
 
 const Container = styled.div<ContainerProps>`
-  
+  position: relative;
 `;
 
 interface HeaderProps {
@@ -29,7 +29,7 @@ interface FooterProps {
 };
 // footer is just a container, date element is controlled by in-line css
 const Footer = styled.div<FooterProps>`
-  padding-top: 0.5em;
+  padding-top: 1em;
   font-size: 0.6em;
   ${(props)=> props.bg? `background-color: ${props.bg};` : ''}
   ${(props)=> props.txtColor? `color: ${props.txtColor};` : ''} 

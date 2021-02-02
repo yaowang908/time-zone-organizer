@@ -57,8 +57,8 @@ const Entry: React.FC<Props> = ({
   const timezoneTextStyle = () => {
     return {
       'color': '#4B67AD',
-      'font-size':'0.8em',
-      'margin-left': '1em',
+      'fontSize':'0.8em',
+      'marginLeft': '1em',
     }
   }
 
