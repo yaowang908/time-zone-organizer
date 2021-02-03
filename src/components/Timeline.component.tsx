@@ -143,6 +143,7 @@ const Timeline: React.FC<Props> = ({
       'fontSize': '0.6em',
     } as React.CSSProperties;
 // DONE: show date under midnight cell
+//TODO: change date base on real data
     return <div style={annotationStyle} >{txt}</div>;
     // return txt;
   };
