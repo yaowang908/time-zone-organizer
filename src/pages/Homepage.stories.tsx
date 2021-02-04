@@ -22,13 +22,13 @@ Default.args = {
     },
     {
       name: 'Tyrik Celia',
-      time: '16:00',
+      time: '23:30',
       date: '2-3-2021',
       timezone: 'Asia/Jerusalem',
     },
     {
       name: 'Henricus Peter',
-      time: '1:25',
+      time: '0:00',
       date: '2-2-2021',
       timezone: 'Australia/Adelaide',
     },

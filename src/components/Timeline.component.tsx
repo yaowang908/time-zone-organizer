@@ -2,7 +2,7 @@ import React from 'react';
 import defaultColor from '../settings/color.settings';
 import hoursFormat from '../settings/hours.setting';
 
-import { useDebouncedEffect } from '../lib/useDebouncedEffect';
+import { getFormattedDate } from '../lib/getFormattedDate';
 
 import { Styled } from './Timeline.style';
 
@@ -136,15 +136,26 @@ const Timeline: React.FC<Props> = ({
     }
   }
   
+  let zeroCount = 0;
   const getAnnotation = (txt :string) => {
+    const curDate = new Date(Date.parse(txt));
+    let nextDate = new Date();
+    nextDate.setDate(curDate.getDate() + 1);
     const annotationStyle = {
       'position': 'absolute',
       'top': '12px',
       'fontSize': '0.6em',
     } as React.CSSProperties;
 // DONE: show date under midnight cell
-//TODO: change date base on real data
-    return <div style={annotationStyle} >{txt}</div>;
+//DONE: change date base on real data
+    if (zeroCount === 0) {
+      zeroCount += 1;
+      return <div style={annotationStyle} >{getFormattedDate(curDate)}</div>;
+    } else {
+      zeroCount += 1;
+      return <div style={annotationStyle} >{getFormattedDate(nextDate)}</div>;
+    }
+    
     // return txt;
   };
 
