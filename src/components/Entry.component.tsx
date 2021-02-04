@@ -32,6 +32,7 @@ export interface Props {
   sunriseTime?: string;
   sunsetTime?: string;
   militaryFormat?: boolean;
+  elementWidth?: number;
   color?: {
     night?: string;
     day?: string;
@@ -51,7 +52,8 @@ const Entry: React.FC<Props> = ({
   sunriseTime = '6:00', 
   sunsetTime = '18:00', 
   militaryFormat = true,
-  color = defaultColor
+  color = defaultColor,
+  elementWidth = 50
 }) => {
 
   const timezoneTextStyle = () => {
@@ -76,7 +78,7 @@ const Entry: React.FC<Props> = ({
         time = {time}
         date = {date}
         militaryFormat = {militaryFormat}
-        elementWidth = {50}
+        elementWidth = {elementWidth}
         />
       <Styled.Footer  bg={color.background} txtColor={color.nightText}>
       </Styled.Footer>

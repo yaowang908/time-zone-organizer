@@ -18,10 +18,11 @@ export interface Props {
     textLighter?: string;
     textDarker?: string;
     white?: string;
-  }
+  };
+  elementWidth?: number;
 };
 
-const Homepage: React.FC<Props> = ({ time, date, users, color = defaultColor }) => {
+const Homepage: React.FC<Props> = ({ time, date, users, color = defaultColor, elementWidth = 50 }) => {
 
 
   return (
@@ -49,6 +50,7 @@ const Homepage: React.FC<Props> = ({ time, date, users, color = defaultColor }) 
             time={user.time}
             date={user.date}
             militaryFormat={false}
+            elementWidth={elementWidth}
             />
         )) : ''}
       </div>

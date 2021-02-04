@@ -32,5 +32,6 @@ Default.args = {
       date: '2-2-2021',
       timezone: 'Australia/Adelaide',
     },
-  ]
+  ],
+  elementWidth: 70,
 } as Partial<Props>;
