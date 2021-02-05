@@ -21,8 +21,8 @@ const Holder = styled.div<HolderProps>`
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  overflow-x: ${(props)=> props.isScrollEnabled? 'scroll' : 'hidden'}; 
-  overflow-y: scroll;
+  overflow: ${(props)=> props.isScrollEnabled? 'scroll' : 'hidden'}; 
+  // you can't set overflow-x and overflow-y different when use scroll and hidden
   height: 35px;
   font-size: 0.8em;
   font-family: Sans-Serif;

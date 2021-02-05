@@ -27,7 +27,7 @@ NormalHours.args = {
 export const WithIndicator: Story<Props> = Template.bind({});
 WithIndicator.args = {
   timezone: 'america/New_York',
-  time: '7:20',
+  time: '23:20',
   date: '12-23-2020',
   militaryFormat: false,
   elementWidth: 50,

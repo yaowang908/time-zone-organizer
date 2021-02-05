@@ -161,7 +161,7 @@ const Timeline: React.FC<Props> = ({
 
   return (
     <Styled.Container bg={color.background} txtColor={color.nightText}>
-      <Styled.Holder elementWidth={eleWidth} ref={holderCallbackRef} isScrollEnabled={true}>
+      <Styled.Holder elementWidth={eleWidth} ref={holderCallbackRef} isScrollEnabled={false}>
         {
           hoursArr.map((x, index) => {
             return (
