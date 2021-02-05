@@ -1,6 +1,7 @@
 import React from 'react';
-import defaultColor from '../settings/color.settings';
+import spacetime from 'spacetime';
 
+import defaultColor from '../settings/color.settings';
 import Entry from '../components/Entry.component';
 
 import './Homepage.style.scss';
@@ -24,13 +25,24 @@ export interface Props {
 
 const Homepage: React.FC<Props> = ({ time, date, users, color = defaultColor, elementWidth = 50 }) => {
 
+  const [ usersState, setUsersState ] = React.useState(users);
+
+  const addPersonClickHandler = () => {
+    // TODO: get NewYork local time as default value for new users.
+    const defaultTimezone = 'America/New_York';
+    const spaceTimeNowInNewYork = spacetime.now(defaultTimezone);
+    const timeNowInNewYork = spaceTimeNowInNewYork.hour() + ':' + spaceTimeNowInNewYork.minute() ;
+    const dateNowInNewYork = ( spaceTimeNowInNewYork.month() + 1 ) + '-' + spaceTimeNowInNewYork.date() + '-' + spaceTimeNowInNewYork.year();
+    const newUsersState = [...usersState, {name: 'New User', time: timeNowInNewYork, date: dateNowInNewYork, timezone: defaultTimezone}];
+    setUsersState(newUsersState);
+  };
 
   return (
     <div className='container' style={{backgroundColor: color.background}}>
       <div className="nav">
         <div className="logo"></div>
         <div className="menu_container">
-          <div className="menu_item" style={{color:color.white}}>New</div>
+          <div className="menu_item" style={{color:color.white}} onClick={addPersonClickHandler}>New</div>
           <div className="menu_item" style={{color:color.white}}>Import</div>
         </div>
       </div>
@@ -42,7 +54,7 @@ const Homepage: React.FC<Props> = ({ time, date, users, color = defaultColor, el
       </div>
       <div className="indicator"></div>
       <div className="content">
-        {users ? users.map((user, index) => (
+        {usersState ? usersState.map((user, index) => (
           <Entry 
             key={index}
             name={user.name} 
@@ -53,6 +65,12 @@ const Homepage: React.FC<Props> = ({ time, date, users, color = defaultColor, el
             elementWidth={elementWidth}
             />
         )) : ''}
+      </div>
+      <div className="footer">
+        <div className="add_person" onClick={addPersonClickHandler}>
+          <div className="cross"></div>
+          <div className="cross_title">add person</div>          
+        </div>
       </div>
     </div>
   );
