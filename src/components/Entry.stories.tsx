@@ -34,7 +34,8 @@ WithIndicator.decorators = [
           left: '50%', 
           marginLeft: '0px', 
           backgroundColor:'transparent', 
-          border:'1px solid red'
+          border:'1px solid red',
+          zIndex: 100,
         }}></div>
       <Story/>
     </div>

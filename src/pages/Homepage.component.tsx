@@ -26,15 +26,30 @@ export interface Props {
 const Homepage: React.FC<Props> = ({ time, date, users, color = defaultColor, elementWidth = 50 }) => {
 
   const [ usersState, setUsersState ] = React.useState(users);
+  const [ timeState, setTimeState ] = React.useState(time);
+  const [ dateState, setDateState ] = React.useState(date);
 
   const addPersonClickHandler = () => {
-    // TODO: get NewYork local time as default value for new users.
+    // DONE: get NewYork local time as default value for new users.
     const defaultTimezone = 'America/New_York';
     const spaceTimeNowInNewYork = spacetime.now(defaultTimezone);
     const timeNowInNewYork = spaceTimeNowInNewYork.hour() + ':' + spaceTimeNowInNewYork.minute() ;
     const dateNowInNewYork = ( spaceTimeNowInNewYork.month() + 1 ) + '-' + spaceTimeNowInNewYork.date() + '-' + spaceTimeNowInNewYork.year();
     const newUsersState = [...usersState, {name: 'New User', time: timeNowInNewYork, date: dateNowInNewYork, timezone: defaultTimezone}];
     setUsersState(newUsersState);
+  };
+
+  // TODO: add a way to change date
+  // thoughts: to make content editable, there are two ways
+  // 1. input field, disabled when not focused
+  // 2. div field, contenteditable when clicked
+  const changeDate = () => {};
+
+  //TODO: functions that will pass down to child components to updated userName, timezone, time
+  const changeUserName = () => {};
+  const changeUserTimezone = () => {};
+  const changeUserTime = () => {
+    //TODO: user time will affect the whole app
   };
 
   return (
@@ -48,8 +63,8 @@ const Homepage: React.FC<Props> = ({ time, date, users, color = defaultColor, el
       </div>
       <div className="local_time" style={{color:color.white,backgroundColor: color.background}}>
         <div className="title">Local Time</div>
-        <div className="time">{time}</div>
-        <div className="date">{date}</div>
+        <div className="time">{timeState}</div>
+        <div className="date">{dateState}</div>
         <div className="triangle"></div>
       </div>
       <div className="indicator"></div>

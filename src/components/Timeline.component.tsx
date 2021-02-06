@@ -159,6 +159,13 @@ const Timeline: React.FC<Props> = ({
     // return txt;
   };
 
+  /**
+   * TODO: 1: click on hour to set current hour to the clicked hour
+   * TODO:   1.1: click on time to set more precise time
+   * TODO: 2: click on name to edit name
+   * TODO: 3: click on time zone to edit time zone 
+   * */
+
   return (
     <Styled.Container bg={color.background} txtColor={color.nightText}>
       <Styled.Holder elementWidth={eleWidth} ref={holderCallbackRef} isScrollEnabled={false}>
