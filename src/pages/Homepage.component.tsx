@@ -50,6 +50,7 @@ const Homepage: React.FC<Props> = ({ time, date, users, color = defaultColor, el
   const changeUserTimezone = () => {};
   const changeUserTime = () => {
     //TODO: user time will affect the whole app
+    //use context api to avoid unnecessary child components update
   };
 
   return (
