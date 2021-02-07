@@ -26,8 +26,8 @@ export interface Props {
 const Homepage: React.FC<Props> = ({ time, date, users, color = defaultColor, elementWidth = 50 }) => {
 
   const [ usersState, setUsersState ] = React.useState(users);
-  const [ timeState, setTimeState ] = React.useState(time);
-  const [ dateState, setDateState ] = React.useState(date);
+  const [ localTimeState, setLocalTimeState ] = React.useState(time);
+  const [ localDateState, setLocalDateState ] = React.useState(date);
 
   const addPersonClickHandler = () => {
     // DONE: get NewYork local time as default value for new users.
@@ -41,9 +41,29 @@ const Homepage: React.FC<Props> = ({ time, date, users, color = defaultColor, el
 
   // TODO: add a way to change date
   // thoughts: to make content editable, there are two ways
-  // 1. input field, disabled when not focused
+  // 1. NOTE:input field, disabled when not focused
   // 2. div field, contenteditable when clicked
-  const changeDate = () => {};
+  const changeLocalDate = (e: React.FocusEvent<HTMLInputElement>) => {
+    setLocalDateState(e.target.value);
+    console.log(e.target);
+  };
+  const localDateEnterHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      setLocalDateState((e.target as HTMLInputElement).value);
+      (e.target as HTMLInputElement).blur();
+      // console.dir((e.target as HTMLInputElement).value);
+    }
+  };
+  const changeLocalTime = (e: React.FocusEvent<HTMLInputElement>) => {
+    setLocalTimeState(e.target.value);
+  };
+  const localTimeEnterHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      setLocalTimeState((e.target as HTMLInputElement).value);
+      (e.target as HTMLInputElement).blur();
+    }
+  };
+  // TODO: next step is to make local Date and local time affect all users
 
   //TODO: functions that will pass down to child components to updated userName, timezone, time
   const changeUserName = () => {};
@@ -63,9 +83,21 @@ const Homepage: React.FC<Props> = ({ time, date, users, color = defaultColor, el
         </div>
       </div>
       <div className="local_time" style={{color:color.white,backgroundColor: color.background}}>
-        <div className="title">Local Time</div>
-        <div className="time">{timeState}</div>
-        <div className="date">{dateState}</div>
+        <div className="title input_div">Local Time</div>
+        <input className="time input_div" 
+          value={localTimeState} 
+          style={{color:color.white,backgroundColor: color.background}}
+          onChange={changeLocalTime}
+          onBlur={changeLocalTime}
+          onKeyDown={localTimeEnterHandler}
+        />
+        <input className="date input_div" 
+          value={localDateState} 
+          style={{color:color.white,backgroundColor: color.background}}
+          onChange={changeLocalDate}
+          onBlur={changeLocalDate}
+          onKeyDown={localDateEnterHandler}
+        />
         <div className="triangle"></div>
       </div>
       <div className="indicator"></div>
