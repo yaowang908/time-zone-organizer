@@ -28,16 +28,56 @@ const Homepage: React.FC<Props> = ({ time, date, users, color = defaultColor, el
   const [ usersState, setUsersState ] = React.useState(users);
   const [ localTimeState, setLocalTimeState ] = React.useState(time);
   const [ localDateState, setLocalDateState ] = React.useState(date);
+  const defaultTimezone = 'America/New_York';
 
   const addPersonClickHandler = () => {
     // DONE: get NewYork local time as default value for new users.
-    const defaultTimezone = 'America/New_York';
     const spaceTimeNowInNewYork = spacetime.now(defaultTimezone);
     const timeNowInNewYork = spaceTimeNowInNewYork.hour() + ':' + spaceTimeNowInNewYork.minute() ;
     const dateNowInNewYork = ( spaceTimeNowInNewYork.month() + 1 ) + '-' + spaceTimeNowInNewYork.date() + '-' + spaceTimeNowInNewYork.year();
     const newUsersState = [...usersState, {name: 'New User', time: timeNowInNewYork, date: dateNowInNewYork, timezone: defaultTimezone}];
     setUsersState(newUsersState);
   };
+
+  //TODO: get correct time and date for every user
+  //
+  const getUserDateTime = (userTimezone: string, localTime: string, localDate: string,localTimezone: string) => {
+
+    const d = spacetime(localDate, localTimezone);
+    d.time(localTime);
+    d.goto(userTimezone);
+    return {
+      date: `${d.month()+1}-${d.date()}-${d.year()}`,
+      time: `${d.hour()}:${d.minute()}`
+    };
+  };
+
+  const dateFormatter = () => {
+    // scenarios
+    // 1. 2-3-2021
+    // 2. February 3, 2021
+    // 3. or maybe find a library to format all possible date format
+
+    // this is for spacetime library to work
+    // so the return format is going to be February 3, 2021
+    return '';
+  };
+
+  const timeFormatter = () => {
+    // scenarios
+    // 1. 16:20
+    // 2. 4:20pm
+    // 3. or maybe find a library to format all possible date format
+
+    // this is for spacetime library to work
+    // so the return format is going to be 4:20pm
+    return '';
+  };
+
+  React.useEffect(() => {
+    // https://stackoverflow.com/questions/53715465/can-i-set-state-inside-a-useeffect-hook
+
+  }, [localTimeState, localDateState]);
 
   // TODO: add a way to change date
   // thoughts: to make content editable, there are two ways
