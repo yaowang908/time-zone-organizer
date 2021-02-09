@@ -77,6 +77,8 @@ const Entry: React.FC<Props> = ({
         <div>
           <span>{name}</span>
           <span style={timezoneTextStyle()}>
+            {/* TODO: need to style this timezone value or create my own */}
+            {/* TODO: if you decided to build you own remember to remove this timezone picker and react-bootstrap and bootstrap */}
             <TimezonePicker
               absolute      = {false}
               defaultValue  = "America/New_York"
