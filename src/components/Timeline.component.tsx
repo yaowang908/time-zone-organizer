@@ -58,7 +58,7 @@ const Timeline: React.FC<Props> = ({
   const [curHour, setCurHour] = React.useState<string>('0');
   const [curMin, setCurMin] = React.useState<string>('0');
   const [eleWidth, setEleWidth] = React.useState<number>(75);
-
+  
   React.useEffect(() => {
     if( elementWidth && elementWidth > 0 ) {
       setEleWidth(elementWidth);

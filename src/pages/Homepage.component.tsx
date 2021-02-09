@@ -1,5 +1,8 @@
 import React from 'react';
 import spacetime from 'spacetime';
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 import defaultColor from '../settings/color.settings';
 import Entry from '../components/Entry.component';
@@ -26,8 +29,7 @@ export interface Props {
 const Homepage: React.FC<Props> = ({ time, date, users, color = defaultColor, elementWidth = 50 }) => {
 
   const [ usersState, setUsersState ] = React.useState(users);
-  const [ localTimeState, setLocalTimeState ] = React.useState(time);
-  const [ localDateState, setLocalDateState ] = React.useState(date);
+  const [ localDateTimeState, setLocalDateTimeState ] = React.useState(new Date());
   const defaultTimezone = 'America/New_York';
 
   const addPersonClickHandler = () => {
@@ -52,57 +54,32 @@ const Homepage: React.FC<Props> = ({ time, date, users, color = defaultColor, el
     };
   };
 
-  const dateFormatter = () => {
-    // scenarios
-    // 1. 2-3-2021
-    // 2. February 3, 2021
-    // 3. or maybe find a library to format all possible date format
+  React.useEffect(() => {
+    // process timezone for usersState
+    const _date = localDateTimeState.toLocaleDateString('default', { year: 'numeric', month: 'long', day: 'numeric' });
+    const _time = localDateTimeState.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+    console.dir(_date);
+    console.dir(_time);
+    
+  }, [localDateTimeState]);
 
+  const dateFormatter = (date:string) => {
+    // input format February 8, 2021
+    
     // this is for spacetime library to work
     // so the return format is going to be February 3, 2021
-    return '';
+    return date;
   };
 
-  const timeFormatter = () => {
-    // scenarios
-    // 1. 16:20
-    // 2. 4:20pm
-    // 3. or maybe find a library to format all possible date format
-
+  const timeFormatter = (time:string) => {
+    // input format 08:50 PM
+    const _time = time.replace(/^0+/, '').split(' ').join('');
     // this is for spacetime library to work
     // so the return format is going to be 4:20pm
-    return '';
+    return _time;
   };
 
-  React.useEffect(() => {
-    // https://stackoverflow.com/questions/53715465/can-i-set-state-inside-a-useeffect-hook
 
-  }, [localTimeState, localDateState]);
-
-  // TODO: add a way to change date
-  // thoughts: to make content editable, there are two ways
-  // 1. NOTE:input field, disabled when not focused
-  // 2. div field, contenteditable when clicked
-  const changeLocalDate = (e: React.FocusEvent<HTMLInputElement>) => {
-    setLocalDateState(e.target.value);
-    console.log(e.target);
-  };
-  const localDateEnterHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      setLocalDateState((e.target as HTMLInputElement).value);
-      (e.target as HTMLInputElement).blur();
-      // console.dir((e.target as HTMLInputElement).value);
-    }
-  };
-  const changeLocalTime = (e: React.FocusEvent<HTMLInputElement>) => {
-    setLocalTimeState(e.target.value);
-  };
-  const localTimeEnterHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      setLocalTimeState((e.target as HTMLInputElement).value);
-      (e.target as HTMLInputElement).blur();
-    }
-  };
   // TODO: next step is to make local Date and local time affect all users
 
   //TODO: functions that will pass down to child components to updated userName, timezone, time
@@ -124,20 +101,14 @@ const Homepage: React.FC<Props> = ({ time, date, users, color = defaultColor, el
       </div>
       <div className="local_time" style={{color:color.white,backgroundColor: color.background}}>
         <div className="title input_div">Local Time</div>
-        <input className="time input_div" 
-          value={localTimeState} 
-          style={{color:color.white,backgroundColor: color.background}}
-          onChange={changeLocalTime}
-          onBlur={changeLocalTime}
-          onKeyDown={localTimeEnterHandler}
+        
+        <DatePicker 
+          showTimeSelect
+          selected={localDateTimeState}
+          dateFormat="MMMM d, yyyy h:mm aa"
+          onChange={(date: Date) => setLocalDateTimeState(date)}  
         />
-        <input className="date input_div" 
-          value={localDateState} 
-          style={{color:color.white,backgroundColor: color.background}}
-          onChange={changeLocalDate}
-          onBlur={changeLocalDate}
-          onKeyDown={localDateEnterHandler}
-        />
+        
         <div className="triangle"></div>
       </div>
       <div className="indicator"></div>

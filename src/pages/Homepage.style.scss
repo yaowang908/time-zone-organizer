@@ -41,15 +41,15 @@
   }
   .local_time {
     position: absolute;
-    top: 27px;
+    top: 55px;
     left: 50%;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
     justify-content: space-around;
     align-items: center;
-    width: 100px;
-    margin-left: -49px;
+    width: 400px;
+    margin-left: -199px;
     line-height: 1.5rem;
     z-index: 120;
     .title {
@@ -79,6 +79,17 @@
     border: 0;
     padding: 0;
     &::placeholder {
+      color: #fff;
+    }
+  }
+  .react-datepicker__input-container {
+    input {
+      width: 100%;
+      text-align: center;
+      background-color: transparent;
+      border: 0;
+      padding: 0;
+      font-size: 1.5rem;
       color: #fff;
     }
   }
