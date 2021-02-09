@@ -1,4 +1,7 @@
 import React from 'react';
+import TimezonePicker from 'react-bootstrap-timezone-picker';
+import 'react-bootstrap-timezone-picker/dist/react-bootstrap-timezone-picker.min.css';
+
 import defaultColor from '../settings/color.settings';
 
 import Timeline from './Timeline.component';
@@ -64,12 +67,23 @@ const Entry: React.FC<Props> = ({
     }
   }
 
+  const handleTimezoneChange = (timezone: string) => {
+    console.dir(timezone);
+  }
+
   return (
     <Styled.Container>
       <Styled.Header  bg={color.background} txtColor={color.nightText}>
         <div>
           <span>{name}</span>
-          <span style={timezoneTextStyle()}>{timezone}</span>
+          <span style={timezoneTextStyle()}>
+            <TimezonePicker
+              absolute      = {false}
+              defaultValue  = "America/New_York"
+              placeholder   = "Select timezone..."
+              onChange      = {handleTimezoneChange}
+            />
+          </span>
         </div>
         <div>{time}</div>
       </Styled.Header>

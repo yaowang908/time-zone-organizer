@@ -1,4 +1,5 @@
 import React from 'react';
+
 import defaultColor from '../settings/color.settings';
 import hoursFormat from '../settings/hours.setting';
 
