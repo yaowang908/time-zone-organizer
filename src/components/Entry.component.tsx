@@ -1,6 +1,5 @@
 import React from 'react';
-import TimezonePicker from 'react-bootstrap-timezone-picker';
-import 'react-bootstrap-timezone-picker/dist/react-bootstrap-timezone-picker.min.css';
+import TimezonePicker from './TimezonePicker.component';
 
 import defaultColor from '../settings/color.settings';
 
@@ -77,14 +76,7 @@ const Entry: React.FC<Props> = ({
         <div>
           <span>{name}</span>
           <span style={timezoneTextStyle()}>
-            {/* TODO: need to style this timezone value or create my own */}
-            {/* TODO: if you decided to build you own remember to remove this timezone picker and react-bootstrap and bootstrap */}
-            <TimezonePicker
-              absolute      = {false}
-              defaultValue  = "America/New_York"
-              placeholder   = "Select timezone..."
-              onChange      = {handleTimezoneChange}
-            />
+            <TimezonePicker placeHolder="America/New_York"  />
           </span>
         </div>
         <div>{time}</div>

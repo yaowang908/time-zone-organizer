@@ -1,5 +1,5 @@
 import React from 'react';
-import { Story, Meta } from '@storybook/react'
+import { Story, Meta } from '@storybook/react';
 import Timeline, { Props } from './Timeline.component';
 
 export default {
