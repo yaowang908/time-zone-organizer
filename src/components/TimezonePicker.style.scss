@@ -1,0 +1,35 @@
+.react-datepicker-wrapper {
+  width: 100%;
+}
+.content {
+  .single_user_timezone_holder {
+    display: flex;
+    flex-direction: row;
+    min-width: 500px;
+    .single_user_timezone_name {
+      line-height: 37px;
+    }
+    .single_user_timezone_picker {
+      width: 100%;
+      max-width: 320px;
+      margin-left: 10px;
+      .react-select__control {
+        background-color: #0a2875;
+        border: 0;
+        // border-bottom: 1px solid #395396;
+        border-radius: 0;
+        .react-select__value-container {
+          .react-select__single-value, .react-select__placeholder {
+            color: #4f6ebf;
+            font-size: 0.8rem;
+  
+          }
+        }
+        .react-select__indicators {
+          display: none;
+        }
+      }
+    }
+  }
+
+}

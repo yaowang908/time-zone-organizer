@@ -5,6 +5,7 @@ import defaultColor from '../settings/color.settings';
 
 import Timeline from './Timeline.component';
 import { Styled } from './Entry.style'; 
+import './Entry.style.scss';
 
 /**
  * @param { string } name - person's name
@@ -73,11 +74,9 @@ const Entry: React.FC<Props> = ({
   return (
     <Styled.Container>
       <Styled.Header  bg={color.background} txtColor={color.nightText}>
-        <div>
-          <span>{name}</span>
-          <span style={timezoneTextStyle()}>
-            <TimezonePicker placeHolder="America/New_York"  />
-          </span>
+        <div className="single_user_timezone_holder">
+          <span className="single_user_timezone_name">{name}</span>
+          <TimezonePicker placeHolder="America/New_York"  className="single_user_timezone_picker"/>
         </div>
         <div>{time}</div>
       </Styled.Header>

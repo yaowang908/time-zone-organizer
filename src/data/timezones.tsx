@@ -112,7 +112,7 @@ const defaultTimezones: DefaultTimezones[] = [
   { timezone: "(GMT+13:00) Fakaofo", city: "Pacific/Fakaofo"},
   { timezone: "(GMT+13:00) Fiji", city: "Pacific/Fiji"},
   { timezone: "(GMT+13:00) Tongatapu", city: "Pacific/Tongatapu"},
-  { timezone: "(GMT+14:00) Apia", city: "Pa}cific/Apia"},
+  { timezone: "(GMT+14:00) Apia", city: "Pacific/Apia"},
 ];
 
 export default defaultTimezones;
