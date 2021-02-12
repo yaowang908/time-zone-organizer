@@ -108,7 +108,7 @@ const Homepage: React.FC<Props> = ({ time, date, users, color = defaultColor, el
           dateFormat="MMMM d, yyyy h:mm aa"
           onChange={(date: Date) => setLocalDateTimeState(date)}  
         />
-        
+        {/* TODO: local time change on real time */}
         <div className="triangle"></div>
       </div>
       <div className="indicator"></div>

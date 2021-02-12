@@ -36,7 +36,8 @@ const TimezonePicker: React.FC<Props> = ({
     setOptions(optionsInit());
   }, []);
 // TODO: return selected value
-// TODO: style it
+// TODO: pass in selected value
+// DONE: style it
 
   return (
     <Select 
