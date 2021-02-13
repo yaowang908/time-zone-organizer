@@ -22,28 +22,13 @@ const TimezonePicker: React.FC<Props> = ({
   setSelectedTimezone,
 }) => {
 
-  const [ options, setOptions ] = React.useState<Timezone[]>([]);
-  // const [ selectedTimezone, setSelectedTimezone ] = React.useState<Timezone>(); 
-
-  const optionsInit = () => {
-    const _options:{id:number, value:string, label:string}[] = [];
-    defaultTimezones.map((timezone, index) => {
-      _options.push({id: index, value: timezone.timezone, label: timezone.city});
-      return <></>;
-    });
-    return _options;
-  };
-
-  React.useEffect(() => {
-    setOptions(optionsInit());
-  }, []);
 // TODO: return selected value
 // TODO: pass in selected value
 // DONE: style it
 
   return (
     <Select 
-      options={options} 
+      options={defaultTimezones} 
       onChange={(values:Timezone) => setSelectedTimezone(values)}
       className={className?className:''}
       classNamePrefix="react-select"
