@@ -6,13 +6,12 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import defaultColor from '../settings/color.settings';
 import Entry from '../components/Entry.component';
+import getCurrentDateTimeInFormat from '../lib/getCurrentDateTimeInFormat';
 
 import './Homepage.style.scss';
 
 export interface Props {
-  time: string;
-  date: string;
-  users: {name: string; time: string; date: string; timezone: string;}[];
+  users: {name: string; timezone: string;}[];
   color?: {
     night?: string;
     day?: string;
@@ -26,18 +25,20 @@ export interface Props {
   elementWidth?: number;
 };
 
-const Homepage: React.FC<Props> = ({ time, date, users, color = defaultColor, elementWidth = 50 }) => {
+const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth = 50 }) => {
 
   const [ usersState, setUsersState ] = React.useState(users);
   const [ localDateTimeState, setLocalDateTimeState ] = React.useState(new Date());
-  const defaultTimezone = 'America/New_York';
+  const [ defaultTimezoneState, setDefaultTimezoneState ] = React.useState('America/New_York');
+  const [ timeState, setTimeState ] = React.useState(getCurrentDateTimeInFormat().time);
+  const [ dateState, setDateState ] = React.useState(getCurrentDateTimeInFormat().date);
 
   const addPersonClickHandler = () => {
     // DONE: get NewYork local time as default value for new users.
-    const spaceTimeNowInNewYork = spacetime.now(defaultTimezone);
+    const spaceTimeNowInNewYork = spacetime.now(defaultTimezoneState);
     const timeNowInNewYork = spaceTimeNowInNewYork.hour() + ':' + spaceTimeNowInNewYork.minute() ;
     const dateNowInNewYork = ( spaceTimeNowInNewYork.month() + 1 ) + '-' + spaceTimeNowInNewYork.date() + '-' + spaceTimeNowInNewYork.year();
-    const newUsersState = [...usersState, {name: 'New User', time: timeNowInNewYork, date: dateNowInNewYork, timezone: defaultTimezone}];
+    const newUsersState = [...usersState, {name: 'New User', time: timeNowInNewYork, date: dateNowInNewYork, timezone: defaultTimezoneState}];
     setUsersState(newUsersState);
   };
 
@@ -118,8 +119,9 @@ const Homepage: React.FC<Props> = ({ time, date, users, color = defaultColor, el
             key={index}
             name={user.name} 
             timezone={user.timezone}
-            time={user.time}
-            date={user.date}
+            localTimezone={defaultTimezoneState}
+            time={timeState}
+            date={dateState}
             militaryFormat={false}
             elementWidth={elementWidth}
             />

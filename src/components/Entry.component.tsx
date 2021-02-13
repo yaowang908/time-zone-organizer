@@ -3,7 +3,9 @@ import spacetime from 'spacetime';
 import TimezonePicker, { Timezone } from './TimezonePicker.component';
 
 import defaultColor from '../settings/color.settings';
+import defaultTimezones from '../data/timezones';
 
+import getCurrentDateTimeInFormat from '../lib/getCurrentDateTimeInFormat';
 import Timeline from './Timeline.component';
 import { Styled } from './Entry.style'; 
 import './Entry.style.scss';
@@ -31,6 +33,7 @@ import './Entry.style.scss';
 export interface Props {
   name: string;
   timezone: string;
+  localTimezone: string;
   time: string;
   date: string;
   sunriseTime?: string;
@@ -51,6 +54,7 @@ export interface Props {
 const Entry: React.FC<Props> = ({
   name='New User',
   timezone = 'America/New_York', 
+  localTimezone = 'America/New_York',
   time = '19:38', 
   date = '1-8-2021', 
   sunriseTime = '6:00', 
@@ -60,7 +64,17 @@ const Entry: React.FC<Props> = ({
   elementWidth = 50
 }) => {
 
-  const [ selectedTimezone,setSelectedTimezone ] = React.useState<Timezone>({id: 0, value: '(GMT-05:00) Eastern Time', label: 'America/New_York'});
+  const getDefaultTimezoneObject = (timezone: string) => {
+    const newArray = defaultTimezones.filter(el => {return el.label === timezone});
+    if (newArray.length >= 1) {
+      console.dir(newArray[0]);
+      return newArray[0];
+    }
+    return { id: 12,value: "(GMT-05:00) Eastern Time", label: "America/New_York"};
+  };
+
+  const [ selectedTimezone,setSelectedTimezone ] = React.useState<Timezone>(getDefaultTimezoneObject(timezone));
+  // DONE: should use the prop to init selectedTimezone
   // NOTE: setState here probably is not a perfect solution, context api should be good to solve this
   // Is it really necessary to hold a overall timezone data in homepage component
   // Only change the state in individual Entry, this could save time and simplify the logic
@@ -80,19 +94,8 @@ const Entry: React.FC<Props> = ({
     };
   };
 
-  const setDateTimeFormat = () => {
-    const localDateTimeState = new Date();
-    // TODO: is it a good practice to hold a local state instead of everything in the parent node
-    //FIXME: d.toLocaleString('en-US', { timeZone: 'America/New_York' })
-
-    const _date = localDateTimeState.toLocaleDateString('default', { year: 'numeric', month: 'long', day: 'numeric' });
-    const _time = localDateTimeState.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
-    console.dir(_date);
-    console.dir(_time);
-  };
-
   const getTime = () => {
-    return time;
+    return getUserDateTime(selectedTimezone.label, time, date, localTimezone).time;
   };
   const getDate = () => {
     return date;
@@ -103,12 +106,17 @@ const Entry: React.FC<Props> = ({
       <Styled.Header  bg={color.background} txtColor={color.nightText}>
         <div className="single_user_timezone_holder">
           <span className="single_user_timezone_name">{name}</span>
-          <TimezonePicker placeHolder={selectedTimezone.label}  className="single_user_timezone_picker" setSelectedTimezone={setSelectedTimezone}/>
+          <TimezonePicker 
+            placeHolder={selectedTimezone.label}  
+            className="single_user_timezone_picker" 
+            setSelectedTimezone={setSelectedTimezone}
+            defaultValue={selectedTimezone}
+          />
         </div>
         <div>{time}</div>
       </Styled.Header>
       <Timeline 
-        timezone={selectedTimezone.label}
+        timezone={getTimezone()}
         time = {getTime()}
         date = {getDate()}
         militaryFormat = {militaryFormat}

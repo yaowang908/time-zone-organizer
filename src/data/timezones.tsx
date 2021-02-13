@@ -1,8 +1,6 @@
-interface DefaultTimezones {
-  id:number, value:string, label:string
-}
+import { Timezone } from '../components/TimezonePicker.component';
 
-const defaultTimezones: DefaultTimezones[] = [
+const defaultTimezones: Timezone[] = [
   { id: 0,value: "(GMT-11:00) Pago Pago", label: "Pacific/Pago_Pago"},
   { id: 1,value: "(GMT-10:00) Hawaii Time", label: "Pacific/Honolulu"},
   { id: 2,value: "(GMT-08:00) Pacific Time", label: "America/Los_Angeles"},

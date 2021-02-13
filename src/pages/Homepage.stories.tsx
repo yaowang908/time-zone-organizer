@@ -11,25 +11,17 @@ const Template: Story<Props> = (args:Props) => <Homepage {...args} />;
 
 export const Default: Story<Props> = Template.bind({});
 Default.args = {
-  time: '8:08 PM',
-  date: 'Feb. 8, 2021',
   users: [
     {
       name: 'Andrew Lee',
-      time: '20:08',
-      date: 'Feb. 8, 2021',
       timezone: 'America/New_York',
     },
     {
       name: 'Tyrik Celia',
-      time: '23:30',
-      date: '2-3-2021',
       timezone: 'Asia/Jerusalem',
     },
     {
       name: 'Henricus Peter',
-      time: '0:00',
-      date: '2-2-2021',
       timezone: 'Australia/Adelaide',
     },
   ],
