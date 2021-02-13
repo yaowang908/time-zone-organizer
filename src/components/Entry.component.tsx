@@ -1,5 +1,5 @@
 import React from 'react';
-import TimezonePicker from './TimezonePicker.component';
+import TimezonePicker, { Timezone } from './TimezonePicker.component';
 
 import defaultColor from '../settings/color.settings';
 
@@ -59,6 +59,9 @@ const Entry: React.FC<Props> = ({
   elementWidth = 50
 }) => {
 
+  const [ selectedTimezone,setSelectedTimezone ] = React.useState<Timezone>({id: 0, value: '(GMT-05:00) Eastern Time', label: 'America/New_York'});
+  // TODO: setState here probably is not a perfect solution, context api should be good to solve this
+
   const timezoneTextStyle = () => {
     return {
       'color': '#4B67AD',
@@ -76,7 +79,7 @@ const Entry: React.FC<Props> = ({
       <Styled.Header  bg={color.background} txtColor={color.nightText}>
         <div className="single_user_timezone_holder">
           <span className="single_user_timezone_name">{name}</span>
-          <TimezonePicker placeHolder="America/New_York"  className="single_user_timezone_picker"/>
+          <TimezonePicker placeHolder={selectedTimezone.label}  className="single_user_timezone_picker" setSelectedTimezone={setSelectedTimezone}/>
         </div>
         <div>{time}</div>
       </Styled.Header>

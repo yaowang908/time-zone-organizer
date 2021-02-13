@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import defaultTimezones from '../data/timezones' 
 import Select from "react-select";
 
@@ -7,9 +7,10 @@ import './TimezonePicker.style.scss';
 export interface Props {
   placeHolder: string;
   className?: string;
+  setSelectedTimezone: Dispatch<SetStateAction<Timezone>>;
 };
 
-interface Timezone {
+export interface Timezone {
   id:number; 
   value:string; 
   label:string
@@ -18,10 +19,11 @@ interface Timezone {
 const TimezonePicker: React.FC<Props> = ({
   placeHolder = 'America/New_York',
   className,
+  setSelectedTimezone,
 }) => {
 
   const [ options, setOptions ] = React.useState<Timezone[]>([]);
-  const [ selectedTimezone, setSelectedTimezone ] = React.useState<Timezone>(); 
+  // const [ selectedTimezone, setSelectedTimezone ] = React.useState<Timezone>(); 
 
   const optionsInit = () => {
     const _options:{id:number, value:string, label:string}[] = [];
