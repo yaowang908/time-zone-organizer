@@ -4,8 +4,10 @@ import defaultColor from '../settings/color.settings';
 import hoursFormat from '../settings/hours.setting';
 
 import { getFormattedDate } from '../lib/getFormattedDate';
+import getUserDateTime from '../lib/getUserDateTime';
 
 import { Styled } from './Timeline.style';
+import getCurrentDateTimeInFormat from '../lib/getCurrentDateTimeInFormat';
 
 /**
  * @param { string } timezone - selected from a drop down
@@ -27,6 +29,7 @@ import { Styled } from './Timeline.style';
 
 export interface Props {
   timezone: string;
+  localTimezone: string;
   time: string;
   date: string;
   elementWidth?: number;
@@ -46,6 +49,7 @@ export interface Props {
 
 const Timeline: React.FC<Props> = ({
     timezone, 
+    localTimezone,
     time, 
     date,
     elementWidth, 
@@ -54,12 +58,31 @@ const Timeline: React.FC<Props> = ({
     militaryFormat = true,
     color = defaultColor
 }) => {
-
+  
+  const getUserTime = () => {
+    // timezone, time, date, localTimezone
+    return getUserDateTime(
+        timezone, 
+        getCurrentDateTimeInFormat(timezone).time, 
+        getCurrentDateTimeInFormat(timezone).date, 
+        localTimezone
+      ).time;
+  };
+  const getUserDate = () => {
+    return getUserDateTime(
+        timezone, 
+        getCurrentDateTimeInFormat(timezone).time, 
+        getCurrentDateTimeInFormat(timezone).date, 
+        localTimezone
+      ).date;
+  };
   const [hoursArr, setHoursArr] = React.useState<string[]>([]);
   const [curHour, setCurHour] = React.useState<string>('0');
   const [curMin, setCurMin] = React.useState<string>('0');
   const [eleWidth, setEleWidth] = React.useState<number>(75);
+  const [dateState, setDateState] = React.useState<string>(getUserDate());
   
+
   React.useEffect(() => {
     if( elementWidth && elementWidth > 0 ) {
       setEleWidth(elementWidth);
@@ -67,7 +90,8 @@ const Timeline: React.FC<Props> = ({
   }, [elementWidth]);
 
   React.useEffect(() => {
-    const cur = time.split(':');
+    const cur = getUserTime().split(' ')[0].split(':');
+    console.log(getUserTime().split(' '));
     const [_curHour, _curMin ]= cur;
     setCurHour(_curHour);
     setCurMin(_curMin);
@@ -175,7 +199,7 @@ const Timeline: React.FC<Props> = ({
             return (
             <div key={index} style={{"display":"flex","flexDirection":"column","position":"relative", "alignItems":"center"}}>
               <div style={setBackgroundColor(x)} >{x}</div>
-              {(x === '0') ? getAnnotation(date) : ''}
+              {(x === '0') ? getAnnotation(dateState) : ''}
             </div>
             );
           })

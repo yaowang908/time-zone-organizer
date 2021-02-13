@@ -1,9 +1,9 @@
 import React from 'react';
-import spacetime from 'spacetime';
 import TimezonePicker, { Timezone } from './TimezonePicker.component';
 
 import defaultColor from '../settings/color.settings';
 import defaultTimezones from '../data/timezones';
+import getUserDateTime from '../lib/getUserDateTime';
 
 import getCurrentDateTimeInFormat from '../lib/getCurrentDateTimeInFormat';
 import Timeline from './Timeline.component';
@@ -55,8 +55,6 @@ const Entry: React.FC<Props> = ({
   name='New User',
   timezone = 'America/New_York', 
   localTimezone = 'America/New_York',
-  time = '19:38', 
-  date = '1-8-2021', 
   sunriseTime = '6:00', 
   sunsetTime = '18:00', 
   militaryFormat = true,
@@ -67,7 +65,7 @@ const Entry: React.FC<Props> = ({
   const getDefaultTimezoneObject = (timezone: string) => {
     const newArray = defaultTimezones.filter(el => {return el.label === timezone});
     if (newArray.length >= 1) {
-      console.dir(newArray[0]);
+      // console.dir(newArray[0]);
       return newArray[0];
     }
     return { id: 12,value: "(GMT-05:00) Eastern Time", label: "America/New_York"};
@@ -83,22 +81,22 @@ const Entry: React.FC<Props> = ({
     return selectedTimezone.label;
   };
 
-  const getUserDateTime = (userTimezone: string, localTime: string, localDate: string,localTimezone: string) => {
-
-    const d = spacetime(localDate, localTimezone);
-    d.time(localTime);
-    d.goto(userTimezone);
-    return {
-      date: `${d.month()+1}-${d.date()}-${d.year()}`,
-      time: `${d.hour()}:${d.minute()}`
-    };
+  const getUserTime = () => {
+    // timezone, time, date, localTimezone
+    return getUserDateTime(
+        timezone, 
+        getCurrentDateTimeInFormat(selectedTimezone.label).time, 
+        getCurrentDateTimeInFormat(selectedTimezone.label).date, 
+        localTimezone
+      ).time;
   };
-
-  const getTime = () => {
-    return getUserDateTime(selectedTimezone.label, time, date, localTimezone).time;
-  };
-  const getDate = () => {
-    return date;
+  const getUserDate = () => {
+    return getUserDateTime(
+        timezone, 
+        getCurrentDateTimeInFormat(selectedTimezone.label).time, 
+        getCurrentDateTimeInFormat(selectedTimezone.label).date, 
+        localTimezone
+      ).date;
   };
 
   return (
@@ -113,12 +111,13 @@ const Entry: React.FC<Props> = ({
             defaultValue={selectedTimezone}
           />
         </div>
-        <div>{time}</div>
+        <div>{getCurrentDateTimeInFormat(selectedTimezone.label).time}</div>
       </Styled.Header>
       <Timeline 
         timezone={getTimezone()}
-        time = {getTime()}
-        date = {getDate()}
+        localTimezone={localTimezone}
+        time = {getUserTime()}
+        date = {getUserDate()}
         militaryFormat = {militaryFormat}
         elementWidth = {elementWidth}
         />
