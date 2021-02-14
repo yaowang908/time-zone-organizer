@@ -9,7 +9,7 @@ const defaultTimezones: Timezone[] = [
   { id: 5,value: "(GMT-07:00) Mountain Time - Arizona", label: "America/Phoenix"},
   { id: 6,value: "(GMT-07:00) Mountain Time - Chihuahua, Mazatlan", label: "America/Mazatlan"},
   { id: 7,value: "(GMT-06:00) Central Time", label: "America/Chicago"},
-  { id: 8,value: "(GMT-06:00) Central Time - Mexico label", label: "America/Mexico_label"},
+  { id: 8,value: "(GMT-06:00) Central Time - Mexico City", label: "America/Mexico_City"},
   { id: 9,value: "(GMT-06:00) Central Time - Regina", label: "America/Regina"},
   { id: 10,value: "(GMT-06:00) Guatemala", label: "America/Guatemala"},
   { id: 11,value: "(GMT-05:00) Bogota", label: "America/Bogota"},

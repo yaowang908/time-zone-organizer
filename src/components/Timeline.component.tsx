@@ -95,7 +95,7 @@ const Timeline: React.FC<Props> = ({
     const [_curHour, _curMin ]= cur;
     setCurHour(_curHour);
     setCurMin(_curMin);
-  }, [time]);
+  }, [timezone]);
 
   React.useEffect(() => {
     //recreate hoursArr base on the time parameter at middle

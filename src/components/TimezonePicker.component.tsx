@@ -34,7 +34,7 @@ const [ defaultValueState, setDefaultValueState ] = React.useState({
 
 React.useEffect(() => {
   setDefaultValueState(defaultValue);
-  console.log(defaultValue);
+  // console.log(defaultValue);
 }, [defaultValue]);
 
   return (
