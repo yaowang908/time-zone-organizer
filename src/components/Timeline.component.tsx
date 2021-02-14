@@ -91,7 +91,7 @@ const Timeline: React.FC<Props> = ({
 
   React.useEffect(() => {
     const cur = getUserTime().split(' ')[0].split(':');
-    console.log(getUserTime().split(' '));
+    // console.log(timezone);
     const [_curHour, _curMin ]= cur;
     setCurHour(_curHour);
     setCurMin(_curMin);

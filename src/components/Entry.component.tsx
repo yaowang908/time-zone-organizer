@@ -77,10 +77,6 @@ const Entry: React.FC<Props> = ({
   // Is it really necessary to hold a overall timezone data in homepage component
   // Only change the state in individual Entry, this could save time and simplify the logic
   
-  const getTimezone = () => {
-    return selectedTimezone.label;
-  };
-
   const getUserTime = () => {
     // timezone, time, date, localTimezone
     return getUserDateTime(
@@ -99,6 +95,19 @@ const Entry: React.FC<Props> = ({
       ).date;
   };
 
+  const userTime = (militaryTime = false) => {
+
+    const _time = getUserDateTime(
+      selectedTimezone.label,
+      getCurrentDateTimeInFormat(selectedTimezone.label).time, 
+      getCurrentDateTimeInFormat(selectedTimezone.label).date, 
+      localTimezone,
+      militaryTime
+    ).time;
+    // console.dir(_time);
+    return _time;
+  };
+
   return (
     <Styled.Container>
       <Styled.Header  bg={color.background} txtColor={color.nightText}>
@@ -111,10 +120,10 @@ const Entry: React.FC<Props> = ({
             defaultValue={selectedTimezone}
           />
         </div>
-        <div>{getCurrentDateTimeInFormat(selectedTimezone.label).time}</div>
+        <div>{userTime(false)}</div>
       </Styled.Header>
       <Timeline 
-        timezone={getTimezone()}
+        timezone={selectedTimezone.label}
         localTimezone={localTimezone}
         time = {getUserTime()}
         date = {getUserDate()}

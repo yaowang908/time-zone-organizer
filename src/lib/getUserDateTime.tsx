@@ -1,6 +1,6 @@
 import spacetime from 'spacetime';
 
-const getUserDateTime = (userTimezone: string, localTime: string, localDate: string,localTimezone: string) => {
+const getUserDateTime = (userTimezone: string, localTime: string, localDate: string,localTimezone: string,militaryFormat:boolean = true) => {
   
   const spaceTimeInitValue = () => {
     // 'July 2, 2017 5:01:00'
@@ -18,12 +18,24 @@ const getUserDateTime = (userTimezone: string, localTime: string, localDate: str
   // console.dir(localTimezone);
 
   const d = spacetime(spaceTimeInitValue());
-  // d.time(_localTime());
-  d.goto(userTimezone);
+  // d.goto(localTimezone);
+  // console.log(`Timezone: ${localTimezone}, spacetime.now():`);
+  // console.dir(spacetime.now());
+  const userTime = d.goto(userTimezone);
+  // console.dir(userTime.minute());
+  // DONE: switch timezone is not changing time
+  // console.log(`Timezone: ${userTimezone}, spacetime.now():`);
+  // console.dir(spacetime.now());
   // console.dir(`${d.hour()}:${d.minute()}`);
+  if(!militaryFormat) {
+    return {
+      date: `${userTime.month()+1}-${userTime.date()}-${userTime.year()}`,
+      time: userTime.format('time') as string
+    }
+  }
   return {
-    date: `${d.month()+1}-${d.date()}-${d.year()}`,
-    time: `${d.hour()}:${d.minute()}`
+    date: `${userTime.month()+1}-${userTime.date()}-${userTime.year()}`,
+    time: userTime.format('time-24') as string
   };
 };
 
