@@ -72,6 +72,7 @@ const Entry: React.FC<Props> = ({
   };
 
   const [ selectedTimezone,setSelectedTimezone ] = React.useState<Timezone>(getDefaultTimezoneObject(timezone));
+  const [ userNameState, setUserNameState ] = React.useState<string>(name);
   // DONE: should use the prop to init selectedTimezone
   // NOTE: setState here probably is not a perfect solution, context api should be good to solve this
   // Is it really necessary to hold a overall timezone data in homepage component
@@ -108,11 +109,16 @@ const Entry: React.FC<Props> = ({
     return _time;
   };
 
+  // DONE: 2: click on name to edit name
+  const userNameChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUserNameState(e.target.value);
+  };
+
   return (
     <Styled.Container>
       <Styled.Header  bg={color.background} txtColor={color.nightText}>
         <div className="single_user_timezone_holder">
-          <span className="single_user_timezone_name">{name}</span>
+          <input className="single_user_timezone_name" value={userNameState} onChange={userNameChangeHandler}/>
           <TimezonePicker 
             placeHolder={selectedTimezone.label}  
             className="single_user_timezone_picker" 
