@@ -42,19 +42,6 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
     setUsersState(newUsersState);
   };
 
-  //TODO: get correct time and date for every user
-  //
-  const getUserDateTime = (userTimezone: string, localTime: string, localDate: string,localTimezone: string) => {
-
-    const d = spacetime(localDate, localTimezone);
-    d.time(localTime);
-    d.goto(userTimezone);
-    return {
-      date: `${d.month()+1}-${d.date()}-${d.year()}`,
-      time: `${d.hour()}:${d.minute()}`
-    };
-  };
-
   React.useEffect(() => {
     // process timezone for usersState
     const _date = localDateTimeState.toLocaleDateString('default', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -64,24 +51,9 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
     
   }, [localDateTimeState]);
 
-  const dateFormatter = (date:string) => {
-    // input format February 8, 2021
-    
-    // this is for spacetime library to work
-    // so the return format is going to be February 3, 2021
-    return date;
-  };
-
-  const timeFormatter = (time:string) => {
-    // input format 08:50 PM
-    const _time = time.replace(/^0+/, '').split(' ').join('');
-    // this is for spacetime library to work
-    // so the return format is going to be 4:20pm
-    return _time;
-  };
-
 
   // TODO: next step is to make local Date and local time affect all users
+  // steps 1. datePicker onchange setTime setDate
 
   //TODO: functions that will pass down to child components to updated userName, timezone, time
   const changeUserName = () => {};
@@ -95,10 +67,6 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
     <div className='container' style={{backgroundColor: color.background}}>
       <div className="nav">
         <div className="logo"></div>
-        <div className="menu_container">
-          <div className="menu_item" style={{color:color.white}} onClick={addPersonClickHandler}>New</div>
-          <div className="menu_item" style={{color:color.white}}>Import</div>
-        </div>
       </div>
       <div className="local_time" style={{color:color.white,backgroundColor: color.background}}>
         <div className="title input_div">Local Time</div>
@@ -109,7 +77,8 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
           dateFormat="MMMM d, yyyy h:mm aa"
           onChange={(date: Date) => setLocalDateTimeState(date)}  
         />
-        {/* TODO: local time change on real time */}
+        {/* NOTE: local time change on real time */}
+        {/* after a second thought, I don't think it's good idea to update it per minute, this app is not really time sensitive after all */}
         <div className="triangle"></div>
       </div>
       <div className="indicator"></div>
