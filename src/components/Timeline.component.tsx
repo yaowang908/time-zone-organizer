@@ -168,7 +168,7 @@ const Timeline: React.FC<Props> = ({
     nextDate.setDate(curDate.getDate() + 1);
     const annotationStyle = {
       'position': 'absolute',
-      'top': '12px',
+      'top': '14px',
       'fontSize': '0.6em',
     } as React.CSSProperties;
 // DONE: show date under midnight cell
@@ -194,7 +194,7 @@ const Timeline: React.FC<Props> = ({
         {
           hoursArr.map((x, index) => {
             return (
-            <div key={index} style={{"display":"flex","flexDirection":"column","position":"relative", "alignItems":"center"}}>
+            <div key={index} style={{"display":"flex","flexDirection":"column","position":"relative", "alignItems":"center", "fontSize":"1rem"}}>
               <div style={setBackgroundColor(x)} >{x}</div>
               {(x === '0') ? getAnnotation(dateState) : ''}
             </div>
