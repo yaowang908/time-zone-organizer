@@ -13,14 +13,17 @@ export const Default: Story<Props> = Template.bind({});
 Default.args = {
   users: [
     {
+      id: 0,
       name: 'Andrew Lee',
       timezone: 'America/New_York',
     },
     {
+      id: 1,
       name: 'Tyrik Celia',
       timezone: 'Asia/Jerusalem',
     },
     {
+      id: 2,
       name: 'Henricus Peter',
       timezone: 'Australia/Adelaide',
     },

@@ -7,7 +7,7 @@ import './TimezonePicker.style.scss';
 export interface Props {
   placeHolder: string;
   className?: string;
-  setSelectedTimezone: Dispatch<SetStateAction<Timezone>>;
+  setSelectedTimezone: (newTimezone:string) => void;
   defaultValue?: Timezone
 };
 
@@ -24,8 +24,8 @@ const TimezonePicker: React.FC<Props> = ({
   defaultValue = { value: "(GMT-05:00) Eastern Time", label: "America/New_York"},
 }) => {
 
-// TODO: return selected value
-// TODO: pass in selected value
+// DONE: return selected value
+// DONE: pass in selected value
 // DONE: style it
 const [ defaultValueState, setDefaultValueState ] = React.useState({
               value: defaultValue.value, 
@@ -40,7 +40,7 @@ React.useEffect(() => {
   return (
     <Select 
       options={defaultTimezones} 
-      onChange={(values:Timezone) => setSelectedTimezone(values)}
+      onChange={(values:Timezone) => setSelectedTimezone(values.label)}
       className={className?className:''}
       classNamePrefix="react-select"
       defaultValue={defaultValueState}

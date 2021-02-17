@@ -6,6 +6,7 @@ function App() {
   const args = {
     users: [
       {
+        id: 0,
         name: 'You',
         timezone: 'America/New_York',
       },

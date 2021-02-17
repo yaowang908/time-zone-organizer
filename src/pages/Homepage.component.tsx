@@ -10,8 +10,13 @@ import getCurrentDateTimeInFormat from '../lib/getCurrentDateTimeInFormat';
 
 import './Homepage.style.scss';
 
+interface User {
+  id: number; 
+  name: string; 
+  timezone: string;
+};
 export interface Props {
-  users: {name: string; timezone: string;}[];
+  users: User[];
   color?: {
     night?: string;
     day?: string;
@@ -38,7 +43,9 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
     const spaceTimeNowInNewYork = spacetime.now(defaultTimezoneState);
     const timeNowInNewYork = spaceTimeNowInNewYork.hour() + ':' + spaceTimeNowInNewYork.minute() ;
     const dateNowInNewYork = ( spaceTimeNowInNewYork.month() + 1 ) + '-' + spaceTimeNowInNewYork.date() + '-' + spaceTimeNowInNewYork.year();
-    const newUsersState = [...usersState, {name: 'New User', time: timeNowInNewYork, date: dateNowInNewYork, timezone: defaultTimezoneState}];
+    const newUsersState = [...usersState, {id: usersState.length,name: 'New User', timezone: defaultTimezoneState}];
+    console.log("🚀 ~ file: Homepage.component.tsx ~ line 42 ~ addPersonClickHandler ~ newUsersState", newUsersState)
+    
     setUsersState(newUsersState);
   };
 
@@ -51,6 +58,14 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
     
   }, [localDateTimeState]);
 
+  const updateUser = (id:number, newTimezone:string) => {
+    // update usersState
+    let users = [...usersState];
+    let user = {...users[id]}
+    user.timezone = newTimezone;
+    users[id] = user;
+    setUsersState(users);
+  };
 
   // TODO: next step is to make local Date and local time affect all users
   // steps 1. datePicker onchange setTime setDate
@@ -86,6 +101,9 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
         {usersState ? usersState.map((user, index) => (
           <Entry 
             key={index}
+            updateUser={ (newTimezone:string) => {
+              updateUser(user.id, newTimezone);
+            }}
             name={user.name} 
             timezone={user.timezone}
             localTimezone={defaultTimezoneState}

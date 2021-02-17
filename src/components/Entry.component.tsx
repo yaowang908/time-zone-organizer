@@ -36,6 +36,7 @@ export interface Props {
   localTimezone: string;
   time: string;
   date: string;
+  updateUser: (newTimezone:string) => void;
   sunriseTime?: string;
   sunsetTime?: string;
   militaryFormat?: boolean;
@@ -57,6 +58,7 @@ const Entry: React.FC<Props> = ({
   localTimezone = 'America/New_York',
   sunriseTime = '6:00', 
   sunsetTime = '18:00', 
+  updateUser,
   militaryFormat = true,
   color = defaultColor,
   elementWidth = 50
@@ -77,6 +79,12 @@ const Entry: React.FC<Props> = ({
   // NOTE: setState here probably is not a perfect solution, context api should be good to solve this
   // Is it really necessary to hold a overall timezone data in homepage component
   // Only change the state in individual Entry, this could save time and simplify the logic
+
+
+  React.useEffect(() => {
+    setSelectedTimezone(getDefaultTimezoneObject(timezone));
+    // console.log(defaultValue);
+  }, [timezone]);
   
   const getUserTime = () => {
     // timezone, time, date, localTimezone
@@ -122,7 +130,7 @@ const Entry: React.FC<Props> = ({
           <TimezonePicker 
             placeHolder={selectedTimezone.label}  
             className="single_user_timezone_picker" 
-            setSelectedTimezone={setSelectedTimezone}
+            setSelectedTimezone={updateUser}
             defaultValue={selectedTimezone}
           />
         </div>
