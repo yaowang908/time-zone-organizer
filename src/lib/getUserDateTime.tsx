@@ -1,9 +1,13 @@
 import spacetime from 'spacetime';
 
 const getUserDateTime = (userTimezone: string, localTime: string, localDate: string,localTimezone: string,militaryFormat:boolean = true) => {
-  
-  let [_number, _label] = localTime.split(' ');
-  const _localTime = _number + _label.toLowerCase();
+  // localTime format: HH:MM
+  let [_hour, _minute] = localTime.split(':');
+  let hour =Number(_hour);
+  let minute = Number(_minute);
+  let suffix = hour >= 12 ? "pm":"am"; 
+  hour = ((hour + 11) % 12 + 1);
+  const _localTime = `${hour}:${minute}${suffix}`;
   const d = spacetime().time(_localTime);
 
   const userTime = d.goto(userTimezone);

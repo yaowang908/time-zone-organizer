@@ -34,8 +34,8 @@ export interface Props {
   name: string;
   timezone: string;
   localTimezone: string;
-  time: string;
-  date: string;
+  localTime:string;
+  localDate:string;
   updateUser: (newTimezone:string) => void;
   sunriseTime?: string;
   sunsetTime?: string;
@@ -56,6 +56,8 @@ const Entry: React.FC<Props> = ({
   name='New User',
   timezone = 'America/New_York', 
   localTimezone = 'America/New_York',
+  localTime,
+  localDate,
   sunriseTime = '6:00', 
   sunsetTime = '18:00', 
   updateUser,
@@ -79,37 +81,77 @@ const Entry: React.FC<Props> = ({
   // NOTE: setState here probably is not a perfect solution, context api should be good to solve this
   // Is it really necessary to hold a overall timezone data in homepage component
   // Only change the state in individual Entry, this could save time and simplify the logic
+  const [ localTimeState, setLocalTimeState ] = React.useState(localTime);
+  const [ localDateState, setLocalDateState ] = React.useState(localDate);
+  const [ userTimeState, setUserTimeState ] = React.useState<string>(getUserDateTime(
+        timezone, 
+        localTimeState, 
+        localDateState, 
+        localTimezone
+      ).time);
+  const [ userDateState, setUserDateState ] = React.useState<string>(getUserDateTime(
+        timezone, 
+        localTimeState, 
+        localDateState, 
+        localTimezone
+      ).date);
 
 
   React.useEffect(() => {
     setSelectedTimezone(getDefaultTimezoneObject(timezone));
+    console.log("🚀 ~ file: Entry.component.tsx ~ line 102 ~ React.useEffect ~ timezone", timezone)
     // console.log(defaultValue);
   }, [timezone]);
+  React.useEffect(()=>{
+    setLocalTimeState(localTime);
+    const _tempUserDateTime = getUserDateTime(
+        timezone, 
+        localTimeState, 
+        localDateState, 
+        localTimezone
+      );
+    setUserTimeState(_tempUserDateTime.time);
+    // console.log("🚀 ~ file: Entry.component.tsx ~ line 95 ~ localTime", localTime)
+    // NOTE: keep timezone to update component when timezone updates
+  }, [localDateState, localTime, localTimeState, localTimezone, timezone]);
+  React.useEffect(()=>{
+    setLocalDateState(localDate);
+    const _tempUserDateTime = getUserDateTime(
+        timezone, 
+        localTimeState, 
+        localDateState, 
+        localTimezone
+      );
+    setUserDateState(_tempUserDateTime.date);
+    // FIXME: localdate is not passing in
+    console.log("🚀 ~ file: Entry.component.tsx ~ line 123 ~ localDate", _tempUserDateTime.date);
+    // NOTE: keep timezone to update component when timezone updates
+  }, [localDate, localDateState, localTimeState, localTimezone, timezone]);
   
-  const getUserTime = () => {
-    // timezone, time, date, localTimezone
-    return getUserDateTime(
-        timezone, 
-        getCurrentDateTimeInFormat(selectedTimezone.label).time, 
-        getCurrentDateTimeInFormat(selectedTimezone.label).date, 
-        localTimezone
-      ).time;
-  };
-  const getUserDate = () => {
-    return getUserDateTime(
-        timezone, 
-        getCurrentDateTimeInFormat(selectedTimezone.label).time, 
-        getCurrentDateTimeInFormat(selectedTimezone.label).date, 
-        localTimezone
-      ).date;
-  };
+  // const getUserTime = () => {
+  //   // timezone, time, date, localTimezone
+  //   return getUserDateTime(
+  //       timezone, 
+  //       localTimeState, 
+  //       localDateState, 
+  //       localTimezone
+  //     ).time;
+  // };
+  // const getUserDate = () => {
+  //   return getUserDateTime(
+  //       timezone, 
+  //       localTimeState, 
+  //       localDateState, 
+  //       localTimezone
+  //     ).date;
+  // };
 
   const userTime = (militaryTime = false) => {
 
     const _time = getUserDateTime(
       selectedTimezone.label,
-      getCurrentDateTimeInFormat(selectedTimezone.label).time, 
-      getCurrentDateTimeInFormat(selectedTimezone.label).date, 
+      localTimeState, 
+      localDateState, 
       localTimezone,
       militaryTime
     ).time;
@@ -139,8 +181,8 @@ const Entry: React.FC<Props> = ({
       <Timeline 
         timezone={selectedTimezone.label}
         localTimezone={localTimezone}
-        time = {getUserTime()}
-        date = {getUserDate()}
+        time = {userTimeState}
+        date = {userDateState}
         militaryFormat = {militaryFormat}
         elementWidth = {elementWidth}
         />

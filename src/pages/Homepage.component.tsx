@@ -35,6 +35,7 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
   const [ usersState, setUsersState ] = React.useState(users);
   const [ localDateTimeState, setLocalDateTimeState ] = React.useState(new Date());
   const [ defaultTimezoneState, setDefaultTimezoneState ] = React.useState('America/New_York');
+  // TODO: this init defaultTimezone needs to match user's timezone
   const [ timeState, setTimeState ] = React.useState(getCurrentDateTimeInFormat().time);
   const [ dateState, setDateState ] = React.useState(getCurrentDateTimeInFormat().date);
 
@@ -44,18 +45,24 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
     const timeNowInNewYork = spaceTimeNowInNewYork.hour() + ':' + spaceTimeNowInNewYork.minute() ;
     const dateNowInNewYork = ( spaceTimeNowInNewYork.month() + 1 ) + '-' + spaceTimeNowInNewYork.date() + '-' + spaceTimeNowInNewYork.year();
     const newUsersState = [...usersState, {id: usersState.length,name: 'New User', timezone: defaultTimezoneState}];
-    console.log("🚀 ~ file: Homepage.component.tsx ~ line 42 ~ addPersonClickHandler ~ newUsersState", newUsersState)
     
     setUsersState(newUsersState);
   };
 
   React.useEffect(() => {
     // process timezone for usersState
-    const _date = localDateTimeState.toLocaleDateString('default', { year: 'numeric', month: 'long', day: 'numeric' });
-    const _time = localDateTimeState.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
-    console.dir(_date);
-    console.dir(_time);
-    
+    // const _date = localDateTimeState.toLocaleDateString('default', { year: 'numeric', month: 'long', day: 'numeric' });
+    // const _time = localDateTimeState.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+
+    const {date, time} = getCurrentDateTimeInFormat(defaultTimezoneState, localDateTimeState);
+    console.log("🚀 ~ file: Homepage.component.tsx ~ line 58 ~ React.useEffect ~ time", time)
+    console.log("🚀 ~ file: Homepage.component.tsx ~ line 58 ~ React.useEffect ~ date", date)
+    setTimeState(time);
+    setDateState(date);
+
+    // TODO: next step is to make local Date and local time affect all users
+    // steps 1. datePicker onchange setTime setDate
+
   }, [localDateTimeState]);
 
   const updateUser = (id:number, newTimezone:string) => {
@@ -65,10 +72,8 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
     user.timezone = newTimezone;
     users[id] = user;
     setUsersState(users);
+    // console.log("🚀 ~ file: Homepage.component.tsx ~ line 74 ~ updateUser ~ users", users)
   };
-
-  // TODO: next step is to make local Date and local time affect all users
-  // steps 1. datePicker onchange setTime setDate
 
   //TODO: functions that will pass down to child components to updated userName, timezone, time
   const changeUserName = () => {};
@@ -107,8 +112,8 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
             name={user.name} 
             timezone={user.timezone}
             localTimezone={defaultTimezoneState}
-            time={timeState}
-            date={dateState}
+            localTime={timeState}
+            localDate={dateState}
             militaryFormat={false}
             elementWidth={elementWidth}
             />

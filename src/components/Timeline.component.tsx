@@ -59,28 +59,31 @@ const Timeline: React.FC<Props> = ({
     color = defaultColor
 }) => {
   
-  const getUserTime = () => {
-    // timezone, time, date, localTimezone
-    return getUserDateTime(
-        timezone, 
-        getCurrentDateTimeInFormat(timezone).time, 
-        getCurrentDateTimeInFormat(timezone).date, 
-        localTimezone
-      ).time;
-  };
-  const getUserDate = () => {
-    return getUserDateTime(
-        timezone, 
-        getCurrentDateTimeInFormat(timezone).time, 
-        getCurrentDateTimeInFormat(timezone).date, 
-        localTimezone
-      ).date;
-  };
+  const [ userTimeState, setLocalTimeState ] = React.useState(time);
+  const [ userDateState, setLocalDateState ] = React.useState(date);
+
+  // const getUserTime = () => {
+  //   // timezone, time, date, localTimezone
+  //   return getUserDateTime(
+  //       timezone, 
+  //       localTimeState,
+  //       localDateState, 
+  //       localTimezone
+  //     ).time;
+  // };
+  // const getUserDate = () => {
+  //   return getUserDateTime(
+  //       timezone, 
+  //       localTimeState, 
+  //       localDateState, 
+  //       localTimezone
+  //     ).date;
+  // };
   const [hoursArr, setHoursArr] = React.useState<string[]>([]);
   const [curHour, setCurHour] = React.useState<string>('0');
   const [curMin, setCurMin] = React.useState<string>('0');
   const [eleWidth, setEleWidth] = React.useState<number>(75);
-  const [dateState, setDateState] = React.useState<string>(getUserDate());
+  // const [dateState, setDateState] = React.useState<string>(getUserDate());
   
 
   React.useEffect(() => {
@@ -88,14 +91,31 @@ const Timeline: React.FC<Props> = ({
       setEleWidth(elementWidth);
     }
   }, [elementWidth]);
+  
+  React.useEffect(()=>{
+    // console.log("🚀 ~ file: Timeline.component.tsx ~ line 125 ~ React.useEffect ~ time", time)
+    setLocalTimeState(time);
+  }, [time]);
+  React.useEffect(()=>{
+    console.log("🚀 ~ file: Timeline.component.tsx ~ line 125 ~ React.useEffect ~ date", date)
+    setLocalDateState(date);
+    // setDateState(getUserDateTime(
+    //     timezone, 
+    //     localTimeState, 
+    //     localDateState, 
+    //     localTimezone
+    //   ).date);
+  }, [date]);
+  
 
   React.useEffect(() => {
-    const cur = getUserTime().split(' ')[0].split(':');
+    const cur = userTimeState.split(' ')[0].split(':');
+    // console.log("🚀 ~ file: Timeline.component.tsx ~ line 105 ~ React.useEffect ~ cur", cur)
     // console.log(timezone);
     const [_curHour, _curMin ]= cur;
     setCurHour(_curHour);
     setCurMin(_curMin);
-  }, [timezone]);
+  }, [timezone, userTimeState]);
 
   React.useEffect(() => {
     //recreate hoursArr base on the time parameter at middle
@@ -106,7 +126,7 @@ const Timeline: React.FC<Props> = ({
     const baseArr = [...nextArr, ...prevArr, ...nextArr, ...prevArr];
     // console.dir(1);
     setHoursArr(baseArr);
-  }, [militaryFormat, hoursArr.length, curHour]);
+  }, [militaryFormat, hoursArr.length, curHour, userTimeState, userDateState]);
 
   const holderCallbackRef = (ele: (HTMLDivElement | null)) => {
       if (ele) {
@@ -196,7 +216,7 @@ const Timeline: React.FC<Props> = ({
             return (
             <div key={index} style={{"display":"flex","flexDirection":"column","position":"relative", "alignItems":"center", "fontSize":"1rem"}}>
               <div style={setBackgroundColor(x)} >{x}</div>
-              {(x === '0') ? getAnnotation(dateState) : ''}
+              {(x === '0') ? getAnnotation(userDateState) : ''}
             </div>
             );
           })
