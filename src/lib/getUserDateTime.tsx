@@ -1,14 +1,6 @@
 import spacetime from 'spacetime';
 
 const getUserDateTime = (userTimezone: string, localTime: string, localDate: string,localTimezone: string,militaryFormat:boolean = true) => {
-  // localTime format: HH:MM
-  // let [_hour, _minute] = localTime.split(':');
-  // let hour =Number(_hour);
-  // let minute = Number(_minute);
-  // let suffix = hour >= 12 ? "pm":"am"; 
-  // hour = ((hour + 11) % 12 + 1);
-  // const _localTime = `${hour}:${minute}${suffix}`;
-  // console.log("🚀 ~ file: getUserDateTime.tsx ~ line 11 ~ getUserDateTime ~ _localTime", _localTime)
 
   let _localTime = ``;
   if(is12HourFormat(localTime)) {
@@ -16,24 +8,29 @@ const getUserDateTime = (userTimezone: string, localTime: string, localDate: str
   } else {
     _localTime = format24HourTime(localTime);
   }
-  const d = spacetime().time(_localTime);
+  // _localTime HH:MMam/pm
+
+  let [monthDay, year] = localDate.split(', ');
+  let [month, day] = monthDay.split(' ');
+  const formattedDate = formatDate(year, month as keyof typeof months, day);
+  // console.log("🚀 ~ file: getUserDateTime.tsx ~ line 16 ~ getUserDateTime ~ formattedDate", formattedDate)
+
+  const d = spacetime(formattedDate, localTimezone).time(_localTime);
 
   const userTime = d.goto(userTimezone);
-  // console.dir(userTime.minute());
+  // console.log("🚀 ~ file: getUserDateTime.tsx ~ line 21 ~ getUserDateTime ~ userTime", userTime)
   // DONE: switch timezone is not changing time
-  // console.log(`Timezone: ${userTimezone}, spacetime.now():`);
-  // console.dir(spacetime.now());
-  // console.log('Shanghai time:')
-  // console.dir(d.goto('Asia/Shanghai').format('time'));
   // DONE: getting Shanghai time, but am and pm is opposite
+  const timeCache = new Date(userTime.epoch);
+  // console.log("🚀 ~ file: getUserDateTime.tsx ~ line 25 ~ getUserDateTime ~ timeCache", timeCache.getMonth())
   if(!militaryFormat) {
     return {
-      date: `${userTime.month()+1}-${userTime.date()}-${userTime.year()}`,
+      date: `${timeCache.getMonth()+1}-${timeCache.getDate()}-${timeCache.getFullYear()}`,
       time: userTime.format('time') as string
     }
   }
   return {
-    date: `${userTime.month()+1}-${userTime.date()}-${userTime.year()}`,
+    date: `${timeCache.getMonth()+1}-${timeCache.getDate()}-${timeCache.getFullYear()}`,
     time: userTime.format('time-24') as string
   };
 };
@@ -55,6 +52,29 @@ const format24HourTime = (time:string) => {
   hour = ((hour + 11) % 12 + 1);
   const _localTime = `${hour}:${minute}${suffix}`;
   return _localTime;
+};
+const months = {
+    'January': '01',
+    'February': '02',
+    'March': '03',
+    'April': '04',
+    'May': '05',
+    'June': '06',
+    'July':'07',
+    'August':'08',
+    'September':'09',
+    'October':'10',
+    'November':'11',
+    'December':'12'
+  };
+const formatDate = (year:string,month: keyof typeof months,day:string) => {
+  // let [monthDay, year] = date.split(', ');
+  // let month: keyof typeof months;
+  // let day: string;
+  // [month, day] = monthDay.split(' ');
+  
+  // return format yyyy/mm/dd
+  return `${year}/${months[month]}/${day.padStart(2,'0')}`;
 };
 
 export default getUserDateTime;

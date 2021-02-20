@@ -4,10 +4,8 @@ import defaultColor from '../settings/color.settings';
 import hoursFormat from '../settings/hours.setting';
 
 import { getFormattedDate } from '../lib/getFormattedDate';
-import getUserDateTime from '../lib/getUserDateTime';
 
 import { Styled } from './Timeline.style';
-import getCurrentDateTimeInFormat from '../lib/getCurrentDateTimeInFormat';
 
 /**
  * @param { string } timezone - selected from a drop down
@@ -97,21 +95,14 @@ const Timeline: React.FC<Props> = ({
     setLocalTimeState(time);
   }, [time]);
   React.useEffect(()=>{
-    console.log("🚀 ~ file: Timeline.component.tsx ~ line 125 ~ React.useEffect ~ date", date)
+    // console.log("🚀 ~ file: Timeline.component.tsx ~ line 125 ~ React.useEffect ~ date", date)
     setLocalDateState(date);
-    // setDateState(getUserDateTime(
-    //     timezone, 
-    //     localTimeState, 
-    //     localDateState, 
-    //     localTimezone
-    //   ).date);
   }, [date]);
   
 
   React.useEffect(() => {
     const cur = userTimeState.split(' ')[0].split(':');
     // console.log("🚀 ~ file: Timeline.component.tsx ~ line 105 ~ React.useEffect ~ cur", cur)
-    // console.log(timezone);
     const [_curHour, _curMin ]= cur;
     setCurHour(_curHour);
     setCurMin(_curMin);
@@ -126,6 +117,7 @@ const Timeline: React.FC<Props> = ({
     const baseArr = [...nextArr, ...prevArr, ...nextArr, ...prevArr];
     // console.dir(1);
     setHoursArr(baseArr);
+    // console.log("🚀 ~ file: Timeline.component.tsx ~ line 123 ~ userDateState", userDateState)
   }, [militaryFormat, hoursArr.length, curHour, userTimeState, userDateState]);
 
   const holderCallbackRef = (ele: (HTMLDivElement | null)) => {
@@ -181,9 +173,12 @@ const Timeline: React.FC<Props> = ({
     }
   }
   
-  let zeroCount = 0;
   const getAnnotation = (txt :string) => {
+    let zeroCount = 0;
+  // console.log("🚀 ~ file: Timeline.component.tsx ~ line 186 ~ getAnnotation ~ txt", txt)
+    
     const curDate = new Date(Date.parse(txt));
+    // console.log("🚀 ~ file: Timeline.component.tsx ~ line 183 ~ getAnnotation ~ curDate", curDate)
     let nextDate = new Date();
     nextDate.setDate(curDate.getDate() + 1);
     const annotationStyle = {

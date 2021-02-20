@@ -1,5 +1,5 @@
 import React from 'react';
-import spacetime from 'spacetime';
+// import spacetime from 'spacetime';
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -45,9 +45,9 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
 
   const addPersonClickHandler = () => {
     // DONE: get NewYork local time as default value for new users.
-    const spaceTimeNowInNewYork = spacetime.now(defaultTimezoneState);
-    const timeNowInNewYork = spaceTimeNowInNewYork.hour() + ':' + spaceTimeNowInNewYork.minute() ;
-    const dateNowInNewYork = ( spaceTimeNowInNewYork.month() + 1 ) + '-' + spaceTimeNowInNewYork.date() + '-' + spaceTimeNowInNewYork.year();
+    // const spaceTimeNowInNewYork = spacetime.now(defaultTimezoneState);
+    // const timeNowInNewYork = spaceTimeNowInNewYork.hour() + ':' + spaceTimeNowInNewYork.minute() ;
+    // const dateNowInNewYork = ( spaceTimeNowInNewYork.month() + 1 ) + '-' + spaceTimeNowInNewYork.date() + '-' + spaceTimeNowInNewYork.year();
     const newUsersState = [...usersState, {id: usersState.length,name: 'New User', timezone: defaultTimezoneState}];
     
     setUsersState(newUsersState);
@@ -65,8 +65,7 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
     // setDateState(date);
     setDateTimeState({time, date})
 
-    // TODO: next step is to make local Date and local time affect all users
-    // steps 1. datePicker onchange setTime setDate
+    // DONE: next step is to make local Date and local time affect all users
 
   }, [localDateTimeState]);
 
@@ -80,13 +79,10 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
     // console.log("🚀 ~ file: Homepage.component.tsx ~ line 74 ~ updateUser ~ users", users)
   };
 
-  //TODO: functions that will pass down to child components to updated userName, timezone, time
+  //TODO: functions that will pass down to child components to updated userName
+  // time could only be changed in local format 
   const changeUserName = () => {};
-  const changeUserTimezone = () => {};
-  const changeUserTime = () => {
-    //TODO: user time will affect the whole app
-    //use context api to avoid unnecessary child components update
-  };
+
 
   return (
     <div className='container' style={{backgroundColor: color.background}}>
