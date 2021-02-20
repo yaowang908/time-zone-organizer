@@ -36,8 +36,12 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
   const [ localDateTimeState, setLocalDateTimeState ] = React.useState(new Date());
   const [ defaultTimezoneState, setDefaultTimezoneState ] = React.useState('America/New_York');
   // TODO: this init defaultTimezone needs to match user's timezone
-  const [ timeState, setTimeState ] = React.useState(getCurrentDateTimeInFormat().time);
-  const [ dateState, setDateState ] = React.useState(getCurrentDateTimeInFormat().date);
+  // const [ timeState, setTimeState ] = React.useState(getCurrentDateTimeInFormat().time);
+  // const [ dateState, setDateState ] = React.useState(getCurrentDateTimeInFormat().date);
+  const [ dateTimeState, setDateTimeState ] = React.useState({
+    time: getCurrentDateTimeInFormat().time,
+    date: getCurrentDateTimeInFormat().date,
+  });
 
   const addPersonClickHandler = () => {
     // DONE: get NewYork local time as default value for new users.
@@ -57,8 +61,9 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
     const {date, time} = getCurrentDateTimeInFormat(defaultTimezoneState, localDateTimeState);
     console.log("🚀 ~ file: Homepage.component.tsx ~ line 58 ~ React.useEffect ~ time", time)
     console.log("🚀 ~ file: Homepage.component.tsx ~ line 58 ~ React.useEffect ~ date", date)
-    setTimeState(time);
-    setDateState(date);
+    // setTimeState(time);
+    // setDateState(date);
+    setDateTimeState({time, date})
 
     // TODO: next step is to make local Date and local time affect all users
     // steps 1. datePicker onchange setTime setDate
@@ -112,8 +117,8 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
             name={user.name} 
             timezone={user.timezone}
             localTimezone={defaultTimezoneState}
-            localTime={timeState}
-            localDate={dateState}
+            localTime={dateTimeState.time}
+            localDate={dateTimeState.date}
             militaryFormat={false}
             elementWidth={elementWidth}
             />

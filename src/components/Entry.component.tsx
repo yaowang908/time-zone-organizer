@@ -99,34 +99,38 @@ const Entry: React.FC<Props> = ({
 
   React.useEffect(() => {
     setSelectedTimezone(getDefaultTimezoneObject(timezone));
-    console.log("🚀 ~ file: Entry.component.tsx ~ line 102 ~ React.useEffect ~ timezone", timezone)
+    // console.log("🚀 ~ file: Entry.component.tsx ~ line 102 ~ React.useEffect ~ timezone", timezone)
     // console.log(defaultValue);
   }, [timezone]);
   React.useEffect(()=>{
     setLocalTimeState(localTime);
+    console.log("🚀 ~ file: Entry.component.tsx ~ line 118 ~ React.useEffect ~ timezone", timezone)
+    console.log("🚀 ~ file: Entry.component.tsx ~ line 117 ~ React.useEffect ~ localTime", localTime);
+    console.log("🚀 ~ file: Entry.component.tsx ~ line 118 ~ React.useEffect ~ localDate", localDate)
+    console.log("🚀 ~ file: Entry.component.tsx ~ line 118 ~ React.useEffect ~ localTimezone", localTimezone)
     const _tempUserDateTime = getUserDateTime(
         timezone, 
-        localTimeState, 
-        localDateState, 
+        localTime, 
+        localDate, 
         localTimezone
       );
     setUserTimeState(_tempUserDateTime.time);
-    // console.log("🚀 ~ file: Entry.component.tsx ~ line 95 ~ localTime", localTime)
+    console.log("🚀 ~ file: Entry.component.tsx ~ line 95 ~ _tempUserDateTime.time", _tempUserDateTime.time)
     // NOTE: keep timezone to update component when timezone updates
-  }, [localDateState, localTime, localTimeState, localTimezone, timezone]);
+  }, [localDateState, localTime, localDate, localTimeState, localTimezone, timezone]);
   React.useEffect(()=>{
     setLocalDateState(localDate);
     const _tempUserDateTime = getUserDateTime(
         timezone, 
-        localTimeState, 
-        localDateState, 
+        localTime, 
+        localDate, 
         localTimezone
       );
     setUserDateState(_tempUserDateTime.date);
     // FIXME: localdate is not passing in
-    console.log("🚀 ~ file: Entry.component.tsx ~ line 123 ~ localDate", _tempUserDateTime.date);
+    // console.log("🚀 ~ file: Entry.component.tsx ~ line 123 ~ _tempUserDateTime.time", _tempUserDateTime.date);
     // NOTE: keep timezone to update component when timezone updates
-  }, [localDate, localDateState, localTimeState, localTimezone, timezone]);
+  }, [localDate, localDateState, localTime, localTimeState, localTimezone, timezone]);
   
   // const getUserTime = () => {
   //   // timezone, time, date, localTimezone
