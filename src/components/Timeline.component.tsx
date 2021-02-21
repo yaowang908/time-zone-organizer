@@ -189,7 +189,7 @@ const Timeline: React.FC<Props> = ({
   // console.log("🚀 ~ file: Timeline.component.tsx ~ line 186 ~ getAnnotation ~ txt", txt)
     
     const curDate = new Date(constructValidDateString(txt));
-    console.log("🚀 ~ file: Timeline.component.tsx ~ line 183 ~ getAnnotation ~ curDate", curDate)
+    // console.log("🚀 ~ file: Timeline.component.tsx ~ line 183 ~ getAnnotation ~ curDate", curDate)
     let nextDate = new Date();
     nextDate.setDate(curDate.getDate() + 1);
     const annotationStyle = {

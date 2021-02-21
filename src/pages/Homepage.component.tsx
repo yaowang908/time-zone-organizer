@@ -49,7 +49,13 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
     date: getCurrentDateTimeInFormat().date,
   });
   const [usersLocalStorage, setUsersLocalStorage] = useLocalStorage<User[]>('users', users);
-  // TODO: when init, check local storage for users data first; 
+  
+  React.useEffect(()=>{
+    // DONE: when init, check local storage for users data first; 
+    const savedUsers = usersLocalStorage;
+    setUsersState(savedUsers);
+    // console.dir(savedUsers);
+  },[]);
 
   const addPersonClickHandler = () => {
     // DONE: get NewYork local time as default value for new users.
@@ -67,8 +73,8 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
     // const _time = localDateTimeState.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
 
     const {date, time} = getCurrentDateTimeInFormat(defaultTimezoneState, localDateTimeState);
-    console.log("🚀 ~ file: Homepage.component.tsx ~ line 58 ~ React.useEffect ~ time", time)
-    console.log("🚀 ~ file: Homepage.component.tsx ~ line 58 ~ React.useEffect ~ date", date)
+    // console.log("🚀 ~ file: Homepage.component.tsx ~ line 58 ~ React.useEffect ~ time", time)
+    // console.log("🚀 ~ file: Homepage.component.tsx ~ line 58 ~ React.useEffect ~ date", date)
     // setTimeState(time);
     // setDateState(date);
     setDateTimeState({time, date})
@@ -96,7 +102,7 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
     _users[id] = user;
     setUsersState(_users);
     setUsersLocalStorage(_users);
-    console.log("🚀 ~ file: Homepage.component.tsx ~ line 89 ~ updateUserName ~ users", users)
+    // console.log("🚀 ~ file: Homepage.component.tsx ~ line 89 ~ updateUserName ~ users", users)
   };
 
   //DONE: functions that will pass down to child components to updated userName
