@@ -4,7 +4,6 @@ const getCurrentDateTimeInFormat = (timezone:string = 'America/New_York', timeDa
       (timeDate.getTime() - anchorDate.getTime()) !== 0 ?
       (new Date(timeDate)).toLocaleString('en-US', { timeZone: 'America/New_York' } )
       :(new Date()).toLocaleString('en-US', { timeZone: 'America/New_York' } );
-    // TODO: is it a good practice to hold a local state instead of everything in the parent node
     //DONE: d.toLocaleString('en-US', { timeZone: 'America/New_York' })
 
     const _date = new Date(localDateTime).toLocaleDateString('default', { year: 'numeric', month: 'long', day: 'numeric' });

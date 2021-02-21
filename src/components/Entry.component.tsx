@@ -5,7 +5,7 @@ import defaultColor from '../settings/color.settings';
 import defaultTimezones from '../data/timezones';
 import getUserDateTime from '../lib/getUserDateTime';
 
-import getCurrentDateTimeInFormat from '../lib/getCurrentDateTimeInFormat';
+// import getCurrentDateTimeInFormat from '../lib/getCurrentDateTimeInFormat';
 import Timeline from './Timeline.component';
 import { Styled } from './Entry.style'; 
 import './Entry.style.scss';
@@ -37,6 +37,7 @@ export interface Props {
   localTime:string;
   localDate:string;
   updateUser: (newTimezone:string) => void;
+  updateUserName: (newUsername:string) => void;
   sunriseTime?: string;
   sunsetTime?: string;
   militaryFormat?: boolean;
@@ -61,6 +62,7 @@ const Entry: React.FC<Props> = ({
   sunriseTime = '6:00', 
   sunsetTime = '18:00', 
   updateUser,
+  updateUserName,
   militaryFormat = true,
   color = defaultColor,
   elementWidth = 50
@@ -132,24 +134,6 @@ const Entry: React.FC<Props> = ({
     // console.log("🚀 ~ file: Entry.component.tsx ~ line 123 ~ _tempUserDateTime.time", _tempUserDateTime.date);
     // NOTE: keep timezone to update component when timezone updates
   }, [localDate, localDateState, localTime, localTimeState, localTimezone, timezone]);
-  
-  // const getUserTime = () => {
-  //   // timezone, time, date, localTimezone
-  //   return getUserDateTime(
-  //       timezone, 
-  //       localTimeState, 
-  //       localDateState, 
-  //       localTimezone
-  //     ).time;
-  // };
-  // const getUserDate = () => {
-  //   return getUserDateTime(
-  //       timezone, 
-  //       localTimeState, 
-  //       localDateState, 
-  //       localTimezone
-  //     ).date;
-  // };
 
   const userTime = (militaryTime = false) => {
 
@@ -167,6 +151,7 @@ const Entry: React.FC<Props> = ({
   // DONE: 2: click on name to edit name
   const userNameChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserNameState(e.target.value);
+    updateUserName(e.target.value);
   };
 
   return (

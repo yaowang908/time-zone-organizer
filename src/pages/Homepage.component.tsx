@@ -1,12 +1,14 @@
 import React from 'react';
 // import spacetime from 'spacetime';
 import DatePicker from "react-datepicker";
+import { confirmAlert } from 'react-confirm-alert';
 
 import "react-datepicker/dist/react-datepicker.css";
 
 import defaultColor from '../settings/color.settings';
 import Entry from '../components/Entry.component';
 import getCurrentDateTimeInFormat from '../lib/getCurrentDateTimeInFormat';
+import useLocalStorage from '../lib/useLocalStorageHook';
 
 import './Homepage.style.scss';
 
@@ -42,6 +44,7 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
     time: getCurrentDateTimeInFormat().time,
     date: getCurrentDateTimeInFormat().date,
   });
+  const [usersLocalStorage, setUsersLocalStorage] = useLocalStorage<User[]>('users', users);
 
   const addPersonClickHandler = () => {
     // DONE: get NewYork local time as default value for new users.
@@ -71,23 +74,43 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
 
   const updateUser = (id:number, newTimezone:string) => {
     // update usersState
-    let users = [...usersState];
-    let user = {...users[id]}
+    let _users = [...usersState];
+    let user = {..._users[id]}
     user.timezone = newTimezone;
-    users[id] = user;
-    setUsersState(users);
+    _users[id] = user;
+    setUsersState(_users);
+    setUsersLocalStorage(_users);
     // console.log("🚀 ~ file: Homepage.component.tsx ~ line 74 ~ updateUser ~ users", users)
+  };
+
+  const updateUserName = (id:number, newUsername:string) => {
+    // update currentUserName
+    let _users = [...usersState];
+    let user = {..._users[id]}
+    user.name = newUsername;
+    _users[id] = user;
+    setUsersState(_users);
+    setUsersLocalStorage(_users);
+    console.log("🚀 ~ file: Homepage.component.tsx ~ line 89 ~ updateUserName ~ users", users)
   };
 
   //TODO: functions that will pass down to child components to updated userName
   // time could only be changed in local format 
   const changeUserName = () => {};
 
+  // TODO: get all changes into on object, save to localStorage
+  // TODO: add a reset button
+  const clearLocalStorage = () => {
+    setUsersLocalStorage(users);
+  };
 
   return (
     <div className='container' style={{backgroundColor: color.background}}>
       <div className="nav">
         <div className="logo"></div>
+        <div className="menu_container">
+          <div className="menu_item">Reset</div>
+        </div>
       </div>
       <div className="local_time" style={{color:color.white,backgroundColor: color.background}}>
         <div className="title input_div">Local Time</div>
@@ -109,6 +132,9 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
             key={index}
             updateUser={ (newTimezone:string) => {
               updateUser(user.id, newTimezone);
+            }}
+            updateUserName={ (newUsername:string) => {
+              updateUserName(user.id, newUsername);
             }}
             name={user.name} 
             timezone={user.timezone}
