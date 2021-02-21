@@ -10,6 +10,7 @@ import defaultColor from '../settings/color.settings';
 import Entry from '../components/Entry.component';
 import getCurrentDateTimeInFormat from '../lib/getCurrentDateTimeInFormat';
 import useLocalStorage from '../lib/useLocalStorageHook';
+import getClientTimezone from '../lib/getClientTimezone';
 
 import './Homepage.style.scss';
 
@@ -35,10 +36,12 @@ export interface Props {
 
 const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth = 50 }) => {
 
+  const defaultTimezoneInitValue = getClientTimezone();
+
   const [ usersState, setUsersState ] = React.useState(users);
   const [ localDateTimeState, setLocalDateTimeState ] = React.useState(new Date());
-  const [ defaultTimezoneState, setDefaultTimezoneState ] = React.useState('America/New_York');
-  // TODO: this init defaultTimezone needs to match user's timezone
+  const [ defaultTimezoneState, setDefaultTimezoneState ] = React.useState(defaultTimezoneInitValue);
+  // DONE: this init defaultTimezone needs to match user's timezone
   // const [ timeState, setTimeState ] = React.useState(getCurrentDateTimeInFormat().time);
   // const [ dateState, setDateState ] = React.useState(getCurrentDateTimeInFormat().date);
   const [ dateTimeState, setDateTimeState ] = React.useState({

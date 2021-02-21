@@ -6,8 +6,8 @@ const getCurrentDateTimeInFormat = (timezone:string = 'America/New_York', timeDa
       :(new Date()).toLocaleString('en-US', { timeZone: 'America/New_York' } );
     //DONE: d.toLocaleString('en-US', { timeZone: 'America/New_York' })
 
-    const _date = new Date(localDateTime).toLocaleDateString('default', { year: 'numeric', month: 'long', day: 'numeric' });
-    const _time = new Date(localDateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+    const _date = new Date(localDateTime).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const _time = new Date(localDateTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
     // console.dir(_date);
     // console.dir(_time);
     return {

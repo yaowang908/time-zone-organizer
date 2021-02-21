@@ -130,7 +130,7 @@ const Entry: React.FC<Props> = ({
         localTimezone
       );
     setUserDateState(_tempUserDateTime.date);
-    // FIXME: localdate is not passing in
+    // DONE: localdate is not passing in
     // console.log("🚀 ~ file: Entry.component.tsx ~ line 123 ~ _tempUserDateTime.time", _tempUserDateTime.date);
     // NOTE: keep timezone to update component when timezone updates
   }, [localDate, localDateState, localTime, localTimeState, localTimezone, timezone]);
