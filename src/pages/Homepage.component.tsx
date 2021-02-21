@@ -2,6 +2,7 @@ import React from 'react';
 // import spacetime from 'spacetime';
 import DatePicker from "react-datepicker";
 import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -45,6 +46,7 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
     date: getCurrentDateTimeInFormat().date,
   });
   const [usersLocalStorage, setUsersLocalStorage] = useLocalStorage<User[]>('users', users);
+  // TODO: when init, check local storage for users data first; 
 
   const addPersonClickHandler = () => {
     // DONE: get NewYork local time as default value for new users.
@@ -94,14 +96,30 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
     console.log("🚀 ~ file: Homepage.component.tsx ~ line 89 ~ updateUserName ~ users", users)
   };
 
-  //TODO: functions that will pass down to child components to updated userName
+  //DONE: functions that will pass down to child components to updated userName
   // time could only be changed in local format 
-  const changeUserName = () => {};
 
-  // TODO: get all changes into on object, save to localStorage
-  // TODO: add a reset button
+  // DONE: get all changes into on object, save to localStorage
+  // DONE: add a reset button
   const clearLocalStorage = () => {
     setUsersLocalStorage(users);
+    setUsersState(users);
+  };
+  const reset = () => {
+    confirmAlert({
+      title: 'Confirm to DELETE all data',
+      message: 'Are you sure to do this.',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => {clearLocalStorage()}
+        },
+        {
+          label: 'No',
+          onClick: () => {console.log('Deletion Abort!')}
+        }
+      ]
+    });
   };
 
   return (
@@ -109,7 +127,7 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
       <div className="nav">
         <div className="logo"></div>
         <div className="menu_container">
-          <div className="menu_item">Reset</div>
+          <div className="menu_item" onClick={reset}>Reset</div>
         </div>
       </div>
       <div className="local_time" style={{color:color.white,backgroundColor: color.background}}>
