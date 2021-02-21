@@ -173,12 +173,23 @@ const Timeline: React.FC<Props> = ({
     }
   }
   
+  const constructValidDateString = (dateString:string) => {
+    const [month, day, year] = dateString.split('-');
+    if(month&&day&&year) {
+      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T16:00:00.0`;
+    } else {
+      console.error('Date format error, Timeline component');
+      return 0;
+    }
+  };
+
   const getAnnotation = (txt :string) => {
+    // txt format will be MM-DD-YYYY
     let zeroCount = 0;
   // console.log("🚀 ~ file: Timeline.component.tsx ~ line 186 ~ getAnnotation ~ txt", txt)
     
-    const curDate = new Date(Date.parse(txt));
-    // console.log("🚀 ~ file: Timeline.component.tsx ~ line 183 ~ getAnnotation ~ curDate", curDate)
+    const curDate = new Date(constructValidDateString(txt));
+    console.log("🚀 ~ file: Timeline.component.tsx ~ line 183 ~ getAnnotation ~ curDate", curDate)
     let nextDate = new Date();
     nextDate.setDate(curDate.getDate() + 1);
     const annotationStyle = {
