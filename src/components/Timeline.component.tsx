@@ -64,7 +64,7 @@ const Timeline: React.FC<Props> = ({
   const [curMin, setCurMin] = React.useState<string>('0');
   const [eleWidth, setEleWidth] = React.useState<number>(75);
   // const [dateState, setDateState] = React.useState<string>(getUserDate());
-  const [holderMarginLeft, setHolderMarginLeft] = React.useState<number>(877.25);
+  // const [holderMarginLeft, setHolderMarginLeft] = React.useState<number>(877.25);
   
 
   React.useEffect(() => {
