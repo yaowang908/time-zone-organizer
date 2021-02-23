@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import defaultTimezones from '../data/timezones' 
 import Select from "react-select";
 

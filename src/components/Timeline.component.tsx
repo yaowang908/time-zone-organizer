@@ -59,28 +59,12 @@ const Timeline: React.FC<Props> = ({
   const [ userTimeState, setLocalTimeState ] = React.useState(time);
   const [ userDateState, setLocalDateState ] = React.useState(date);
 
-  // const getUserTime = () => {
-  //   // timezone, time, date, localTimezone
-  //   return getUserDateTime(
-  //       timezone, 
-  //       localTimeState,
-  //       localDateState, 
-  //       localTimezone
-  //     ).time;
-  // };
-  // const getUserDate = () => {
-  //   return getUserDateTime(
-  //       timezone, 
-  //       localTimeState, 
-  //       localDateState, 
-  //       localTimezone
-  //     ).date;
-  // };
   const [hoursArr, setHoursArr] = React.useState<string[]>([]);
   const [curHour, setCurHour] = React.useState<string>('0');
   const [curMin, setCurMin] = React.useState<string>('0');
   const [eleWidth, setEleWidth] = React.useState<number>(75);
   // const [dateState, setDateState] = React.useState<string>(getUserDate());
+  const [holderMarginLeft, setHolderMarginLeft] = React.useState<number>(877.25);
   
 
   React.useEffect(() => {
@@ -124,6 +108,9 @@ const Timeline: React.FC<Props> = ({
         // set cur hour in middle
         const marginSetByMin = ( Number(curMin) / 60 ) * eleWidth; 
         ele.scrollLeft = (ele.scrollWidth / 2) - (ele.clientWidth / 2) - (eleWidth / 2) + marginSetByMin;
+        setHolderMarginLeft((ele.scrollWidth / 2) - (ele.clientWidth / 2) - (eleWidth / 2) + marginSetByMin);
+        console.log("🚀 ~ file: Timeline.component.tsx ~ line 110 ~ holderCallbackRef ~ scrollLeft", (ele.scrollWidth / 2) - (ele.clientWidth / 2) - (eleWidth / 2) + marginSetByMin)
+        
       }
   };
 
@@ -160,15 +147,15 @@ const Timeline: React.FC<Props> = ({
 
     switch (thisType) {
       case type.night:
-        return Object.assign({} as React.CSSProperties, baseStyle, {'backgroundColor': defaultColor.night});
+        return Object.assign({} as React.CSSProperties, baseStyle, {'backgroundColor': defaultColor.night, 'color': defaultColor.nightText });
       case type.dawn:
-        return Object.assign({} as React.CSSProperties, baseStyle,  {'backgroundImage': `linear-gradient( 90deg, ${defaultColor.night} 13%, ${defaultColor.day} 86%)`, 'color': defaultColor.white });
+        return Object.assign({} as React.CSSProperties, baseStyle,  {'backgroundImage': `linear-gradient( 90deg, ${defaultColor.night} 13%, ${defaultColor.day} 86%)`, 'color': defaultColor.dayText });
       case type.day:
-        return Object.assign({} as React.CSSProperties, baseStyle, {'backgroundColor': defaultColor.day});
+        return Object.assign({} as React.CSSProperties, baseStyle, {'backgroundColor': defaultColor.day, 'color': defaultColor.dayText });
       case type.dusk:
-        return Object.assign({} as React.CSSProperties, baseStyle, {'backgroundImage': `linear-gradient( 90deg, ${defaultColor.day} 13%, ${defaultColor.night} 86%)`, 'color': defaultColor.white });
+        return Object.assign({} as React.CSSProperties, baseStyle, {'backgroundImage': `linear-gradient( 90deg, ${defaultColor.day} 13%, ${defaultColor.night} 86%)`, 'color': defaultColor.dayText });
       default:
-        return Object.assign({} as React.CSSProperties, baseStyle, {'backgroundColor': defaultColor.night});
+        return Object.assign({} as React.CSSProperties, baseStyle, {'backgroundColor': defaultColor.night, 'color': defaultColor.nightText });
     }
   }
   
@@ -219,9 +206,14 @@ const Timeline: React.FC<Props> = ({
       <div className="timeline-holder" 
         ref={holderCallbackRef}
         style={{
-          "flex": eleWidth ? '1 0 '+eleWidth+'px' : '75px'
+          "flex": eleWidth ? '1 0 '+eleWidth+'px' : '75px',
+          // "marginLeft": holderMarginLeft ? '-'+holderMarginLeft+'px': '0px', //FIXME:
         }}  
       // isScrollEnabled={false}
+      // TODO: when holder overflow: hidden, scrollLeft works, 
+      // ...to make annotation show, try to make scrollLeft to marginLeft,
+      // ...but the value is not the same as scrollLeft used to be. FIXME:
+      // ...make annotation position relative, and it will be placed under the number outside the timeline box
       >
         {
           hoursArr.map((x, index) => {
