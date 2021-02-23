@@ -1,0 +1,35 @@
+.timeline-container {
+  width: 100%;
+  .timeline-holder {
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    flex-wrap: nowrap;
+    height: 35px;
+    font-size: 0.8em;
+    font-family: Sans-Serif;
+    cursor: pointer;
+    user-select: none;
+    .timeline-cell {
+      // flex: 0 0 75px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      align-items: center;
+      font-size: 1rem;
+      text-align: center;
+      line-height: 35px;
+      .timeline-cell-number {
+        // font-size: 0.8rem;
+      }
+      .timeline-cell-annotation {
+        position: absolute;
+        top: 14px;
+        font-size: 0.6em;
+      }
+    }
+    &::-webkit-scrollbar {
+      height: 0px;
+    }
+  }
+}

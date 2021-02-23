@@ -11,3 +11,18 @@
     cursor: pointer;
   }
 }
+
+.entry-container {
+  position: relative;
+  .header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding:0 1em 0.5em 1em;
+  }
+  .footer {
+    padding-top: 1em;
+    font-size: 0.6em;
+  }
+}

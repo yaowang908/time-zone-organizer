@@ -3,6 +3,7 @@ import React from 'react';
 import DatePicker from "react-datepicker";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import { useMediaQuery } from 'react-responsive';
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -50,6 +51,16 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
   });
   const [usersLocalStorage, setUsersLocalStorage] = useLocalStorage<User[]>('users', users);
   
+  // TODO: add support for mobile devices
+  const isDesktopOrLaptop = useMediaQuery({
+    query: '(min-width: 1224px)'
+  })
+  const isBigScreen = useMediaQuery({ query: '(min-width: 1824px)' })
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
+  const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
+  const isRetina = useMediaQuery({ query: '(min-resolution: 2dppx)' })
+  // TODO: publish project
+
   React.useEffect(()=>{
     // DONE: when init, check local storage for users data first; 
     const savedUsers = usersLocalStorage;

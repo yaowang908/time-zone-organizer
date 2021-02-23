@@ -7,7 +7,6 @@ import getUserDateTime from '../lib/getUserDateTime';
 
 // import getCurrentDateTimeInFormat from '../lib/getCurrentDateTimeInFormat';
 import Timeline from './Timeline.component';
-import { Styled } from './Entry.style'; 
 import './Entry.style.scss';
 
 /**
@@ -65,7 +64,7 @@ const Entry: React.FC<Props> = ({
   updateUserName,
   militaryFormat = true,
   color = defaultColor,
-  elementWidth = 50
+  elementWidth = 75
 }) => {
 
   const getDefaultTimezoneObject = (timezone: string) => {
@@ -155,8 +154,12 @@ const Entry: React.FC<Props> = ({
   };
 
   return (
-    <Styled.Container>
-      <Styled.Header  bg={color.background} txtColor={color.nightText}>
+    <div className="entry-container">
+      <div className="header" 
+        style={{
+          'backgroundColor': color.background ? color.background : '',
+          'color': color.nightText ? color.nightText : ''
+        }}>
         <div className="single_user_timezone_holder">
           <input className="single_user_timezone_name" value={userNameState} onChange={userNameChangeHandler}/>
           <TimezonePicker 
@@ -167,7 +170,7 @@ const Entry: React.FC<Props> = ({
           />
         </div>
         <div>{userTime(false)}</div>
-      </Styled.Header>
+      </div>
       <Timeline 
         timezone={selectedTimezone.label}
         localTimezone={localTimezone}
@@ -176,9 +179,13 @@ const Entry: React.FC<Props> = ({
         militaryFormat = {militaryFormat}
         elementWidth = {elementWidth}
         />
-      <Styled.Footer  bg={color.background} txtColor={color.nightText}>
-      </Styled.Footer>
-    </Styled.Container>
+      <div className='footer'  
+        style={{
+          'backgroundColor': color.background ? color.background : '',
+          'color': color.nightText ? color.nightText : ''
+        }}>
+      </div>
+    </div>
   );
 }
 

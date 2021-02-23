@@ -11,7 +11,7 @@ function App() {
         timezone: 'America/New_York',
       },
     ],
-    elementWidth: 70,
+    elementWidth: 75,
   };
   return (
     <div className="App">
