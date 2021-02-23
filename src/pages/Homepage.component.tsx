@@ -60,6 +60,7 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
   const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
   const isRetina = useMediaQuery({ query: '(min-resolution: 2dppx)' })
   // TODO: publish project
+  // TODO: add live sunset sunrise time
 
   React.useEffect(()=>{
     // DONE: when init, check local storage for users data first; 
