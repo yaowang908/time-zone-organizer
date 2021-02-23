@@ -171,9 +171,9 @@ const Timeline: React.FC<Props> = ({
     }
   };
 
+  let zeroCount = 0; //do not move zeroCount into getAnnotation
   const getAnnotation = (txt :string) => {
     // txt format will be MM-DD-YYYY
-    let zeroCount = 0;
   // console.log("🚀 ~ file: Timeline.component.tsx ~ line 186 ~ getAnnotation ~ txt", txt)
     
     const curDate = new Date(constructValidDateString(txt));
@@ -182,13 +182,12 @@ const Timeline: React.FC<Props> = ({
     nextDate.setDate(curDate.getDate() + 1);
 // DONE: show date under midnight cell
 //DONE: change date base on real data
-//FIXME: two dates are the same now.
     if (zeroCount === 0) {
       zeroCount += 1;
       return <div className="timeline-cell-annotation">{getFormattedDate(curDate)}</div>;
     } else {
       zeroCount += 1;
-      return <div >{getFormattedDate(nextDate)}</div>;
+      return <div className="timeline-cell-annotation">{getFormattedDate(nextDate)}</div>;
     }
     
     // return txt;
@@ -212,9 +211,9 @@ const Timeline: React.FC<Props> = ({
           "flex": eleWidth ? '1 0 '+eleWidth+'px' : '75px',
         }}  
       // isScrollEnabled={false}
-      // TODO: when holder overflow: hidden, scrollLeft works, 
+      // DONE: when holder overflow: hidden, scrollLeft works, 
       // ...to make annotation show, try to make scrollLeft to marginLeft,
-      // ...but the value is not the same as scrollLeft used to be. FIXME:
+      // ...but the value is not the same as scrollLeft used to be. 
       // ...make annotation position relative, and it will be placed under the number outside the timeline box
       >
         {
