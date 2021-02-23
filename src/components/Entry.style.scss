@@ -10,19 +10,27 @@
   .react-select__single-value {
     cursor: pointer;
   }
+  .react-select__menu {
+    // min-height: 500px;
+  }
 }
 
 .entry-container {
   position: relative;
+  height: 100px;
+  .timeline-wrapper {
+    overflow: hidden;
+    position: relative;
+    height: 100px;
+  }
   .header {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: space-between;
     padding:0 1em 0.5em 1em;
-  }
-  .footer {
-    padding-top: 1em;
-    font-size: 0.6em;
+    .single_user_time {
+      line-height: 39px;
+    }
   }
 }

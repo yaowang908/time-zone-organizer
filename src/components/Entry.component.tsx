@@ -169,21 +169,17 @@ const Entry: React.FC<Props> = ({
             defaultValue={selectedTimezone}
           />
         </div>
-        <div>{userTime(false)}</div>
+        <div className="single_user_time">{userTime(false)}</div>
       </div>
-      <Timeline 
-        timezone={selectedTimezone.label}
-        localTimezone={localTimezone}
-        time = {userTimeState}
-        date = {userDateState}
-        militaryFormat = {militaryFormat}
-        elementWidth = {elementWidth}
-        />
-      <div className='footer'  
-        style={{
-          'backgroundColor': color.background ? color.background : '',
-          'color': color.nightText ? color.nightText : ''
-        }}>
+      <div className="timeline-wrapper">
+        <Timeline 
+          timezone={selectedTimezone.label}
+          localTimezone={localTimezone}
+          time = {userTimeState}
+          date = {userDateState}
+          militaryFormat = {militaryFormat}
+          elementWidth = {elementWidth}
+          />
       </div>
     </div>
   );

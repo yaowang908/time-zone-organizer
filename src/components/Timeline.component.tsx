@@ -107,9 +107,11 @@ const Timeline: React.FC<Props> = ({
       if (ele) {
         // set cur hour in middle
         const marginSetByMin = ( Number(curMin) / 60 ) * eleWidth; 
-        ele.scrollLeft = (ele.scrollWidth / 2) - (ele.clientWidth / 2) - (eleWidth / 2) + marginSetByMin;
-        setHolderMarginLeft((ele.scrollWidth / 2) - (ele.clientWidth / 2) - (eleWidth / 2) + marginSetByMin);
-        console.log("🚀 ~ file: Timeline.component.tsx ~ line 110 ~ holderCallbackRef ~ scrollLeft", (ele.scrollWidth / 2) - (ele.clientWidth / 2) - (eleWidth / 2) + marginSetByMin)
+        const allCellsWidth = 48 * eleWidth;
+        // ele.scrollLeft = (ele.scrollWidth / 2) - (ele.clientWidth / 2) - (eleWidth / 2) + marginSetByMin;
+        // ele.style.marginLeft = `${-((allCellsWidth/2 - (ele.clientWidth / 2) - (eleWidth / 2)) + marginSetByMin)}px`; 
+        ele.style.left = '50%';
+        ele.style.marginLeft = `${-1 * allCellsWidth/2 + (eleWidth / 2) - marginSetByMin}px`;
         
       }
   };
@@ -180,6 +182,7 @@ const Timeline: React.FC<Props> = ({
     nextDate.setDate(curDate.getDate() + 1);
 // DONE: show date under midnight cell
 //DONE: change date base on real data
+//FIXME: two dates are the same now.
     if (zeroCount === 0) {
       zeroCount += 1;
       return <div className="timeline-cell-annotation">{getFormattedDate(curDate)}</div>;
@@ -207,7 +210,6 @@ const Timeline: React.FC<Props> = ({
         ref={holderCallbackRef}
         style={{
           "flex": eleWidth ? '1 0 '+eleWidth+'px' : '75px',
-          // "marginLeft": holderMarginLeft ? '-'+holderMarginLeft+'px': '0px', //FIXME:
         }}  
       // isScrollEnabled={false}
       // TODO: when holder overflow: hidden, scrollLeft works, 
