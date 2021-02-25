@@ -1,3 +1,5 @@
+@import '../style/mediaQuery';
+
 .react-datepicker-wrapper {
   width: 100%;
 }
@@ -31,5 +33,20 @@
       }
     }
   }
-
+  
+  @include mobile {
+    .single_user_timezone_holder {
+      display: flex;
+      flex-direction: column;
+      width: auto;
+      min-width: 200px;
+      .single_user_timezone_name {
+        max-width: 200px;
+        line-height: 20px;
+      }
+      .single_user_timezone_picker {
+        min-width: 150px;
+      }
+    }
+  }
 }

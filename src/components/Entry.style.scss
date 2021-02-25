@@ -1,10 +1,12 @@
+@import '../style/mediaQuery';
+
 .single_user_timezone_holder {
   .single_user_timezone_name {
     background-color: transparent;
     border: 0;
     color: #90AFFF;
     font-size: 1rem;
-    width: auto;
+    // width: auto; // defined in TimezonePicker.style.scss
     cursor: pointer;
   }
   .react-select__single-value {
@@ -31,6 +33,18 @@
     padding:0 1em 0.5em 1em;
     .single_user_time {
       line-height: 39px;
+    }
+  }
+}
+
+@include mobile {
+  .entry-container {
+    height: 110px;
+    margin-bottom: 10px;
+    .header {
+      .single_user_time {
+        line-height: 65px;
+      }
     }
   }
 }

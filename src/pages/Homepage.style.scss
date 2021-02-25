@@ -1,17 +1,4 @@
-$tablet-width: 768px;
-$desktop-width: 1024px;
-
-@mixin tablet {
-  @media (min-width: #{$tablet-width}) and (max-width: #{$desktop-width - 1px}) {
-    @content;
-  }
-}
-
-@mixin desktop {
-  @media (min-width: #{$desktop-width}) {
-    @content;
-  }
-}
+@import '../style/_mediaQuery';
 
 .container {
   margin: 0;
@@ -55,6 +42,12 @@ $desktop-width: 1024px;
       }
     }
   }
+  @include mobile {
+    .nav {
+      align-items: flex-start;
+      padding-top: 10px;
+    }
+  }
   .local_time {
     position: absolute;
     top: 53px;
@@ -93,6 +86,15 @@ $desktop-width: 1024px;
       }
     }
   }
+  @include mobile {
+    .local_time {
+      border-top: 1px solid #fff;
+      width: 100%;
+      top: 62px;
+      left: 0;
+      margin-left: 0;
+    }
+  }
   .input_div {
     width: 100%;
     text-align: center;
@@ -112,6 +114,11 @@ $desktop-width: 1024px;
       padding: 0;
       font-size: 1.5rem;
       color: #fff;
+    }
+    @include mobile {
+      input {
+        font-size: 1.2rem;
+      }
     }
   }
   .indicator {
