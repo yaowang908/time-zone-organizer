@@ -7,37 +7,46 @@ export default {
   title: 'Entry',
 } as Meta;
 
-const Template: Story<Props> = (args:Props) => <Entry {...args}/>
+const Template: Story<Props> = (args: Props) => <Entry {...args} />;
 
 export const Default: Story<Props> = Template.bind({});
 Default.args = {
   timezone: 'america/New_York',
-  time: '11:43',
-  date: '12-23-2020',
+  localTime: '11:43',
+  localDate: 'February 13, 2021',
 } as Partial<Props>;
 
 export const WithIndicator: Story<Props> = Template.bind({});
 WithIndicator.args = {
   timezone: 'america/New_York',
-  time: '11:20',
-  date: '12-23-2020',
+  localTime: '11:20',
+  localDate: 'February 13, 2021',
   militaryFormat: false,
 } as Partial<Props>;
 WithIndicator.decorators = [
   (Story) => (
-    <div style={{width: '100%', height: '100vh', position: 'relative', paddingTop: '100px'}}>
-      <div style={{
-          width: '0px', 
-          height: '100vh',  
-          position: 'absolute', 
-          top: '0', 
-          left: '50%', 
-          marginLeft: '0px', 
-          backgroundColor:'transparent', 
-          border:'1px solid red',
+    <div
+      style={{
+        width: '100%',
+        height: '100vh',
+        position: 'relative',
+        paddingTop: '100px',
+      }}
+    >
+      <div
+        style={{
+          width: '0px',
+          height: '100vh',
+          position: 'absolute',
+          top: '0',
+          left: '50%',
+          marginLeft: '0px',
+          backgroundColor: 'transparent',
+          border: '1px solid red',
           zIndex: 100,
-        }}></div>
-      <Story/>
+        }}
+      ></div>
+      <Story />
     </div>
   ),
 ];
