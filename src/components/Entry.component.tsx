@@ -1,13 +1,14 @@
 'use client';
 import React from 'react';
 import TimezonePicker, { Timezone } from './TimezonePicker.component';
+import { Input } from './ui/input';
+import { Card, CardContent, CardHeader } from './ui/card';
 
 import defaultColor from '../settings/color.settings';
 import defaultTimezones from '../data/timezones';
 import getUserDateTime from '../lib/getUserDateTime';
 
 import Timeline from './Timeline.component';
-import '../style/Entry.style.scss';
 
 /**
  * @param { string } name - person's name
@@ -135,24 +136,29 @@ const Entry: React.FC<Props> = ({
   };
 
   return (
-    <div className="entry-container">
-      <div className="header"
-        style={{
-          'backgroundColor': color.background ? color.background : '',
-          'color': color.nightText ? color.nightText : ''
-        }}>
-        <div className="single_user_timezone_holder">
-          <input className="single_user_timezone_name" value={userNameState} onChange={userNameChangeHandler} />
-          <TimezonePicker
-            placeHolder={selectedTimezone.label}
-            className="single_user_timezone_picker"
-            setSelectedTimezone={updateUser}
-            defaultValue={selectedTimezone}
-          />
+    <Card className="w-full mb-4 border-0 shadow-lg" style={{ backgroundColor: color.background }}>
+      <CardHeader className="pb-2">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4 flex-1">
+            <Input
+              value={userNameState}
+              onChange={userNameChangeHandler}
+              className="border-0 bg-transparent text-white placeholder:text-white/70 focus:ring-0 text-lg font-medium"
+              placeholder="Enter name"
+            />
+            <TimezonePicker
+              placeHolder={selectedTimezone.label}
+              className="w-64 border-0 bg-transparent text-white"
+              setSelectedTimezone={updateUser}
+              defaultValue={selectedTimezone}
+            />
+          </div>
+          <div className="text-2xl font-bold text-white">
+            {userTime(false)}
+          </div>
         </div>
-        <div className="single_user_time">{userTime(false)}</div>
-      </div>
-      <div className="timeline-wrapper">
+      </CardHeader>
+      <CardContent className="pt-0">
         <Timeline
           timezone={selectedTimezone.label}
           localTimezone={localTimezone}
@@ -161,8 +167,8 @@ const Entry: React.FC<Props> = ({
           militaryFormat={militaryFormat}
           elementWidth={elementWidth}
         />
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }
 

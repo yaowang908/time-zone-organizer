@@ -6,7 +6,6 @@ import defaultColor from '../settings/color.settings';
 import hoursFormat from '../settings/hours.setting';
 
 import { getFormattedDate } from '../lib/getFormattedDate';
-import '../style/Timeline.style.scss';
 
 /**
  * @param { string } timezone - selected from a drop down
@@ -164,22 +163,20 @@ const Timeline: React.FC<Props> = ({
     nextDate.setDate(curDate.getDate() + 1);
     if (zeroCount === 0) {
       zeroCount += 1;
-      return <div className="timeline-cell-annotation">{getFormattedDate(curDate)}</div>;
+      return <div className="text-xs text-center mt-1 opacity-70">{getFormattedDate(curDate)}</div>;
     } else {
       zeroCount += 1;
-      return <div className="timeline-cell-annotation">{getFormattedDate(nextDate)}</div>;
+      return <div className="text-xs text-center mt-1 opacity-70">{getFormattedDate(nextDate)}</div>;
     }
   };
 
   return (
-    <div className="timeline-container"
+    <div className="relative overflow-hidden border-t border-b border-white/20"
       style={{
         "backgroundColor": color.background ? color.background : '',
         "color": color.nightText ? color.nightText : '',
-        "borderBottom": color.nightText ? '1px solid ' + color.nightText : '',
-        "borderTop": color.nightText ? '1px solid ' + color.nightText : ''
       }}>
-      <div className="timeline-holder"
+      <div className="flex relative"
         ref={holderCallbackRef}
         style={{
           "flex": eleWidth ? '1 0 ' + eleWidth + 'px' : '75px',
@@ -188,11 +185,16 @@ const Timeline: React.FC<Props> = ({
         {
           hoursArr.map((x, index) => {
             return (
-              <div key={index} className="timeline-cell" style={{
+              <div key={index} className="flex-shrink-0 text-center" style={{
                 "width": eleWidth ? eleWidth : '75px',
                 "flex": eleWidth ? '0 0 ' + eleWidth + 'px' : '0 0 75px'
               }}>
-                <div style={setBackgroundColor(x)} className='timeline-cell-number'>{x}</div>
+                <div
+                  className="h-12 flex items-center justify-center text-sm font-medium border-r border-white/10"
+                  style={setBackgroundColor(x)}
+                >
+                  {x}
+                </div>
                 {(x === '0') ? getAnnotation(userDateState) : ''}
               </div>
             );
@@ -200,7 +202,7 @@ const Timeline: React.FC<Props> = ({
         }
       </div>
     </div>
-  )
+  );
 }
 
 export default Timeline;

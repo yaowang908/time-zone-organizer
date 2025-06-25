@@ -1,11 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  sassOptions: {
-    includePaths: ['./src/style'],
-  },
-  experimental: {
-    appDir: true,
-  },
+  // Configuration for the time zone organizer app
 };
 
 module.exports = nextConfig;

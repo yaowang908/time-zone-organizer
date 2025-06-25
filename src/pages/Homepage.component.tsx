@@ -1,18 +1,26 @@
 'use client';
 import React from 'react';
-import DatePicker from "react-datepicker";
+import { Calendar, Clock, Plus, RotateCcw } from 'lucide-react';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-
-import "react-datepicker/dist/react-datepicker.css";
 
 import defaultColor from '../settings/color.settings';
 import Entry from '../components/Entry.component';
 import getCurrentDateTimeInFormat from '../lib/getCurrentDateTimeInFormat';
 import useLocalStorage from '../lib/useLocalStorageHook';
 import getClientTimezone from '../lib/getClientTimezone';
-
-import '../style/Homepage.style.scss';
+import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
+import { Card, CardContent } from '../components/ui/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../components/ui/dialog';
 
 interface User {
   id: number;
@@ -47,6 +55,7 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
     date: getCurrentDateTimeInFormat().date,
   });
   const [usersLocalStorage, setUsersLocalStorage] = useLocalStorage<User[]>('users', users);
+  const [isResetDialogOpen, setIsResetDialogOpen] = React.useState(false);
 
   React.useEffect(() => {
     const savedUsers = usersLocalStorage;
@@ -84,46 +93,76 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
   const clearLocalStorage = () => {
     setUsersLocalStorage(users);
     setUsersState(users);
+    setIsResetDialogOpen(false);
   };
 
   const reset = () => {
-    confirmAlert({
-      title: 'Confirm to DELETE all data',
-      message: 'Are you sure to do this.',
-      buttons: [
-        {
-          label: 'Yes',
-          onClick: () => { clearLocalStorage() }
-        },
-        {
-          label: 'No',
-          onClick: () => { console.log('Deletion Abort!') }
-        }
-      ]
-    });
+    setIsResetDialogOpen(true);
   };
 
   return (
-    <div className='container' style={{ backgroundColor: color.background }}>
-      <div className="nav">
-        <div className="logo"></div>
-        <div className="menu_container">
-          <div className="menu_item" onClick={reset}>Reset</div>
+    <div className='min-h-screen' style={{ backgroundColor: color.background }}>
+      {/* Navigation */}
+      <nav className="flex items-center justify-between p-6 border-b border-white/20">
+        <div className="flex items-center space-x-4">
+          <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center">
+            <Clock className="w-6 h-6 text-blue-900" />
+          </div>
+          <h1 className="text-2xl font-bold text-white">Time Zone Organizer</h1>
         </div>
-      </div>
-      <div className="local_time" style={{ color: color.white, backgroundColor: color.background }}>
-        <div className="title input_div">Local Time</div>
+        <Dialog open={isResetDialogOpen} onOpenChange={setIsResetDialogOpen}>
+          <DialogTrigger asChild>
+            <Button variant="outline" className="text-white border-white/20 hover:bg-white/10">
+              <RotateCcw className="w-4 h-4 mr-2" />
+              Reset
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Confirm Reset</DialogTitle>
+              <DialogDescription>
+                Are you sure you want to delete all data? This action cannot be undone.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setIsResetDialogOpen(false)}>
+                Cancel
+              </Button>
+              <Button variant="destructive" onClick={clearLocalStorage}>
+                Yes, Reset All Data
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </nav>
 
-        <DatePicker
-          showTimeSelect
-          selected={localDateTimeState}
-          dateFormat="MMMM d, yyyy h:mm aa"
-          onChange={(date: Date | null) => setLocalDateTimeState(date || new Date())}
-        />
-        <div className="triangle"></div>
+      {/* Local Time Section */}
+      <div className="relative flex justify-center py-8">
+        <Card className="w-96 bg-white/10 border-white/20 backdrop-blur-sm">
+          <CardContent className="p-6">
+            <div className="text-center space-y-4">
+              <div className="flex items-center justify-center space-x-2 text-white/80">
+                <Calendar className="w-4 h-4" />
+                <span className="text-sm">Local Time</span>
+              </div>
+              <Input
+                type="datetime-local"
+                value={localDateTimeState.toISOString().slice(0, 16)}
+                onChange={(e) => setLocalDateTimeState(new Date(e.target.value))}
+                className="text-center text-xl font-semibold bg-transparent border-0 text-white focus:ring-0"
+              />
+            </div>
+          </CardContent>
+        </Card>
       </div>
-      <div className="indicator"></div>
-      <div className="content">
+
+      {/* Timeline Indicator */}
+      <div className="relative">
+        <div className="absolute left-1/2 w-px h-full bg-red-500 z-10"></div>
+      </div>
+
+      {/* Content */}
+      <div className="container mx-auto px-6 pb-20">
         {usersState ? usersState.map((user, index) => (
           <Entry
             key={index}
@@ -143,11 +182,16 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
           />
         )) : ''}
       </div>
-      <div className="footer">
-        <div className="add_person" onClick={addPersonClickHandler}>
-          <div className="cross"></div>
-          <div className="cross_title">add person</div>
-        </div>
+
+      {/* Footer */}
+      <div className="fixed bottom-6 left-6">
+        <Button
+          onClick={addPersonClickHandler}
+          className="bg-blue-600 hover:bg-blue-700 text-white border-2 border-blue-400"
+        >
+          <Plus className="w-4 h-4 mr-2" />
+          Add Person
+        </Button>
       </div>
     </div>
   );
