@@ -1,4 +1,4 @@
-import Homepage from '../pages/Homepage.component';
+import Homepage from '@/pages/Homepage.component';
 
 export default function Home() {
   const args = {
@@ -6,7 +6,7 @@ export default function Home() {
       {
         id: 0,
         name: 'You',
-        timezone: 'America/New_York',
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       },
     ],
     elementWidth: 75,
