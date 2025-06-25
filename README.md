@@ -176,3 +176,22 @@ This project is licensed under the MIT License.
 - [Radix UI](https://www.radix-ui.com/) for accessible primitives
 - [Tailwind CSS](https://tailwindcss.com/) for utility-first styling
 - [Lucide](https://lucide.dev/) for the icon set
+
+## Git Hooks (Husky)
+
+This project uses [Husky](https://typicode.github.io/husky) to enforce running unit tests before every commit. If any test fails, the commit will be aborted.
+
+### Setup (if you clone the repo)
+
+After installing dependencies, run:
+
+```
+npm run prepare
+```
+
+This will set up the Husky hooks.
+
+### How it works
+
+- On every `git commit`, Husky will run `npm test`.
+- If tests fail, the commit will not be created.
