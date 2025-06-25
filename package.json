@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@babel/runtime": "^7.17.2",
+    "@babel/runtime": "^7.27.4",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -15,7 +15,7 @@
     "@types/react-responsive": "^8.0.2",
     "@types/react-select": "^4.0.13",
     "lodash": "^4.17.21",
-    "node-sass": "7.0.0",
+    "sass": "^1.69.0",
     "react": "^17.0.1",
     "react-confirm-alert": "^2.7.0",
     "react-datepicker": "^3.4.1",
@@ -55,7 +55,7 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "^7.12.10",
+    "@babel/core": "^7.27.4",
     "@storybook/addon-actions": "^6.5.0-alpha.47",
     "@storybook/addon-essentials": "^6.5.0-alpha.47",
     "@storybook/addon-links": "^6.5.0-alpha.47",
@@ -68,5 +68,8 @@
     "babel-loader": "8.1.0",
     "storybook": "^6.5.0-alpha.47",
     "webpack-cli": "^4.9.2"
+  },
+  "resolutions": {
+    "json5": "^2.2.2"
   }
 }
