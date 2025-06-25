@@ -1,10 +1,12 @@
+'use client';
+
 import React from 'react';
 
 import defaultColor from '../settings/color.settings';
 import hoursFormat from '../settings/hours.setting';
 
 import { getFormattedDate } from '../lib/getFormattedDate';
-import './Timeline.style.scss';
+import '../style/Timeline.style.scss';
 
 /**
  * @param { string } timezone - selected from a drop down
@@ -45,19 +47,19 @@ export interface Props {
 }
 
 const Timeline: React.FC<Props> = ({
-    timezone, 
-    localTimezone,
-    time, 
-    date,
-    elementWidth, 
-    sunriseTime = '6:00', 
-    sunsetTime = '18:00', 
-    militaryFormat = true,
-    color = defaultColor
+  timezone,
+  localTimezone,
+  time,
+  date,
+  elementWidth,
+  sunriseTime = '6:00',
+  sunsetTime = '18:00',
+  militaryFormat = true,
+  color = defaultColor
 }) => {
-  
-  const [ userTimeState, setLocalTimeState ] = React.useState(time);
-  const [ userDateState, setLocalDateState ] = React.useState(date);
+
+  const [userTimeState, setLocalTimeState] = React.useState(time);
+  const [userDateState, setLocalDateState] = React.useState(date);
 
   const [hoursArr, setHoursArr] = React.useState<string[]>([]);
   const [curHour, setCurHour] = React.useState<string>('0');
@@ -65,28 +67,28 @@ const Timeline: React.FC<Props> = ({
   const [eleWidth, setEleWidth] = React.useState<number>(75);
   // const [dateState, setDateState] = React.useState<string>(getUserDate());
   // const [holderMarginLeft, setHolderMarginLeft] = React.useState<number>(877.25);
-  
+
 
   React.useEffect(() => {
-    if( elementWidth && elementWidth > 0 ) {
+    if (elementWidth && elementWidth > 0) {
       setEleWidth(elementWidth);
     }
   }, [elementWidth]);
-  
-  React.useEffect(()=>{
+
+  React.useEffect(() => {
     // console.log("🚀 ~ file: Timeline.component.tsx ~ line 125 ~ React.useEffect ~ time", time)
     setLocalTimeState(time);
   }, [time]);
-  React.useEffect(()=>{
+  React.useEffect(() => {
     // console.log("🚀 ~ file: Timeline.component.tsx ~ line 125 ~ React.useEffect ~ date", date)
     setLocalDateState(date);
   }, [date]);
-  
+
 
   React.useEffect(() => {
     const cur = userTimeState.split(' ')[0].split(':');
     // console.log("🚀 ~ file: Timeline.component.tsx ~ line 105 ~ React.useEffect ~ cur", cur)
-    const [_curHour, _curMin ]= cur;
+    const [_curHour, _curMin] = cur;
     setCurHour(_curHour);
     setCurMin(_curMin);
   }, [timezone, userTimeState]);
@@ -104,30 +106,30 @@ const Timeline: React.FC<Props> = ({
   }, [militaryFormat, hoursArr.length, curHour, userTimeState, userDateState]);
 
   const holderCallbackRef = (ele: (HTMLDivElement | null)) => {
-      if (ele) {
-        // set cur hour in middle
-        const marginSetByMin = ( Number(curMin) / 60 ) * eleWidth; 
-        const allCellsWidth = 48 * eleWidth;
-        // ele.scrollLeft = (ele.scrollWidth / 2) - (ele.clientWidth / 2) - (eleWidth / 2) + marginSetByMin;
-        // ele.style.marginLeft = `${-((allCellsWidth/2 - (ele.clientWidth / 2) - (eleWidth / 2)) + marginSetByMin)}px`; 
-        ele.style.left = '50%';
-        ele.style.marginLeft = `${-1 * allCellsWidth/2 + (eleWidth / 2) - marginSetByMin}px`;
-        
-      }
+    if (ele) {
+      // set cur hour in middle
+      const marginSetByMin = (Number(curMin) / 60) * eleWidth;
+      const allCellsWidth = 48 * eleWidth;
+      // ele.scrollLeft = (ele.scrollWidth / 2) - (ele.clientWidth / 2) - (eleWidth / 2) + marginSetByMin;
+      // ele.style.marginLeft = `${-((allCellsWidth/2 - (ele.clientWidth / 2) - (eleWidth / 2)) + marginSetByMin)}px`; 
+      ele.style.left = '50%';
+      ele.style.marginLeft = `${-1 * allCellsWidth / 2 + (eleWidth / 2) - marginSetByMin}px`;
+
+    }
   };
 
-  const getTimeWhenUsingMilitaryFormat = (_time:string) => {
+  const getTimeWhenUsingMilitaryFormat = (_time: string) => {
     // console.dir(_time);
     // console.dir(hoursFormat.normal.indexOf(_time));
     return hoursFormat.normal.indexOf(_time);
   };
-  const getTime = (_time:string) => {
-    if(!militaryFormat) return Number(_time);
-      return getTimeWhenUsingMilitaryFormat(_time);
+  const getTime = (_time: string) => {
+    if (!militaryFormat) return Number(_time);
+    return getTimeWhenUsingMilitaryFormat(_time);
   }
 
-  const setBackgroundColor = (t:string) => {  
-    const thisTime:number = getTime(t);
+  const setBackgroundColor = (t: string) => {
+    const thisTime: number = getTime(t);
     const type = {
       night: 'NIGHT',
       dawn: 'DAWN',
@@ -140,30 +142,30 @@ const Timeline: React.FC<Props> = ({
     const sunsetHour = Number(sunsetTime.split(':')[0]);
     let thisType = type.night;
     if (thisTime < sunriseHour) thisType = type.night;
-    if (thisTime > sunriseHour && thisTime < sunsetHour ) thisType = type.day;
+    if (thisTime > sunriseHour && thisTime < sunsetHour) thisType = type.day;
     if (thisTime > sunsetHour) thisType = type.night;
     if (thisTime === sunriseHour) thisType = type.dawn;
     if (thisTime === sunsetHour) thisType = type.dusk;
 
-    const baseStyle = {"width":"100%"};
+    const baseStyle = { "width": "100%" };
 
     switch (thisType) {
       case type.night:
-        return Object.assign({} as React.CSSProperties, baseStyle, {'backgroundColor': defaultColor.night, 'color': defaultColor.nightText });
+        return Object.assign({} as React.CSSProperties, baseStyle, { 'backgroundColor': defaultColor.night, 'color': defaultColor.nightText });
       case type.dawn:
-        return Object.assign({} as React.CSSProperties, baseStyle,  {'backgroundImage': `linear-gradient( 90deg, ${defaultColor.night} 13%, ${defaultColor.day} 86%)`, 'color': defaultColor.dayText });
+        return Object.assign({} as React.CSSProperties, baseStyle, { 'backgroundImage': `linear-gradient( 90deg, ${defaultColor.night} 13%, ${defaultColor.day} 86%)`, 'color': defaultColor.dayText });
       case type.day:
-        return Object.assign({} as React.CSSProperties, baseStyle, {'backgroundColor': defaultColor.day, 'color': defaultColor.dayText });
+        return Object.assign({} as React.CSSProperties, baseStyle, { 'backgroundColor': defaultColor.day, 'color': defaultColor.dayText });
       case type.dusk:
-        return Object.assign({} as React.CSSProperties, baseStyle, {'backgroundImage': `linear-gradient( 90deg, ${defaultColor.day} 13%, ${defaultColor.night} 86%)`, 'color': defaultColor.dayText });
+        return Object.assign({} as React.CSSProperties, baseStyle, { 'backgroundImage': `linear-gradient( 90deg, ${defaultColor.day} 13%, ${defaultColor.night} 86%)`, 'color': defaultColor.dayText });
       default:
-        return Object.assign({} as React.CSSProperties, baseStyle, {'backgroundColor': defaultColor.night, 'color': defaultColor.nightText });
+        return Object.assign({} as React.CSSProperties, baseStyle, { 'backgroundColor': defaultColor.night, 'color': defaultColor.nightText });
     }
   }
-  
-  const constructValidDateString = (dateString:string) => {
+
+  const constructValidDateString = (dateString: string) => {
     const [month, day, year] = dateString.split('-');
-    if(month&&day&&year) {
+    if (month && day && year) {
       return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T16:00:00.0`;
     } else {
       console.error('Date format error, Timeline component');
@@ -172,16 +174,16 @@ const Timeline: React.FC<Props> = ({
   };
 
   let zeroCount = 0; //do not move zeroCount into getAnnotation
-  const getAnnotation = (txt :string) => {
+  const getAnnotation = (txt: string) => {
     // txt format will be MM-DD-YYYY
-  // console.log("🚀 ~ file: Timeline.component.tsx ~ line 186 ~ getAnnotation ~ txt", txt)
-    
+    // console.log("🚀 ~ file: Timeline.component.tsx ~ line 186 ~ getAnnotation ~ txt", txt)
+
     const curDate = new Date(constructValidDateString(txt));
     // console.log("🚀 ~ file: Timeline.component.tsx ~ line 183 ~ getAnnotation ~ curDate", curDate)
     let nextDate = new Date();
     nextDate.setDate(curDate.getDate() + 1);
-// DONE: show date under midnight cell
-//DONE: change date base on real data
+    // DONE: show date under midnight cell
+    //DONE: change date base on real data
     if (zeroCount === 0) {
       zeroCount += 1;
       return <div className="timeline-cell-annotation">{getFormattedDate(curDate)}</div>;
@@ -189,7 +191,7 @@ const Timeline: React.FC<Props> = ({
       zeroCount += 1;
       return <div className="timeline-cell-annotation">{getFormattedDate(nextDate)}</div>;
     }
-    
+
     // return txt;
   };
 
@@ -198,18 +200,18 @@ const Timeline: React.FC<Props> = ({
    * */
 
   return (
-    <div className="timeline-container" 
-        style={{
-          "backgroundColor": color.background ? color.background : '',
-          "color": color.nightText ? color.nightText : '',
-          "borderBottom": color.nightText ? '1px solid '+color.nightText : '',
-          "borderTop": color.nightText ? '1px solid '+color.nightText : ''
-        }}>
-      <div className="timeline-holder" 
+    <div className="timeline-container"
+      style={{
+        "backgroundColor": color.background ? color.background : '',
+        "color": color.nightText ? color.nightText : '',
+        "borderBottom": color.nightText ? '1px solid ' + color.nightText : '',
+        "borderTop": color.nightText ? '1px solid ' + color.nightText : ''
+      }}>
+      <div className="timeline-holder"
         ref={holderCallbackRef}
         style={{
-          "flex": eleWidth ? '1 0 '+eleWidth+'px' : '75px',
-        }}  
+          "flex": eleWidth ? '1 0 ' + eleWidth + 'px' : '75px',
+        }}
       // isScrollEnabled={false}
       // DONE: when holder overflow: hidden, scrollLeft works, 
       // ...to make annotation show, try to make scrollLeft to marginLeft,
@@ -219,13 +221,13 @@ const Timeline: React.FC<Props> = ({
         {
           hoursArr.map((x, index) => {
             return (
-            <div key={index} className="timeline-cell" style={{
-              "width": eleWidth ? eleWidth : '75px',
-              "flex": eleWidth ? '0 0 '+eleWidth+'px' : '0 0 75px'
+              <div key={index} className="timeline-cell" style={{
+                "width": eleWidth ? eleWidth : '75px',
+                "flex": eleWidth ? '0 0 ' + eleWidth + 'px' : '0 0 75px'
               }}>
-              <div style={setBackgroundColor(x)} className='timeline-cell-number'>{x}</div>
-              {(x === '0') ? getAnnotation(userDateState) : ''}
-            </div>
+                <div style={setBackgroundColor(x)} className='timeline-cell-number'>{x}</div>
+                {(x === '0') ? getAnnotation(userDateState) : ''}
+              </div>
             );
           })
         }

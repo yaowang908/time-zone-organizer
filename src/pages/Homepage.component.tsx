@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 // import spacetime from 'spacetime';
 import DatePicker from "react-datepicker";
@@ -12,7 +13,7 @@ import getCurrentDateTimeInFormat from '../lib/getCurrentDateTimeInFormat';
 import useLocalStorage from '../lib/useLocalStorageHook';
 import getClientTimezone from '../lib/getClientTimezone';
 
-import './Homepage.style.scss';
+import '../style/Homepage.style.scss';
 
 interface User {
   id: number;
