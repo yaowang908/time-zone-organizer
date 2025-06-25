@@ -56,20 +56,25 @@
   },
   "devDependencies": {
     "@babel/core": "^7.27.4",
-    "@storybook/addon-actions": "^6.5.0-alpha.47",
-    "@storybook/addon-essentials": "^6.5.0-alpha.47",
-    "@storybook/addon-links": "^6.5.0-alpha.47",
-    "@storybook/builder-webpack5": "^6.5.0-alpha.47",
-    "@storybook/manager-webpack5": "^6.5.0-alpha.47",
-    "@storybook/node-logger": "^6.5.0-alpha.47",
+    "@storybook/addon-actions": "^6.5.16",
+    "@storybook/addon-essentials": "^6.5.16",
+    "@storybook/addon-links": "^6.5.16",
+    "@storybook/builder-webpack5": "^6.5.16",
+    "@storybook/manager-webpack5": "^6.5.16",
+    "@storybook/node-logger": "^6.5.16",
     "@storybook/preset-create-react-app": "^4.0.1",
-    "@storybook/react": "^6.5.0-alpha.47",
+    "@storybook/react": "^6.5.16",
     "@types/styled-components": "^5.1.7",
     "babel-loader": "8.1.0",
-    "storybook": "^6.5.0-alpha.47",
+    "storybook": "^6.5.16",
     "webpack-cli": "^4.9.2"
   },
   "resolutions": {
-    "json5": "^2.2.2"
+    "json5": "^2.2.2",
+    "braces": "^3.0.3",
+    "webpack-dev-server": "^5.2.1",
+    "postcss": "^8.4.31",
+    "webpack-dev-middleware": "^5.3.4",
+    "got": "^11.8.5"
   }
 }
