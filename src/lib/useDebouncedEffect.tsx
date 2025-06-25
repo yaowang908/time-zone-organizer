@@ -1,7 +1,6 @@
 import { useCallback, useEffect } from 'react';
 
-export const useDebouncedEffect = (effect: () => any, delay: number, deps:[]) => {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+export const useDebouncedEffect = (effect: () => any, delay: number, deps: []) => {
   const callback = useCallback(effect, deps);
 
   useEffect(() => {

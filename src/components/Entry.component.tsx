@@ -6,7 +6,6 @@ import defaultColor from '../settings/color.settings';
 import defaultTimezones from '../data/timezones';
 import getUserDateTime from '../lib/getUserDateTime';
 
-// import getCurrentDateTimeInFormat from '../lib/getCurrentDateTimeInFormat';
 import Timeline from './Timeline.component';
 import '../style/Entry.style.scss';
 
@@ -71,7 +70,6 @@ const Entry: React.FC<Props> = ({
   const getDefaultTimezoneObject = (timezone: string) => {
     const newArray = defaultTimezones.filter(el => { return el.label === timezone });
     if (newArray.length >= 1) {
-      // console.dir(newArray[0]);
       return newArray[0];
     }
     return { id: 12, value: "(GMT-05:00) Eastern Time", label: "America/New_York" };
@@ -79,10 +77,6 @@ const Entry: React.FC<Props> = ({
 
   const [selectedTimezone, setSelectedTimezone] = React.useState<Timezone>(getDefaultTimezoneObject(timezone));
   const [userNameState, setUserNameState] = React.useState<string>(name);
-  // DONE: should use the prop to init selectedTimezone
-  // NOTE: setState here probably is not a perfect solution, context api should be good to solve this
-  // Is it really necessary to hold a overall timezone data in homepage component
-  // Only change the state in individual Entry, this could save time and simplify the logic
   const [localTimeState, setLocalTimeState] = React.useState(localTime);
   const [localDateState, setLocalDateState] = React.useState(localDate);
   const [userTimeState, setUserTimeState] = React.useState<string>(getUserDateTime(
@@ -98,18 +92,12 @@ const Entry: React.FC<Props> = ({
     localTimezone
   ).date);
 
-
   React.useEffect(() => {
     setSelectedTimezone(getDefaultTimezoneObject(timezone));
-    // console.log("🚀 ~ file: Entry.component.tsx ~ line 102 ~ React.useEffect ~ timezone", timezone)
-    // console.log(defaultValue);
   }, [timezone]);
+
   React.useEffect(() => {
     setLocalTimeState(localTime);
-    // console.log("🚀 ~ file: Entry.component.tsx ~ line 118 ~ React.useEffect ~ timezone", timezone)
-    // console.log("🚀 ~ file: Entry.component.tsx ~ line 117 ~ React.useEffect ~ localTime", localTime);
-    // console.log("🚀 ~ file: Entry.component.tsx ~ line 118 ~ React.useEffect ~ localDate", localDate)
-    // console.log("🚀 ~ file: Entry.component.tsx ~ line 118 ~ React.useEffect ~ localTimezone", localTimezone)
     const _tempUserDateTime = getUserDateTime(
       timezone,
       localTime,
@@ -117,12 +105,10 @@ const Entry: React.FC<Props> = ({
       localTimezone
     );
     setUserTimeState(_tempUserDateTime.time);
-    // console.log("🚀 ~ file: Entry.component.tsx ~ line 95 ~ _tempUserDateTime.time", _tempUserDateTime.time)
-    // NOTE: keep timezone to update component when timezone updates
   }, [localDateState, localTime, localDate, localTimeState, localTimezone, timezone]);
+
   React.useEffect(() => {
     setLocalDateState(localDate);
-    // console.log("🚀 ~ file: Entry.component.tsx ~ line 123 ~ React.useEffect ~ localDate", localDate)
     const _tempUserDateTime = getUserDateTime(
       timezone,
       localTime,
@@ -130,13 +116,9 @@ const Entry: React.FC<Props> = ({
       localTimezone
     );
     setUserDateState(_tempUserDateTime.date);
-    // DONE: localdate is not passing in
-    // console.log("🚀 ~ file: Entry.component.tsx ~ line 123 ~ _tempUserDateTime.time", _tempUserDateTime.date);
-    // NOTE: keep timezone to update component when timezone updates
   }, [localDate, localDateState, localTime, localTimeState, localTimezone, timezone]);
 
   const userTime = (militaryTime = false) => {
-
     const _time = getUserDateTime(
       selectedTimezone.label,
       localTimeState,
@@ -144,11 +126,9 @@ const Entry: React.FC<Props> = ({
       localTimezone,
       militaryTime
     ).time;
-    // console.dir(_time);
     return _time;
   };
 
-  // DONE: 2: click on name to edit name
   const userNameChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserNameState(e.target.value);
     updateUserName(e.target.value);

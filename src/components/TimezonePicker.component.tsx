@@ -25,9 +25,6 @@ const TimezonePicker: React.FC<Props> = ({
   defaultValue = { value: "(GMT-05:00) Eastern Time", label: "America/New_York" },
 }) => {
 
-  // DONE: return selected value
-  // DONE: pass in selected value
-  // DONE: style it
   const [defaultValueState, setDefaultValueState] = React.useState({
     value: defaultValue.value,
     label: defaultValue.label
@@ -35,7 +32,6 @@ const TimezonePicker: React.FC<Props> = ({
 
   React.useEffect(() => {
     setDefaultValueState(defaultValue);
-    // console.log(defaultValue);
   }, [defaultValue]);
 
   return (
@@ -55,9 +51,6 @@ const TimezonePicker: React.FC<Props> = ({
         },
       })}
     />
-    // <div>
-    //   {options[0]?.name}
-    // </div>
   );
 };
 

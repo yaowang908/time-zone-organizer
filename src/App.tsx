@@ -13,8 +13,6 @@ function App() {
     ],
     elementWidth: 75,
   };
-  // DONE: update Page title
-  // DONE: update favcon
   return (
     <div className="App">
       <Homepage {...args} />

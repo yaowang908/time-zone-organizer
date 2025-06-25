@@ -65,9 +65,6 @@ const Timeline: React.FC<Props> = ({
   const [curHour, setCurHour] = React.useState<string>('0');
   const [curMin, setCurMin] = React.useState<string>('0');
   const [eleWidth, setEleWidth] = React.useState<number>(75);
-  // const [dateState, setDateState] = React.useState<string>(getUserDate());
-  // const [holderMarginLeft, setHolderMarginLeft] = React.useState<number>(877.25);
-
 
   React.useEffect(() => {
     if (elementWidth && elementWidth > 0) {
@@ -76,53 +73,42 @@ const Timeline: React.FC<Props> = ({
   }, [elementWidth]);
 
   React.useEffect(() => {
-    // console.log("🚀 ~ file: Timeline.component.tsx ~ line 125 ~ React.useEffect ~ time", time)
     setLocalTimeState(time);
   }, [time]);
+
   React.useEffect(() => {
-    // console.log("🚀 ~ file: Timeline.component.tsx ~ line 125 ~ React.useEffect ~ date", date)
     setLocalDateState(date);
   }, [date]);
 
-
   React.useEffect(() => {
     const cur = userTimeState.split(' ')[0].split(':');
-    // console.log("🚀 ~ file: Timeline.component.tsx ~ line 105 ~ React.useEffect ~ cur", cur)
     const [_curHour, _curMin] = cur;
     setCurHour(_curHour);
     setCurMin(_curMin);
   }, [timezone, userTimeState]);
 
   React.useEffect(() => {
-    //recreate hoursArr base on the time parameter at middle
     let tempHoursArr = hoursFormat.normal;
     if (!militaryFormat) tempHoursArr = hoursFormat.military;
     const prevArr = tempHoursArr.slice(0, Number(curHour) + 1);
     const nextArr = tempHoursArr.slice(Number(curHour) + 1, hoursArr.length);
     const baseArr = [...nextArr, ...prevArr, ...nextArr, ...prevArr];
-    // console.dir(1);
     setHoursArr(baseArr);
-    // console.log("🚀 ~ file: Timeline.component.tsx ~ line 123 ~ userDateState", userDateState)
   }, [militaryFormat, hoursArr.length, curHour, userTimeState, userDateState]);
 
   const holderCallbackRef = (ele: (HTMLDivElement | null)) => {
     if (ele) {
-      // set cur hour in middle
       const marginSetByMin = (Number(curMin) / 60) * eleWidth;
       const allCellsWidth = 48 * eleWidth;
-      // ele.scrollLeft = (ele.scrollWidth / 2) - (ele.clientWidth / 2) - (eleWidth / 2) + marginSetByMin;
-      // ele.style.marginLeft = `${-((allCellsWidth/2 - (ele.clientWidth / 2) - (eleWidth / 2)) + marginSetByMin)}px`; 
       ele.style.left = '50%';
       ele.style.marginLeft = `${-1 * allCellsWidth / 2 + (eleWidth / 2) - marginSetByMin}px`;
-
     }
   };
 
   const getTimeWhenUsingMilitaryFormat = (_time: string) => {
-    // console.dir(_time);
-    // console.dir(hoursFormat.normal.indexOf(_time));
     return hoursFormat.normal.indexOf(_time);
   };
+
   const getTime = (_time: string) => {
     if (!militaryFormat) return Number(_time);
     return getTimeWhenUsingMilitaryFormat(_time);
@@ -136,8 +122,6 @@ const Timeline: React.FC<Props> = ({
       day: 'DAY',
       dusk: 'DUSK',
     }
-    // sunriseTime = '18:00', 
-    // sunsetTime = '6:00', 
     const sunriseHour = Number(sunriseTime.split(':')[0]);
     const sunsetHour = Number(sunsetTime.split(':')[0]);
     let thisType = type.night;
@@ -173,17 +157,11 @@ const Timeline: React.FC<Props> = ({
     }
   };
 
-  let zeroCount = 0; //do not move zeroCount into getAnnotation
+  let zeroCount = 0;
   const getAnnotation = (txt: string) => {
-    // txt format will be MM-DD-YYYY
-    // console.log("🚀 ~ file: Timeline.component.tsx ~ line 186 ~ getAnnotation ~ txt", txt)
-
     const curDate = new Date(constructValidDateString(txt));
-    // console.log("🚀 ~ file: Timeline.component.tsx ~ line 183 ~ getAnnotation ~ curDate", curDate)
     let nextDate = new Date();
     nextDate.setDate(curDate.getDate() + 1);
-    // DONE: show date under midnight cell
-    //DONE: change date base on real data
     if (zeroCount === 0) {
       zeroCount += 1;
       return <div className="timeline-cell-annotation">{getFormattedDate(curDate)}</div>;
@@ -191,13 +169,7 @@ const Timeline: React.FC<Props> = ({
       zeroCount += 1;
       return <div className="timeline-cell-annotation">{getFormattedDate(nextDate)}</div>;
     }
-
-    // return txt;
   };
-
-  /**
-   * DONE: 3: click on time zone to edit time zone 
-   * */
 
   return (
     <div className="timeline-container"
@@ -212,11 +184,6 @@ const Timeline: React.FC<Props> = ({
         style={{
           "flex": eleWidth ? '1 0 ' + eleWidth + 'px' : '75px',
         }}
-      // isScrollEnabled={false}
-      // DONE: when holder overflow: hidden, scrollLeft works, 
-      // ...to make annotation show, try to make scrollLeft to marginLeft,
-      // ...but the value is not the same as scrollLeft used to be. 
-      // ...make annotation position relative, and it will be placed under the number outside the timeline box
       >
         {
           hoursArr.map((x, index) => {
