@@ -130,7 +130,7 @@ const Timeline: React.FC<Props> = ({
     if (thisTime === sunriseHour) thisType = type.dawn;
     if (thisTime === sunsetHour) thisType = type.dusk;
 
-    const baseStyle = { "width": "100%" };
+    const baseStyle = { "width": "100%", "box-shadow": "inset 0 0 0 1px rgba(255, 255, 255, 0.1)" };
 
     switch (thisType) {
       case type.night:
@@ -171,7 +171,7 @@ const Timeline: React.FC<Props> = ({
   };
 
   return (
-    <div className="relative overflow-hidden border-t border-b border-white/20"
+    <div className="relative overflow-hidden"
       style={{
         "backgroundColor": color.background ? color.background : '',
         "color": color.nightText ? color.nightText : '',
@@ -190,7 +190,7 @@ const Timeline: React.FC<Props> = ({
                 "flex": eleWidth ? '0 0 ' + eleWidth + 'px' : '0 0 75px'
               }}>
                 <div
-                  className="h-12 flex items-center justify-center text-sm font-medium border-r border-white/10"
+                  className="h-5 flex items-center justify-center text-sm font-medium"
                   style={setBackgroundColor(x)}
                 >
                   {x}

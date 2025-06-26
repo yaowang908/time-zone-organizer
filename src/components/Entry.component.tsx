@@ -137,7 +137,7 @@ const Entry: React.FC<Props> = ({
 
   return (
     <Card className="w-full mb-4 border-0 shadow-lg" style={{ backgroundColor: color.background }}>
-      <CardHeader className="pb-2">
+      <CardHeader className="p-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4 flex-1">
             <Input
@@ -158,7 +158,7 @@ const Entry: React.FC<Props> = ({
           </div>
         </div>
       </CardHeader>
-      <CardContent className="pt-0">
+      <CardContent className="p-0">
         <Timeline
           timezone={selectedTimezone.label}
           localTimezone={localTimezone}
