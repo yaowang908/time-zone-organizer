@@ -12,6 +12,7 @@ import getClientTimezone from '../lib/getClientTimezone';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Card, CardContent } from '../components/ui/card';
+import { DatePicker } from '../components/ui/date-picker';
 import {
   Dialog,
   DialogContent,
@@ -104,7 +105,7 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
   return (
     <div className='min-h-screen' style={{ backgroundColor: color.background }}>
       {/* Navigation */}
-      <nav className="flex items-center justify-between p-6 border-b border-white/20">
+      <nav className="flex items-center justify-between p-2 border-b border-white/20">
         <div className="flex items-center space-x-4">
           <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center">
             <Clock className="w-6 h-6 text-blue-900" />
@@ -137,50 +138,41 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
         </Dialog>
       </nav>
 
-      {/* Local Time Section */}
-      <div className="relative flex justify-center pt-6">
-        <Card className="w-80 bg-white/10 border-white/20 backdrop-blur-sm">
-          <CardContent className="p-4">
-            <div className="text-center space-y-2">
-              <div className="flex items-center justify-center space-x-2 text-white/80 mb-2">
-                <Calendar className="w-3 h-3" />
-                <span className="text-xs font-medium">Local Time</span>
-              </div>
-              <Input
-                type="datetime-local"
-                value={localDateTimeState.toISOString().slice(0, 16)}
-                onChange={(e) => setLocalDateTimeState(new Date(e.target.value))}
-                className="text-center text-lg font-semibold bg-transparent border-0 text-white focus:ring-0 p-2"
-              />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
       {/* Content */}
       <div className="container mx-auto px-6 pb-20 relative">
-        <div
-          data-testid="timeline-indicator"
-          className="absolute left-1/2 top-0 bottom-0 w-px bg-red-500 z-10"
-        ></div>
-        {usersState ? usersState.map((user, index) => (
-          <Entry
-            key={index}
-            updateUser={(newTimezone: string) => {
-              updateUser(user.id, newTimezone);
-            }}
-            updateUserName={(newUsername: string) => {
-              updateUserName(user.id, newUsername);
-            }}
-            name={user.name}
-            timezone={user.timezone}
-            localTimezone={defaultTimezoneState}
-            localTime={dateTimeState.time}
-            localDate={dateTimeState.date}
-            militaryFormat={false}
-            elementWidth={elementWidth}
+        {/* DatePicker on top of entries */}
+        <div className="flex justify-center mb-6 mt-2">
+          <DatePicker
+            value={localDateTimeState}
+            onChange={setLocalDateTimeState}
           />
-        )) : ''}
+        </div>
+
+        {/* Timeline indicator positioned after DatePicker */}
+        <div className="relative">
+          <div
+            data-testid="timeline-indicator"
+            className="absolute left-1/2 top-0 bottom-0 w-px bg-red-500 z-10"
+          ></div>
+          {usersState ? usersState.map((user, index) => (
+            <Entry
+              key={index}
+              updateUser={(newTimezone: string) => {
+                updateUser(user.id, newTimezone);
+              }}
+              updateUserName={(newUsername: string) => {
+                updateUserName(user.id, newUsername);
+              }}
+              name={user.name}
+              timezone={user.timezone}
+              localTimezone={defaultTimezoneState}
+              localTime={dateTimeState.time}
+              localDate={dateTimeState.date}
+              militaryFormat={false}
+              elementWidth={elementWidth}
+            />
+          )) : ''}
+        </div>
       </div>
 
       {/* Footer */}
