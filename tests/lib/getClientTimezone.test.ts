@@ -1,4 +1,4 @@
-import getClientTimezone from '../getClientTimezone';
+import getClientTimezone from '@/lib/getClientTimezone';
 
 describe('getClientTimezone', () => {
   let mockResolvedOptions: jest.Mock;

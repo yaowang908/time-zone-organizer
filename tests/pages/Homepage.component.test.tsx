@@ -9,34 +9,34 @@ declare global {
 
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import Homepage from '../Homepage.component';
+import Homepage from '@/pages/Homepage.component';
 
 // Mock the useLocalStorage hook
-jest.mock('../../lib/useLocalStorageHook', () => {
+jest.mock('@/lib/useLocalStorageHook', () => {
   global.setValueMock = jest.fn();
   return {
     __esModule: true,
-    default: jest.fn((key, initial) => [initial, global.setValueMock])
+    default: (key: string, initialValue: any) => [initialValue, global.setValueMock],
   };
 });
 
 // Mock the getClientTimezone function
-jest.mock('../../lib/getClientTimezone', () => ({
+jest.mock('@/lib/getClientTimezone', () => ({
   __esModule: true,
   default: jest.fn(() => 'America/New_York')
 }));
 
 // Mock the getCurrentDateTimeInFormat function
-jest.mock('../../lib/getCurrentDateTimeInFormat', () => ({
+jest.mock('@/lib/getCurrentDateTimeInFormat', () => ({
   __esModule: true,
   default: jest.fn(() => ({
     time: '10:30 AM',
-    date: '12-25-2023'
+    date: '2023-12-25'
   }))
 }));
 
 // Mock the Entry component
-jest.mock('../../components/Entry.component', () => {
+jest.mock('@/components/Entry.component', () => {
   return function MockEntry({ name, timezone, updateUser, updateUserName }: any) {
     return (
       <div data-testid="entry">

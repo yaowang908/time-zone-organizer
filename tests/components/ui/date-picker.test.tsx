@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { DatePicker } from '../date-picker';
+import { DatePicker } from '@/components/ui/date-picker';
 
 function formatDate(date: Date) {
   const year = date.getFullYear();

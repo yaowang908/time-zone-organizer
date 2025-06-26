@@ -1,4 +1,4 @@
-import hoursFormat from '../hours.setting';
+import hoursFormat from '@/settings/hours.setting';
 
 describe('hours.setting', () => {
   it('should export a hours format configuration object', () => {

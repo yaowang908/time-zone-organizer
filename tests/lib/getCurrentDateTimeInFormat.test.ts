@@ -1,4 +1,4 @@
-import getCurrentDateTimeInFormat from '../getCurrentDateTimeInFormat';
+import getCurrentDateTimeInFormat from '@/lib/getCurrentDateTimeInFormat';
 
 describe('getCurrentDateTimeInFormat', () => {
   it('should return formatted date and time for default parameters', () => {

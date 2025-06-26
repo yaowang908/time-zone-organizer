@@ -1,4 +1,4 @@
-import getUserDateTime from '../getUserDateTime';
+import getUserDateTime from '@/lib/getUserDateTime';
 
 describe('getUserDateTime', () => {
   it('should convert time and date between timezones correctly', () => {

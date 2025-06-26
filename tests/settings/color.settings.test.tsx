@@ -1,4 +1,4 @@
-import defaultColor from '../color.settings';
+import defaultColor from '@/settings/color.settings';
 
 describe('color.settings', () => {
   it('should export a color configuration object', () => {

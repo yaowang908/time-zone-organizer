@@ -1,4 +1,4 @@
-import { getFormattedDate } from '../getFormattedDate';
+import { getFormattedDate } from '@/lib/getFormattedDate';
 
 describe('getFormattedDate', () => {
   it('should format date correctly in MM/DD/YYYY format', () => {

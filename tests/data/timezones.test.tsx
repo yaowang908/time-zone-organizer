@@ -1,4 +1,4 @@
-import defaultTimezones from '../timezones';
+import defaultTimezones from '@/data/timezones';
 
 describe('timezones', () => {
   it('should export an array of timezone objects', () => {
