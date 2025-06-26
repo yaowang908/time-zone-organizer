@@ -11,6 +11,16 @@ interface DatePickerProps {
 const DatePicker: React.FC<DatePickerProps> = ({ value, onChange, className }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [currentMonth, setCurrentMonth] = React.useState(new Date(value.getFullYear(), value.getMonth(), 1));
+  const [editingHours, setEditingHours] = React.useState(false);
+  const [editingMinutes, setEditingMinutes] = React.useState(false);
+  const [tempHours, setTempHours] = React.useState(value.getHours().toString().padStart(2, '0'));
+  const [tempMinutes, setTempMinutes] = React.useState(value.getMinutes().toString().padStart(2, '0'));
+
+  // Update temp values when value prop changes
+  React.useEffect(() => {
+    setTempHours(value.getHours().toString().padStart(2, '0'));
+    setTempMinutes(value.getMinutes().toString().padStart(2, '0'));
+  }, [value]);
 
   const daysInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate();
   const firstDayOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getDay();
@@ -36,6 +46,58 @@ const DatePicker: React.FC<DatePickerProps> = ({ value, onChange, className }) =
     const newDate = new Date(value);
     newDate.setHours(hours, minutes);
     onChange(newDate);
+  };
+
+  const handleHoursInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.target.value;
+    setTempHours(input);
+  };
+
+  const handleMinutesInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.target.value;
+    setTempMinutes(input);
+  };
+
+  const handleHoursBlur = () => {
+    setEditingHours(false);
+    const hours = parseInt(tempHours, 10);
+    if (!isNaN(hours) && hours >= 0 && hours <= 23) {
+      const newDate = new Date(value);
+      newDate.setHours(hours);
+      onChange(newDate);
+    } else {
+      setTempHours(value.getHours().toString().padStart(2, '0'));
+    }
+  };
+
+  const handleMinutesBlur = () => {
+    setEditingMinutes(false);
+    const minutes = parseInt(tempMinutes, 10);
+    if (!isNaN(minutes) && minutes >= 0 && minutes <= 59) {
+      const newDate = new Date(value);
+      newDate.setMinutes(minutes);
+      onChange(newDate);
+    } else {
+      setTempMinutes(value.getMinutes().toString().padStart(2, '0'));
+    }
+  };
+
+  const handleHoursKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleHoursBlur();
+    } else if (e.key === 'Escape') {
+      setEditingHours(false);
+      setTempHours(value.getHours().toString().padStart(2, '0'));
+    }
+  };
+
+  const handleMinutesKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleMinutesBlur();
+    } else if (e.key === 'Escape') {
+      setEditingMinutes(false);
+      setTempMinutes(value.getMinutes().toString().padStart(2, '0'));
+    }
   };
 
   const isToday = (day: number) => {
@@ -149,9 +211,101 @@ const DatePicker: React.FC<DatePickerProps> = ({ value, onChange, className }) =
             <div className="mt-4 pt-4 border-t border-white/20">
               <div className="flex items-center justify-center space-x-2">
                 <span className="text-xs text-white/60">Time:</span>
-                <div className="flex items-center space-x-2 bg-transparent border border-white/20 rounded px-2 py-1 text-white text-sm">
-                  <span>{value.getHours().toString().padStart(2, '0')}:{value.getMinutes().toString().padStart(2, '0')}</span>
-                  <Clock className="w-3 h-3 text-white/60" />
+                <div className="flex items-center space-x-4 bg-transparent border border-white/20 rounded px-2 py-1 text-white text-sm">
+                  {/* Hours */}
+                  <div className="flex flex-col items-center">
+                    <button
+                      type="button"
+                      className="text-white/60 hover:text-white focus:outline-none"
+                      onClick={() => {
+                        const newDate = new Date(value);
+                        newDate.setHours((value.getHours() + 1) % 24);
+                        onChange(newDate);
+                      }}
+                      aria-label="Increment hour"
+                    >
+                      ▲
+                    </button>
+                    {editingHours ? (
+                      <input
+                        type="text"
+                        value={tempHours}
+                        onChange={handleHoursInputChange}
+                        onBlur={handleHoursBlur}
+                        onKeyDown={handleHoursKeyDown}
+                        className="w-8 text-lg font-mono min-w-[2ch] text-center bg-transparent border-none text-white focus:outline-none"
+                        autoFocus
+                        maxLength={2}
+                      />
+                    ) : (
+                      <span
+                        className="text-lg font-mono min-w-[2ch] text-center select-none cursor-pointer hover:bg-white/10 rounded px-1"
+                        onClick={() => setEditingHours(true)}
+                      >
+                        {value.getHours().toString().padStart(2, '0')}
+                      </span>
+                    )}
+                    <button
+                      type="button"
+                      className="text-white/60 hover:text-white focus:outline-none"
+                      onClick={() => {
+                        const newDate = new Date(value);
+                        newDate.setHours((value.getHours() + 23) % 24);
+                        onChange(newDate);
+                      }}
+                      aria-label="Decrement hour"
+                    >
+                      ▼
+                    </button>
+                  </div>
+                  <span className="text-lg font-mono select-none">:</span>
+                  {/* Minutes */}
+                  <div className="flex flex-col items-center">
+                    <button
+                      type="button"
+                      className="text-white/60 hover:text-white focus:outline-none"
+                      onClick={() => {
+                        const newDate = new Date(value);
+                        newDate.setMinutes((value.getMinutes() + 1) % 60);
+                        onChange(newDate);
+                      }}
+                      aria-label="Increment minute"
+                    >
+                      ▲
+                    </button>
+                    {editingMinutes ? (
+                      <input
+                        type="text"
+                        value={tempMinutes}
+                        onChange={handleMinutesInputChange}
+                        onBlur={handleMinutesBlur}
+                        onKeyDown={handleMinutesKeyDown}
+                        className="w-8 text-lg font-mono min-w-[2ch] text-center bg-transparent border-none text-white focus:outline-none"
+                        autoFocus
+                        maxLength={2}
+                      />
+                    ) : (
+                      <span
+                        className="text-lg font-mono min-w-[2ch] text-center select-none cursor-pointer hover:bg-white/10 rounded px-1"
+                        onClick={() => setEditingMinutes(true)}
+                      >
+                        {value.getMinutes().toString().padStart(2, '0')}
+                      </span>
+                    )}
+                    <button
+                      type="button"
+                      className="text-white/60 hover:text-white focus:outline-none"
+                      onClick={() => {
+                        const newDate = new Date(value);
+                        newDate.setMinutes((value.getMinutes() + 59) % 60);
+                        onChange(newDate);
+                      }}
+                      aria-label="Decrement minute"
+                    >
+                      ▼
+                    </button>
+                  </div>
+                  <Clock className="w-3 h-3 text-white/60 ml-2" />
                 </div>
               </div>
             </div>

@@ -97,8 +97,53 @@ describe('DatePicker', () => {
     render(<DatePicker value={defaultDate} onChange={mockOnChange} />);
     const dateDisplay = screen.getByText('1/15/2024 10:30 AM');
     fireEvent.click(dateDisplay);
-    const timeDisplay = screen.getByText('10:30');
-    expect(timeDisplay).toBeInTheDocument();
+    // Get the hour and minute display spans (not buttons)
+    const hoursDisplay = screen.getAllByText('10').find(el => el.tagName === 'SPAN');
+    const minutesDisplay = screen.getAllByText('30').find(el => el.tagName === 'SPAN');
+    expect(hoursDisplay).toBeDefined();
+    expect(minutesDisplay).toBeDefined();
+    if (hoursDisplay) expect(hoursDisplay).toBeInTheDocument();
+    if (minutesDisplay) expect(minutesDisplay).toBeInTheDocument();
+  });
+
+  it('allows changing time via time input', () => {
+    render(<DatePicker value={defaultDate} onChange={mockOnChange} />);
+    const dateDisplay = screen.getByText('1/15/2024 10:30 AM');
+    fireEvent.click(dateDisplay);
+    // Click on hours to edit (find the span, not the button)
+    const hoursSpan = screen.getAllByText('10').find(el => el.tagName === 'SPAN');
+    expect(hoursSpan).toBeDefined();
+    if (hoursSpan) fireEvent.click(hoursSpan);
+    // Find the hours input and change it
+    const hoursInput = screen.getByDisplayValue('10');
+    fireEvent.change(hoursInput, { target: { value: '14' } });
+    fireEvent.blur(hoursInput);
+    expect(mockOnChange).toHaveBeenCalledWith(expect.any(Date));
+    const newDate = mockOnChange.mock.calls[0][0];
+    expect(newDate.getHours()).toBe(14);
+    expect(newDate.getMinutes()).toBe(30); // Minutes should remain the same
+    expect(newDate.getDate()).toBe(15); // Date should remain the same
+    expect(newDate.getMonth()).toBe(0); // Month should remain the same
+  });
+
+  it('preserves date when only time is changed', () => {
+    render(<DatePicker value={defaultDate} onChange={mockOnChange} />);
+    const dateDisplay = screen.getByText('1/15/2024 10:30 AM');
+    fireEvent.click(dateDisplay);
+    // Click on minutes to edit (find the span, not the button)
+    const minutesSpan = screen.getAllByText('30').find(el => el.tagName === 'SPAN');
+    expect(minutesSpan).toBeDefined();
+    if (minutesSpan) fireEvent.click(minutesSpan);
+    // Find the minutes input and change it
+    const minutesInput = screen.getByDisplayValue('30');
+    fireEvent.change(minutesInput, { target: { value: '15' } });
+    fireEvent.blur(minutesInput);
+    const newDate = mockOnChange.mock.calls[0][0];
+    expect(newDate.getDate()).toBe(15);
+    expect(newDate.getMonth()).toBe(0);
+    expect(newDate.getFullYear()).toBe(2024);
+    expect(newDate.getHours()).toBe(10); // Hours should remain the same
+    expect(newDate.getMinutes()).toBe(15);
   });
 
   it('closes popup when date is selected', async () => {
