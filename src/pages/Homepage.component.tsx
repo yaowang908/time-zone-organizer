@@ -138,32 +138,31 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
       </nav>
 
       {/* Local Time Section */}
-      <div className="relative flex justify-center py-8">
-        <Card className="w-96 bg-white/10 border-white/20 backdrop-blur-sm">
-          <CardContent className="p-6">
-            <div className="text-center space-y-4">
-              <div className="flex items-center justify-center space-x-2 text-white/80">
-                <Calendar className="w-4 h-4" />
-                <span className="text-sm">Local Time</span>
+      <div className="relative flex justify-center pt-6">
+        <Card className="w-80 bg-white/10 border-white/20 backdrop-blur-sm">
+          <CardContent className="p-4">
+            <div className="text-center space-y-2">
+              <div className="flex items-center justify-center space-x-2 text-white/80 mb-2">
+                <Calendar className="w-3 h-3" />
+                <span className="text-xs font-medium">Local Time</span>
               </div>
               <Input
                 type="datetime-local"
                 value={localDateTimeState.toISOString().slice(0, 16)}
                 onChange={(e) => setLocalDateTimeState(new Date(e.target.value))}
-                className="text-center text-xl font-semibold bg-transparent border-0 text-white focus:ring-0"
+                className="text-center text-lg font-semibold bg-transparent border-0 text-white focus:ring-0 p-2"
               />
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Timeline Indicator */}
-      <div className="relative">
-        <div className="absolute left-1/2 w-px h-full bg-red-500 z-10"></div>
-      </div>
-
       {/* Content */}
-      <div className="container mx-auto px-6 pb-20">
+      <div className="container mx-auto px-6 pb-20 relative">
+        <div
+          data-testid="timeline-indicator"
+          className="absolute left-1/2 top-0 bottom-0 w-px bg-red-500 z-10"
+        ></div>
         {usersState ? usersState.map((user, index) => (
           <Entry
             key={index}

@@ -140,4 +140,18 @@ describe('Homepage Component', () => {
       { id: 1, name: 'Jane Smith', timezone: 'America/Los_Angeles' }
     ]);
   });
+
+  it('should display the timeline indicator', () => {
+    render(<Homepage users={defaultUsers} />);
+
+    const timelineIndicator = screen.getByTestId('timeline-indicator');
+    expect(timelineIndicator).toBeInTheDocument();
+  });
+
+  it('should have proper positioning and styling for timeline indicator', () => {
+    render(<Homepage users={defaultUsers} />);
+
+    const timelineIndicator = screen.getByTestId('timeline-indicator');
+    expect(timelineIndicator).toHaveClass('absolute', 'left-1/2', 'w-px', 'bg-red-500', 'z-10');
+  });
 }); 
