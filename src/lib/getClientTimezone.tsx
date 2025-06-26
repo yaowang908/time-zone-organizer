@@ -1,11 +1,11 @@
-
 const getClientTimezone = () => {
-  // https://stackoverflow.com/a/44935836/4297819
-  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  // console.log("🚀 ~ file: getClientTimezone.tsx ~ line 5 ~ getClientTimezone ~ timezone", timezone)
-  // For browser that support Intl Api will return in format like: America/New York
-  // ...for those that don't support Intl Api, will return undefined.
-  if (timezone) return timezone;
+  try {
+    const resolvedOptions = Intl.DateTimeFormat().resolvedOptions();
+    const timezone = resolvedOptions?.timeZone;
+    if (timezone) return timezone;
+  } catch (error) {
+    // Handle any errors that might occur
+  }
   return 'America/New York';
 };
 

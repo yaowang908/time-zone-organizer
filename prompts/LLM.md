@@ -1,0 +1,2 @@
+- Use Test Driven Development, write test first, and work on the implementation.
+- When introducing a new feature, make sure the existing tests are passing
