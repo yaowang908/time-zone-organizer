@@ -82,7 +82,7 @@ describe('Homepage Component', () => {
   it('should add a new person when Add Person button is clicked', () => {
     render(<Homepage users={defaultUsers} />);
 
-    const addPersonButton = screen.getByText('Add Person');
+    const addPersonButton = screen.getByText('Add entry');
     fireEvent.click(addPersonButton);
 
     // Should have 3 entries now (2 original + 1 new)
@@ -100,7 +100,7 @@ describe('Homepage Component', () => {
     render(<Homepage users={defaultUsers} />);
 
     // Add a new person
-    const addPersonButton = screen.getByText('Add Person');
+    const addPersonButton = screen.getByText('Add entry');
     fireEvent.click(addPersonButton);
 
     // Verify that localStorage was updated with the new user

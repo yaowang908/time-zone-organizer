@@ -107,8 +107,8 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
       {/* Navigation */}
       <nav className="flex items-center justify-between p-2 border-b border-white/20">
         <div className="flex items-center space-x-4">
-          <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center">
-            <Clock className="w-6 h-6 text-blue-900" />
+          <div className="w-12 h-12 rounded-lg flex items-center justify-center">
+            <Clock className="w-6 h-6 text-white" />
           </div>
           <h1 className="text-2xl font-bold text-white">Time Zone Organizer</h1>
         </div>
@@ -182,7 +182,7 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
           className="bg-blue-600 hover:bg-blue-700 text-white border-2 border-blue-400"
         >
           <Plus className="w-4 h-4 mr-2" />
-          Add Person
+          Add entry
         </Button>
       </div>
     </div>
