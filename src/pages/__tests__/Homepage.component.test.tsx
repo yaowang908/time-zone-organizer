@@ -2,6 +2,11 @@
 const setValueMock = jest.fn();
 const useLocalStorageMock = jest.fn((key, initial) => [initial, setValueMock]);
 
+// Extend global type to include setValueMock
+declare global {
+  var setValueMock: jest.Mock;
+}
+
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import Homepage from '../Homepage.component';
