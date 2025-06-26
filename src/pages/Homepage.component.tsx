@@ -60,11 +60,12 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
   React.useEffect(() => {
     const savedUsers = usersLocalStorage;
     setUsersState(savedUsers);
-  }, []);
+  }, [usersLocalStorage]);
 
   const addPersonClickHandler = () => {
     const newUsersState = [...usersState, { id: usersState.length, name: 'New User', timezone: defaultTimezoneState }];
     setUsersState(newUsersState);
+    setUsersLocalStorage(newUsersState);
   };
 
   React.useEffect(() => {
@@ -112,7 +113,7 @@ const Homepage: React.FC<Props> = ({ users, color = defaultColor, elementWidth =
         </div>
         <Dialog open={isResetDialogOpen} onOpenChange={setIsResetDialogOpen}>
           <DialogTrigger asChild>
-            <Button variant="outline" className="text-white border-white/20 hover:bg-white/10">
+            <Button className="text-white border border-white/20 hover:bg-white/10 bg-transparent">
               <RotateCcw className="w-4 h-4 mr-2" />
               Reset
             </Button>

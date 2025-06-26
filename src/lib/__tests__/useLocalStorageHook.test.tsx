@@ -161,4 +161,39 @@ describe('useLocalStorage', () => {
     expect(result.current[0]).toBe(true);
     expect(localStorage.setItem).toHaveBeenCalledWith('test-key', JSON.stringify(true));
   });
+
+  it('should preserve data in localStorage when user refreshes the page', () => {
+    // Simulate initial page load with no data in localStorage
+    (localStorage.getItem as jest.Mock).mockReturnValue(null);
+
+    // First instance of the hook (simulating first page load)
+    const { result: firstInstance, unmount: unmountFirst } = renderHook(() =>
+      useLocalStorage('user-data', { name: 'John', timezone: 'UTC' })
+    );
+
+    // Update the data (user adds/modifies data)
+    act(() => {
+      firstInstance.current[1]({ name: 'Jane', timezone: 'EST' });
+    });
+
+    expect(firstInstance.current[0]).toEqual({ name: 'Jane', timezone: 'EST' });
+    expect(localStorage.setItem).toHaveBeenCalledWith('user-data', JSON.stringify({ name: 'Jane', timezone: 'EST' }));
+
+    // Unmount the first instance (simulating page refresh)
+    unmountFirst();
+
+    // Simulate localStorage having the saved data after page refresh
+    (localStorage.getItem as jest.Mock).mockReturnValue(JSON.stringify({ name: 'Jane', timezone: 'EST' }));
+
+    // Second instance of the hook (simulating page refresh)
+    const { result: secondInstance } = renderHook(() =>
+      useLocalStorage('user-data', { name: 'John', timezone: 'UTC' })
+    );
+
+    // Verify that the data is preserved from localStorage
+    expect(secondInstance.current[0]).toEqual({ name: 'Jane', timezone: 'EST' });
+
+    // Verify that the initial value is not used (data was loaded from localStorage)
+    expect(secondInstance.current[0]).not.toEqual({ name: 'John', timezone: 'UTC' });
+  });
 }); 
