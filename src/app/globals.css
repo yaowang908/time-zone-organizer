@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons+Outlined');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -54,6 +57,24 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+    @apply bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-100 transition-colors duration-300;
   }
+}
+
+.timeline-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.timeline-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.timeline-scroll::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 20px;
+}
+
+.dark .timeline-scroll::-webkit-scrollbar-thumb {
+  background-color: #475569;
 }

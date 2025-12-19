@@ -152,6 +152,6 @@ describe('Homepage Component', () => {
     render(<Homepage users={defaultUsers} />);
 
     const timelineIndicator = screen.getByTestId('timeline-indicator');
-    expect(timelineIndicator).toHaveClass('absolute', 'left-1/2', 'w-px', 'bg-red-500', 'z-10');
+    expect(timelineIndicator).toHaveClass('absolute', 'left-1/2', 'w-px', 'bg-red-500', 'z-20');
   });
 }); 

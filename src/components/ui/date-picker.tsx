@@ -25,15 +25,6 @@ const DatePicker: React.FC<DatePickerProps> = ({ value, onChange, className }) =
   const daysInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate();
   const firstDayOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getDay();
 
-  const formatDate = (date: Date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
-  };
-
   const handleDateSelect = (day: number) => {
     const selectedDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
     selectedDate.setHours(value.getHours(), value.getMinutes());
@@ -128,53 +119,61 @@ const DatePicker: React.FC<DatePickerProps> = ({ value, onChange, className }) =
 
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
+  const formatDate = (date: Date) => {
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`;
+  };
+
+  const formatTime = (date: Date) => {
+    return date.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    }).toUpperCase();
+  };
+
   return (
     <div className={cn("relative", className)}>
       <div
-        className="flex items-center justify-center space-x-2 text-white/80 mb-2 cursor-pointer hover:text-white transition-colors"
+        className="flex items-center gap-3 bg-surface-light dark:bg-surface-dark px-6 py-3 rounded-2xl shadow-soft border border-slate-200 dark:border-slate-700 group cursor-pointer hover:border-primary/50 transition-all"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span className="text-xs font-medium">Local Time</span>
-      </div>
-
-      <div className="text-center space-y-2">
-        <div
-          className="text-center text-lg font-semibold bg-transparent border-0 text-white focus:ring-0 p-2 cursor-pointer flex items-center justify-center space-x-2"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <span>{value.toLocaleDateString()} {value.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-          <Calendar className="w-4 h-4 text-white/60" />
-        </div>
+        <span className="text-2xl font-bold text-slate-800 dark:text-white">{formatDate(value)}</span>
+        <div className="w-px h-6 bg-slate-300 dark:bg-slate-600 mx-2"></div>
+        <span className="text-2xl font-mono text-primary font-bold">{formatTime(value)}</span>
+        <span className="material-icons-outlined text-slate-400 group-hover:text-primary ml-2 transition-colors">edit_calendar</span>
       </div>
 
       {isOpen && (
         <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 z-50">
-          <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4 shadow-xl min-w-[280px]">
+          <div className="bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 rounded-lg p-4 shadow-xl min-w-[280px]">
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
               <button
                 onClick={goToPreviousMonth}
-                className="p-1 hover:bg-white/10 rounded transition-colors"
+                className="p-1 hover:bg-slate-100 dark:hover:bg-slate-700 rounded transition-colors"
                 aria-label="Previous month"
               >
-                <ChevronLeft className="w-4 h-4 text-white" />
+                <ChevronLeft className="w-4 h-4 text-slate-800 dark:text-slate-200" />
               </button>
-              <h3 className="text-white font-semibold">
+              <h3 className="text-slate-800 dark:text-slate-200 font-semibold">
                 {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
               </h3>
               <button
                 onClick={goToNextMonth}
-                className="p-1 hover:bg-white/10 rounded transition-colors"
+                className="p-1 hover:bg-slate-100 dark:hover:bg-slate-700 rounded transition-colors"
                 aria-label="Next month"
               >
-                <ChevronRight className="w-4 h-4 text-white" />
+                <ChevronRight className="w-4 h-4 text-slate-800 dark:text-slate-200" />
               </button>
             </div>
 
             {/* Day names */}
             <div className="grid grid-cols-7 gap-1 mb-2">
               {dayNames.map((day) => (
-                <div key={day} className="text-center text-xs text-white/60 font-medium p-1">
+                <div key={day} className="text-center text-xs text-slate-500 dark:text-slate-400 font-medium p-1">
                   {day}
                 </div>
               ))}
@@ -195,10 +194,10 @@ const DatePicker: React.FC<DatePickerProps> = ({ value, onChange, className }) =
                     key={day}
                     onClick={() => handleDateSelect(day)}
                     className={cn(
-                      "p-2 text-sm rounded transition-colors hover:bg-white/20",
-                      isTodayDate && !isSelectedDate && "bg-blue-500/30 text-white font-semibold",
-                      isSelectedDate && "bg-blue-600 text-white font-semibold",
-                      !isTodayDate && !isSelectedDate && "text-white/80 hover:text-white"
+                      "p-2 text-sm rounded transition-colors",
+                      isTodayDate && !isSelectedDate && "bg-primary/20 text-primary font-semibold",
+                      isSelectedDate && "bg-primary text-white font-semibold",
+                      !isTodayDate && !isSelectedDate && "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
                     )}
                   >
                     {day}
@@ -208,15 +207,15 @@ const DatePicker: React.FC<DatePickerProps> = ({ value, onChange, className }) =
             </div>
 
             {/* Time picker */}
-            <div className="mt-4 pt-4 border-t border-white/20">
+            <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
               <div className="flex items-center justify-center space-x-2">
-                <span className="text-xs text-white/60">Time:</span>
-                <div className="flex items-center space-x-4 bg-transparent border border-white/20 rounded px-2 py-1 text-white text-sm">
+                <span className="text-xs text-slate-500 dark:text-slate-400">Time:</span>
+                <div className="flex items-center space-x-4 bg-transparent border border-slate-200 dark:border-slate-700 rounded px-2 py-1 text-slate-800 dark:text-slate-200 text-sm">
                   {/* Hours */}
                   <div className="flex flex-col items-center">
                     <button
                       type="button"
-                      className="text-white/60 hover:text-white focus:outline-none"
+                      className="text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 focus:outline-none"
                       onClick={() => {
                         const newDate = new Date(value);
                         newDate.setHours((value.getHours() + 1) % 24);
@@ -233,13 +232,13 @@ const DatePicker: React.FC<DatePickerProps> = ({ value, onChange, className }) =
                         onChange={handleHoursInputChange}
                         onBlur={handleHoursBlur}
                         onKeyDown={handleHoursKeyDown}
-                        className="w-8 text-lg font-mono min-w-[2ch] text-center bg-transparent border-none text-white focus:outline-none"
+                        className="w-8 text-lg font-mono min-w-[2ch] text-center bg-transparent border-none text-slate-800 dark:text-slate-200 focus:outline-none"
                         autoFocus
                         maxLength={2}
                       />
                     ) : (
                       <span
-                        className="text-lg font-mono min-w-[2ch] text-center select-none cursor-pointer hover:bg-white/10 rounded px-1"
+                        className="text-lg font-mono min-w-[2ch] text-center select-none cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700 rounded px-1"
                         onClick={() => setEditingHours(true)}
                       >
                         {value.getHours().toString().padStart(2, '0')}
@@ -247,7 +246,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ value, onChange, className }) =
                     )}
                     <button
                       type="button"
-                      className="text-white/60 hover:text-white focus:outline-none"
+                      className="text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 focus:outline-none"
                       onClick={() => {
                         const newDate = new Date(value);
                         newDate.setHours((value.getHours() + 23) % 24);
@@ -263,7 +262,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ value, onChange, className }) =
                   <div className="flex flex-col items-center">
                     <button
                       type="button"
-                      className="text-white/60 hover:text-white focus:outline-none"
+                      className="text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 focus:outline-none"
                       onClick={() => {
                         const newDate = new Date(value);
                         newDate.setMinutes((value.getMinutes() + 1) % 60);
@@ -280,13 +279,13 @@ const DatePicker: React.FC<DatePickerProps> = ({ value, onChange, className }) =
                         onChange={handleMinutesInputChange}
                         onBlur={handleMinutesBlur}
                         onKeyDown={handleMinutesKeyDown}
-                        className="w-8 text-lg font-mono min-w-[2ch] text-center bg-transparent border-none text-white focus:outline-none"
+                        className="w-8 text-lg font-mono min-w-[2ch] text-center bg-transparent border-none text-slate-800 dark:text-slate-200 focus:outline-none"
                         autoFocus
                         maxLength={2}
                       />
                     ) : (
                       <span
-                        className="text-lg font-mono min-w-[2ch] text-center select-none cursor-pointer hover:bg-white/10 rounded px-1"
+                        className="text-lg font-mono min-w-[2ch] text-center select-none cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700 rounded px-1"
                         onClick={() => setEditingMinutes(true)}
                       >
                         {value.getMinutes().toString().padStart(2, '0')}
@@ -294,7 +293,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ value, onChange, className }) =
                     )}
                     <button
                       type="button"
-                      className="text-white/60 hover:text-white focus:outline-none"
+                      className="text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 focus:outline-none"
                       onClick={() => {
                         const newDate = new Date(value);
                         newDate.setMinutes((value.getMinutes() + 59) % 60);
@@ -305,7 +304,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ value, onChange, className }) =
                       ▼
                     </button>
                   </div>
-                  <Clock className="w-3 h-3 text-white/60 ml-2" />
+                  <Clock className="w-3 h-3 text-slate-500 dark:text-slate-400 ml-2" />
                 </div>
               </div>
             </div>
