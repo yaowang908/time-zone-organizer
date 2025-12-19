@@ -21,14 +21,18 @@ describe('DatePicker', () => {
 
   it('renders the date picker with correct initial value', () => {
     render(<DatePicker value={defaultDate} onChange={mockOnChange} />);
-    expect(screen.getByText('Local Time')).toBeInTheDocument();
-    expect(screen.getByText('1/15/2024 10:30 AM')).toBeInTheDocument();
+    // Date and time are in separate spans, so check them separately
+    expect(screen.getByText('01/15/2024')).toBeInTheDocument();
+    expect(screen.getByText('10:30 AM')).toBeInTheDocument();
   });
 
   it('opens calendar popup when clicked', () => {
     render(<DatePicker value={defaultDate} onChange={mockOnChange} />);
-    const dateDisplay = screen.getByText('1/15/2024 10:30 AM');
-    fireEvent.click(dateDisplay);
+    // Click on the date display container (the div that contains both date and time)
+    const dateDisplay = screen.getByText('01/15/2024').closest('div');
+    if (dateDisplay) {
+      fireEvent.click(dateDisplay);
+    }
     expect(screen.getByText('January 2024')).toBeInTheDocument();
     expect(screen.getByText('Sun')).toBeInTheDocument();
     expect(screen.getByText('Mon')).toBeInTheDocument();
@@ -36,15 +40,19 @@ describe('DatePicker', () => {
 
   it('displays correct month and year in header', () => {
     render(<DatePicker value={defaultDate} onChange={mockOnChange} />);
-    const dateDisplay = screen.getByText('1/15/2024 10:30 AM');
-    fireEvent.click(dateDisplay);
+    const dateDisplay = screen.getByText('01/15/2024').closest('div');
+    if (dateDisplay) {
+      fireEvent.click(dateDisplay);
+    }
     expect(screen.getByText('January 2024')).toBeInTheDocument();
   });
 
   it('allows navigation to previous month', () => {
     render(<DatePicker value={defaultDate} onChange={mockOnChange} />);
-    const dateDisplay = screen.getByText('1/15/2024 10:30 AM');
-    fireEvent.click(dateDisplay);
+    const dateDisplay = screen.getByText('01/15/2024').closest('div');
+    if (dateDisplay) {
+      fireEvent.click(dateDisplay);
+    }
     const prevButton = screen.getByRole('button', { name: /previous month/i });
     fireEvent.click(prevButton);
     expect(screen.getByText('December 2023')).toBeInTheDocument();
@@ -52,8 +60,10 @@ describe('DatePicker', () => {
 
   it('allows navigation to next month', () => {
     render(<DatePicker value={defaultDate} onChange={mockOnChange} />);
-    const dateDisplay = screen.getByText('1/15/2024 10:30 AM');
-    fireEvent.click(dateDisplay);
+    const dateDisplay = screen.getByText('01/15/2024').closest('div');
+    if (dateDisplay) {
+      fireEvent.click(dateDisplay);
+    }
     const nextButton = screen.getByRole('button', { name: /next month/i });
     fireEvent.click(nextButton);
     expect(screen.getByText('February 2024')).toBeInTheDocument();
@@ -61,8 +71,10 @@ describe('DatePicker', () => {
 
   it('selects a date when day is clicked', () => {
     render(<DatePicker value={defaultDate} onChange={mockOnChange} />);
-    const dateDisplay = screen.getByText('1/15/2024 10:30 AM');
-    fireEvent.click(dateDisplay);
+    const dateDisplay = screen.getByText('01/15/2024').closest('div');
+    if (dateDisplay) {
+      fireEvent.click(dateDisplay);
+    }
     const dayButton = screen.getByText('20');
     fireEvent.click(dayButton);
     expect(mockOnChange).toHaveBeenCalledWith(expect.any(Date));
@@ -79,24 +91,35 @@ describe('DatePicker', () => {
     const selectedDate = new Date(today);
     selectedDate.setDate(todayDate === 1 ? 2 : 1);
     render(<DatePicker value={selectedDate} onChange={mockOnChange} />);
-    const dateDisplay = screen.getByText(`${selectedDate.toLocaleDateString()} ${selectedDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`);
-    fireEvent.click(dateDisplay);
+    // Format date to match component's format (MM/DD/YYYY)
+    const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+    const day = String(selectedDate.getDate()).padStart(2, '0');
+    const year = selectedDate.getFullYear();
+    const formattedDate = `${month}/${day}/${year}`;
+    const dateDisplay = screen.getByText(formattedDate).closest('div');
+    if (dateDisplay) {
+      fireEvent.click(dateDisplay);
+    }
     const todayButton = screen.getByText(todayDate.toString());
-    expect(todayButton).toHaveClass('bg-blue-500/30');
+    expect(todayButton).toHaveClass('bg-primary/20');
   });
 
   it('highlights selected date', () => {
     render(<DatePicker value={defaultDate} onChange={mockOnChange} />);
-    const dateDisplay = screen.getByText('1/15/2024 10:30 AM');
-    fireEvent.click(dateDisplay);
+    const dateDisplay = screen.getByText('01/15/2024').closest('div');
+    if (dateDisplay) {
+      fireEvent.click(dateDisplay);
+    }
     const selectedButton = screen.getByText('15');
-    expect(selectedButton).toHaveClass('bg-blue-600');
+    expect(selectedButton).toHaveClass('bg-primary');
   });
 
   it('allows time selection', () => {
     render(<DatePicker value={defaultDate} onChange={mockOnChange} />);
-    const dateDisplay = screen.getByText('1/15/2024 10:30 AM');
-    fireEvent.click(dateDisplay);
+    const dateDisplay = screen.getByText('01/15/2024').closest('div');
+    if (dateDisplay) {
+      fireEvent.click(dateDisplay);
+    }
     // Get the hour and minute display spans (not buttons)
     const hoursDisplay = screen.getAllByText('10').find(el => el.tagName === 'SPAN');
     const minutesDisplay = screen.getAllByText('30').find(el => el.tagName === 'SPAN');
@@ -108,8 +131,10 @@ describe('DatePicker', () => {
 
   it('allows changing time via time input', () => {
     render(<DatePicker value={defaultDate} onChange={mockOnChange} />);
-    const dateDisplay = screen.getByText('1/15/2024 10:30 AM');
-    fireEvent.click(dateDisplay);
+    const dateDisplay = screen.getByText('01/15/2024').closest('div');
+    if (dateDisplay) {
+      fireEvent.click(dateDisplay);
+    }
     // Click on hours to edit (find the span, not the button)
     const hoursSpan = screen.getAllByText('10').find(el => el.tagName === 'SPAN');
     expect(hoursSpan).toBeDefined();
@@ -128,8 +153,10 @@ describe('DatePicker', () => {
 
   it('preserves date when only time is changed', () => {
     render(<DatePicker value={defaultDate} onChange={mockOnChange} />);
-    const dateDisplay = screen.getByText('1/15/2024 10:30 AM');
-    fireEvent.click(dateDisplay);
+    const dateDisplay = screen.getByText('01/15/2024').closest('div');
+    if (dateDisplay) {
+      fireEvent.click(dateDisplay);
+    }
     // Click on minutes to edit (find the span, not the button)
     const minutesSpan = screen.getAllByText('30').find(el => el.tagName === 'SPAN');
     expect(minutesSpan).toBeDefined();
@@ -148,8 +175,10 @@ describe('DatePicker', () => {
 
   it('closes popup when date is selected', async () => {
     render(<DatePicker value={defaultDate} onChange={mockOnChange} />);
-    const dateDisplay = screen.getByText('1/15/2024 10:30 AM');
-    fireEvent.click(dateDisplay);
+    const dateDisplay = screen.getByText('01/15/2024').closest('div');
+    if (dateDisplay) {
+      fireEvent.click(dateDisplay);
+    }
     expect(screen.getByText('January 2024')).toBeInTheDocument();
     const dayButton = screen.getByText('20');
     fireEvent.click(dayButton);
@@ -160,30 +189,41 @@ describe('DatePicker', () => {
 
   it('toggles popup when input is clicked again', () => {
     render(<DatePicker value={defaultDate} onChange={mockOnChange} />);
-    const dateDisplay = screen.getByText('1/15/2024 10:30 AM');
+    const dateDisplay = screen.getByText('01/15/2024').closest('div');
     // First click opens
-    fireEvent.click(dateDisplay);
+    if (dateDisplay) {
+      fireEvent.click(dateDisplay);
+    }
     expect(screen.getByText('January 2024')).toBeInTheDocument();
     // Second click closes
-    fireEvent.click(dateDisplay);
+    if (dateDisplay) {
+      fireEvent.click(dateDisplay);
+    }
     expect(screen.queryByText('January 2024')).not.toBeInTheDocument();
   });
 
   it('applies custom className', () => {
     render(<DatePicker value={defaultDate} onChange={mockOnChange} className="custom-class" />);
     // The outermost container has the class
-    const container = screen.getByText('Local Time').closest('div.relative');
+    const container = screen.getByText('01/15/2024').closest('div.relative');
     expect(container).toHaveClass('custom-class');
   });
 
   it('prioritizes selected date over today highlight', () => {
     const today = new Date();
     render(<DatePicker value={today} onChange={mockOnChange} />);
-    const dateDisplay = screen.getByText(`${today.toLocaleDateString()} ${today.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`);
-    fireEvent.click(dateDisplay);
+    // Format date to match component's format (MM/DD/YYYY)
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    const year = today.getFullYear();
+    const formattedDate = `${month}/${day}/${year}`;
+    const dateDisplay = screen.getByText(formattedDate).closest('div');
+    if (dateDisplay) {
+      fireEvent.click(dateDisplay);
+    }
     const todayButton = screen.getByText(today.getDate().toString());
     // When today is selected, it should have the selected class, not the today class
-    expect(todayButton).toHaveClass('bg-blue-600');
-    expect(todayButton).not.toHaveClass('bg-blue-500/30');
+    expect(todayButton).toHaveClass('bg-primary');
+    expect(todayButton).not.toHaveClass('bg-primary/20');
   });
 }); 
