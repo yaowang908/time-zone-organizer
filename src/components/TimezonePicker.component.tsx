@@ -155,13 +155,15 @@ const TimezonePicker: React.FC<Props> = ({
     setIsOpen(true);
   };
 
-  const handleInputFocus = () => {
+  const handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     setIsFocused(true);
     setIsOpen(true);
     // When focusing, show the selected timezone value as starting point
     if (!searchQuery || searchQuery === selectedTimezone.value) {
       setSearchQuery(selectedTimezone.value);
     }
+    // Auto-select all text when focused
+    e.target.select();
   };
 
   const handleInputBlur = () => {

@@ -179,12 +179,14 @@ const Entry: React.FC<Props> = ({
               <Input
                 value={userNameState}
                 onChange={userNameChangeHandler}
+                onFocus={(e) => e.target.select()}
                 className="border-0 bg-transparent p-0 h-auto text-lg font-bold text-slate-800 dark:text-white leading-tight focus-visible:ring-0 focus-visible:ring-offset-0"
                 placeholder="Name"
               />
               <Input
                 value={userRoleState}
                 onChange={userRoleChangeHandler}
+                onFocus={(e) => e.target.select()}
                 className="border-0 bg-transparent p-0 h-auto text-xs text-slate-500 dark:text-slate-400 focus-visible:ring-0 focus-visible:ring-offset-0"
                 placeholder="Role"
               />
