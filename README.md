@@ -177,6 +177,19 @@ This project is licensed under the MIT License.
 - [Tailwind CSS](https://tailwindcss.com/) for utility-first styling
 - [Lucide](https://lucide.dev/) for the icon set
 
+## Troubleshooting
+
+### Tests fail after `yarn install`
+
+If you encounter errors like `Cannot find module 'string-width'` or `stripAnsi is not a function` after running `yarn install`, this is usually due to yarn's resolution system not being applied correctly. Try:
+
+```bash
+rm -rf node_modules yarn.lock
+yarn install
+```
+
+The project uses yarn resolutions to ensure CommonJS-compatible versions of `string-width` and `strip-ansi` are installed. If issues persist, the postinstall script will provide guidance.
+
 ## Git Hooks (Husky)
 
 This project uses [Husky](https://typicode.github.io/husky) to enforce running unit tests before every commit. If any test fails, the commit will be aborted.
