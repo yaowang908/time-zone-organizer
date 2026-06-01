@@ -19,9 +19,9 @@
     "@radix-ui/react-toast": "^1.1.5",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
-    "lodash": "4.17.23",
+    "lodash": "^4.18.0",
     "lucide-react": "^0.344.0",
-    "next": "15.5.10",
+    "next": "15.5.18",
     "react": "^18.3.1",
     "react-confirm-alert": "^2.7.0",
     "react-dom": "^18.3.1",
@@ -67,13 +67,20 @@
   "resolutions": {
     "json5": "^2.2.2",
     "braces": "^3.0.3",
-    "webpack-dev-server": "5.2.1",
+    "webpack-dev-server": "^5.2.4",
     "postcss": "^8.4.31",
     "webpack-dev-middleware": "^5.3.4",
     "got": "^11.8.5",
     "glob": "^10.5.0",
     "strip-ansi": "^6.0.1",
     "string-width": "^4.2.3",
-    "qs": "6.14.2"
+    "qs": "^6.15.2",
+    "uuid": "^11.1.1",
+    "follow-redirects": "^1.16.0",
+    "fast-uri": "^3.1.2",
+    "path-to-regexp": "^0.1.13",
+    "node-forge": "^1.4.0",
+    "picomatch": "^4.0.4",
+    "flatted": "^3.4.2"
   }
 }
