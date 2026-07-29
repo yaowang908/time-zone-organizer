@@ -67,7 +67,7 @@
   "resolutions": {
     "json5": "^2.2.2",
     "braces": "^3.0.3",
-    "webpack-dev-server": "^5.2.4",
+    "webpack-dev-server": "^5.2.5",
     "postcss": "^8.4.31",
     "webpack-dev-middleware": "^5.3.4",
     "got": "^11.8.5",
@@ -85,6 +85,9 @@
     "flatted": "^3.4.2",
     "shell-quote": "^1.9.0",
     "js-yaml": "^4.3.0",
-    "@istanbuljs/load-nyc-config/js-yaml": "^3.14.1"
+    "@istanbuljs/load-nyc-config/js-yaml": "^3.14.1",
+    "websocket-driver": "^0.7.5",
+    "http-proxy-middleware": "^2.0.10",
+    "launch-editor": "^2.14.1"
   }
 }
